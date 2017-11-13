@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -66,13 +67,19 @@ public class EditorModeController : MonoBehaviour {
         mapContent = mapContent.Substring(0, mapContent.Length - 1);
 
         //Write some text to the test.txt file
-        StreamWriter writer = new StreamWriter(path, true);
-        writer.WriteLine(mapContent);
+        StreamWriter writer = new StreamWriter(path, false);
+        writer.Write(mapContent);
         writer.Close();
+
+        AssetDatabase.Refresh();
     }
 
     public void LoadMap()
     {
+        var children = new List<GameObject>();
+        foreach (Transform child in terrainPlacementObject.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
         string myFile = "defaultMap";
         if (nameForLoad.text != "")
         {
@@ -81,8 +88,41 @@ public class EditorModeController : MonoBehaviour {
 
         TextAsset asset = Resources.Load(myFile) as TextAsset;
 
+        string[] splitArray = asset.text.Split(char.Parse(";"));
+        string[] splitLine = splitArray[0].Split(char.Parse(" "));
+        mapWidth = splitArray.Length;
+        mapHeight = splitLine.Length;
+
+        terrainMapping = new Terrain[mapWidth, mapHeight];
+        for (int i = 0; i < terrainMapping.GetLength(0); i++)
+        {
+            for (int j = 0; j < terrainMapping.GetLength(1); j++)
+            {
+                terrainMapping[i, j] = new Terrain();
+            }
+        }
+
+        for (int i = 0; i < mapWidth; i++)
+        {
+            string[] myLine = splitArray[i].Split(char.Parse(" "));
+
+            for (int j = 0; j < mapHeight; j++)
+            {
+                terrainMapping[i, j] = myTerrains[System.Int32.Parse(myLine[j])];
+                GameObject myTerrain = Instantiate(terrainMapping[i, j].middle);
+                myTerrain.name = i + " " + j;
+                myTerrain.transform.parent = terrainPlacementObject.transform;
+                myTerrain.transform.position = new Vector3(i - mapWidth / 2, mapHeight / 2 - j, 0.0f);
+            }
+        }
+
+        //foreach (string s in splitArray)
+        //{
+        //    Debug.Log(s);
+        //}
+
         //Print the map from the file
-        Debug.Log(asset.text);
+        //Debug.Log(asset.text);
     }
 
     public void SetTerrainAtPos(int x, int y)
