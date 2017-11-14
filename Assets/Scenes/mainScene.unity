@@ -788,40 +788,45 @@ MonoBehaviour:
   nameForSave: {fileID: 1661403861}
   nameForLoad: {fileID: 1956626169}
   terrainPlacementObject: {fileID: 1656474747}
+  texturePacks:
+  - BasicTerrain: Terrain/WhitePack/0-BasicTerrain
+    BarPoint_Horizontal: Terrain/WhitePack/1-BarPoint_Horizontal
+    BarPoint_Vertical: Terrain/WhitePack/2-BarPoint_Vertical
+    Curve: Terrain/WhitePack/3-Curve
+    ExtraParts: Terrain/WhitePack/4-ExtraParts
+    InnerCurves: Terrain/WhitePack/5-InnerCurves
+    ThreePoints: Terrain/WhitePack/6-ThreePoints
+    Tips: Terrain/WhitePack/7-Tips
+    TwoPointsBar: Terrain/WhitePack/8-TwoPointsBar
+    TwoPoints: Terrain/WhitePack/9-TwoPoints
+    Diagonal: Terrain/WhitePack/10-Diagonal
+  - BasicTerrain: Terrain/GreenPack/0-BasicTerrain
+    BarPoint_Horizontal: Terrain/GreenPack/1-BarPoint_Horizontal
+    BarPoint_Vertical: Terrain/GreenPack/2-BarPoint_Vertical
+    Curve: Terrain/GreenPack/3-Curve
+    ExtraParts: Terrain/GreenPack/4-ExtraParts
+    InnerCurves: Terrain/GreenPack/5-InnerCurves
+    ThreePoints: Terrain/GreenPack/6-ThreePoints
+    Tips: Terrain/GreenPack/7-Tips
+    TwoPointsBar: Terrain/GreenPack/8-TwoPointsBar
+    TwoPoints: Terrain/GreenPack/9-TwoPoints
+    Diagonal: Terrain/GreenPack/10-Diagonal
+  - BasicTerrain: Terrain/RedPack/0-BasicTerrain
+    BarPoint_Horizontal: Terrain/RedPack/1-BarPoint_Horizontal
+    BarPoint_Vertical: Terrain/RedPack/2-BarPoint_Vertical
+    Curve: Terrain/RedPack/3-Curve
+    ExtraParts: Terrain/RedPack/4-ExtraParts
+    InnerCurves: Terrain/RedPack/5-InnerCurves
+    ThreePoints: Terrain/RedPack/6-ThreePoints
+    Tips: Terrain/RedPack/7-Tips
+    TwoPointsBar: Terrain/RedPack/8-TwoPointsBar
+    TwoPoints: Terrain/RedPack/9-TwoPoints
+    Diagonal: Terrain/RedPack/10-Diagonal
   currentTerrainType: 0
   isDrawingTerrain: 1
   isPlacingObject: 0
-  myTerrains:
-  - terrainType: 0
-    topLeft: {fileID: 0}
-    top: {fileID: 0}
-    topRight: {fileID: 0}
-    middleLeft: {fileID: 0}
-    middle: {fileID: 1363322062378574, guid: 6d32434ba20fa59408510d761723b9c3, type: 2}
-    middleRight: {fileID: 0}
-    bottonLeft: {fileID: 0}
-    botton: {fileID: 0}
-    bottonRight: {fileID: 0}
-  - terrainType: 1
-    topLeft: {fileID: 0}
-    top: {fileID: 0}
-    topRight: {fileID: 0}
-    middleLeft: {fileID: 0}
-    middle: {fileID: 1300929920494648, guid: 149a4cc4c115b19418041cf990ff346e, type: 2}
-    middleRight: {fileID: 0}
-    bottonLeft: {fileID: 0}
-    botton: {fileID: 0}
-    bottonRight: {fileID: 0}
-  - terrainType: 2
-    topLeft: {fileID: 0}
-    top: {fileID: 0}
-    topRight: {fileID: 0}
-    middleLeft: {fileID: 0}
-    middle: {fileID: 1562376947646086, guid: 7f958dd69fe078a42ab6f04be7d4e66f, type: 2}
-    middleRight: {fileID: 0}
-    bottonLeft: {fileID: 0}
-    botton: {fileID: 0}
-    bottonRight: {fileID: 0}
+  terrainBasicObject: {fileID: 1882208263621868, guid: 19c3c0989d659d94fbb7e57596babc62,
+    type: 2}
 --- !u!4 &524205395
 Transform:
   m_ObjectHideFlags: 0
@@ -2710,7 +2715,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1656474748}
   m_Layer: 0
-  m_Name: Terrain
+  m_Name: TerrainHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
