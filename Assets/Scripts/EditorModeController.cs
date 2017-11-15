@@ -14,7 +14,13 @@ public class EditorModeController : MonoBehaviour {
     public InputField nameForSave;
     public InputField nameForLoad;
 
-    public GameObject terrainPlacementObject;
+    public GameObject terrainHolder;
+    public GameObject elementHolder;
+    public GameObject patrolPointsHolder
+        ;
+    public bool patrolPointEnabled;
+    public GameObject patrolPointSelectedImage;
+    public GameObject patrolPointPrefab;
 
     [System.Serializable]
     public class TexturePack
@@ -32,14 +38,19 @@ public class EditorModeController : MonoBehaviour {
         public string Diagonal;
     }
 
+    public List<GameObject> selectedTextureFeedbackList;
+    public List<GameObject> selectedElementFeedbackList;
     public List<TexturePack> texturePacks;
+    public List<GameObject> npcList;
+    public List<GameObject> elementsList;
 
     public int currentTerrainType;
+    public int currentElementIdSelected;
     int mapWidth;
     int mapHeight;
 
-    public bool isDrawingTerrain = true;
-    public bool isPlacingObject = false;
+    public bool isDrawingTerrain = false;
+    public bool isPlacingElements = false;
 
     [System.Serializable]
     public class Terrain
@@ -58,12 +69,106 @@ public class EditorModeController : MonoBehaviour {
     }
 
     public GameObject terrainBasicObject;
+    public List<GameObject> elementPrefabs;
     public Terrain[,] tMap;
 
     private void Start()
     {
         currentTerrainType = -1;
+        currentElementIdSelected = -1;
+        patrolPointEnabled = false;
     }
+
+    public void togglePatrolPoint()
+    {
+        if (patrolPointEnabled)
+        {
+            patrolPointEnabled = false;
+        }
+        else
+        {
+            patrolPointEnabled = true;
+            currentElementIdSelected = -1;
+        }
+        UpdateFeedbackElementSelection();
+    }
+    public void UpdateFeedbackTerrainSelection()
+    {
+        foreach (GameObject SelectedTexture in selectedTextureFeedbackList)
+        {
+            SelectedTexture.SetActive(false);
+        }
+        if (currentTerrainType != -1)
+        {
+            selectedTextureFeedbackList[currentTerrainType].SetActive(true);
+        }
+    }
+
+    public void UpdateFeedbackElementSelection()
+    {
+        foreach (GameObject SelectedTexture in selectedElementFeedbackList)
+        {
+            SelectedTexture.SetActive(false);
+        }
+        if (patrolPointEnabled)
+        {
+            patrolPointSelectedImage.SetActive(true);
+        }
+        else
+        {
+            patrolPointSelectedImage.SetActive(false);
+            
+            if (currentElementIdSelected != -1)
+            {
+                selectedElementFeedbackList[currentElementIdSelected].SetActive(true);
+            }
+        }
+    }
+
+    public void InsertElement(Vector3 pos)
+    {
+        if (patrolPointEnabled)
+        {
+            GameObject myElement = Instantiate(patrolPointPrefab);
+
+            myElement.transform.parent = patrolPointsHolder.transform;
+            myElement.transform.position = pos;
+            elementsList.Add(myElement);
+            foreach(GameObject npc in npcList)
+            {
+                npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+            }
+        }
+        else
+        {
+            if (currentElementIdSelected != -1)
+            {
+                GameObject myElement = Instantiate(elementPrefabs[currentElementIdSelected]);
+
+                myElement.transform.parent = elementHolder.transform;
+                myElement.transform.position = pos;
+                elementsList.Add(myElement);
+            }
+        }
+    }
+
+    public void SetCurrentElementId(int id)
+    {
+        if (patrolPointEnabled)
+        {
+            patrolPointEnabled = false;
+        }
+        if (currentElementIdSelected == id)
+        {
+            currentElementIdSelected = -1;
+        }
+        else
+        {
+            currentElementIdSelected = id;
+        }
+        UpdateFeedbackElementSelection();
+    }
+
     public void SetTerrainType(int type)
     {
         if (currentTerrainType == type)
@@ -74,6 +179,7 @@ public class EditorModeController : MonoBehaviour {
         {
             currentTerrainType = type;
         }
+        UpdateFeedbackTerrainSelection();
     }
 
     public void SaveToTxt()
@@ -110,7 +216,7 @@ public class EditorModeController : MonoBehaviour {
     public void LoadMap()
     {
         var children = new List<GameObject>();
-        foreach (Transform child in terrainPlacementObject.transform) children.Add(child.gameObject);
+        foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
 
         string myFile = "defaultMap";
@@ -145,8 +251,9 @@ public class EditorModeController : MonoBehaviour {
                 GameObject myTerrain = Instantiate(terrainBasicObject);
                 tMap[i, j].terrainObject = myTerrain;
                 myTerrain.name = i + " " + j;
-                myTerrain.transform.parent = terrainPlacementObject.transform;
-                myTerrain.transform.position = new Vector3(i - mapWidth / 2, mapHeight / 2 - j, 0.0f);
+                myTerrain.transform.parent = terrainHolder.transform;
+                myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
         }
 
@@ -598,7 +705,7 @@ public class EditorModeController : MonoBehaviour {
                 //    terrainBasicObject.GetComponent<SpriteRenderer>().sprite;
                 break;
         }
-        Debug.Log("( " + x + " , " + y + " )  -> " + patern);
+        //Debug.Log("( " + x + " , " + y + " )  -> " + patern);
     }
 
     public void SetTerrainAtPos(int x, int y)
@@ -647,7 +754,7 @@ public class EditorModeController : MonoBehaviour {
     public void GenerateMap()
     {
         var children = new List<GameObject>();
-        foreach (Transform child in terrainPlacementObject.transform) children.Add(child.gameObject);
+        foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
 
         if (widthOfMap.text == "" || heightOfMap.text == "")
@@ -676,8 +783,9 @@ public class EditorModeController : MonoBehaviour {
                 GameObject myTerrain = Instantiate(terrainBasicObject);
                 tMap[i, j].terrainObject = myTerrain;
                 myTerrain.name = i + " " + j;
-                myTerrain.transform.parent = terrainPlacementObject.transform;
-                myTerrain.transform.position = new Vector3(i - mapWidth / 2, mapHeight / 2 - j, 0.0f);
+                myTerrain.transform.parent = terrainHolder.transform;
+                myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
         }
     }

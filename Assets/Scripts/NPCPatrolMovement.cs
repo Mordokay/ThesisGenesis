@@ -1,0 +1,67 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class NPCPatrolMovement : MonoBehaviour {
+
+    List<Transform> patrolMovementPoints;
+    NavMeshAgent agent;
+    public float waitTime;
+    public float minimumWaitTime;
+    public float maximumWaitTime;
+    GameObject patrolPointHolder;
+
+    void Start () {
+        patrolMovementPoints = new List<Transform>();
+        patrolPointHolder = GameObject.FindGameObjectWithTag("PatrolPointsHolder");
+        foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
+        agent = GetComponent<NavMeshAgent>();
+        waitTime = 0;
+        //this.transform.position = patrolMovementPoints[Random.Range(0, patrolMovementPoints.Length)].position;
+    }
+	
+    void GetNewGoal()
+    {
+        if (patrolMovementPoints.Count > 0)
+        {
+            agent.destination = patrolMovementPoints[Random.Range(0, patrolMovementPoints.Count)].position;
+        }
+    }
+
+    //When NPC reaches a position he waits for a couple of seconds before starting to move again
+    void SetWaitTime()
+    {
+        waitTime = Random.Range(minimumWaitTime, maximumWaitTime);
+    }
+
+    public void UpdatePatrolPoints()
+    {
+        patrolMovementPoints.Clear();
+        foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
+        Debug.Log("Updating patrol points of " + this.name + " and there are " + patrolMovementPoints.Count + " total points ");
+        foreach (Transform t in patrolMovementPoints)
+        {
+            Debug.Log(t.position);
+        }
+    }
+
+    void Update () {
+        float dist = agent.remainingDistance;
+        if(waitTime != 0)
+        {
+            waitTime -= Time.deltaTime;
+            if(waitTime <= 0)
+            {
+                waitTime = 0;
+                GetNewGoal();
+            }
+        }
+        else if (dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && 
+            agent.remainingDistance == 0)
+        {
+            SetWaitTime();
+        }
+
+    }
+}

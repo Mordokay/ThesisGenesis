@@ -6,23 +6,58 @@ public class MouseInputController : MonoBehaviour {
 
     GameObject gm;
 
-	void Start () {
+    public LayerMask TerrainLayerMask;
+    Vector3 lastMousePos;
+    string lastTerrainTileClicked;
+
+    void Start () {
+        lastMousePos = Vector3.zero;
         gm = GameObject.FindGameObjectWithTag("GameManager");
+        lastTerrainTileClicked = "";
     }
 	
 	void Update () {
+        if (Input.GetMouseButton(0))
+        {
+            if (!lastMousePos.Equals(Input.mousePosition) && gm.GetComponent<EditorModeController>().isDrawingTerrain)
+            {
+                //Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, TerrainLayerMask);
+
+                if (hit.collider != null && !lastTerrainTileClicked.Equals(hit.collider.gameObject.name))
+                {
+                    if (hit.collider.tag.Equals("Terrain"))
+                    {
+                        lastTerrainTileClicked = hit.collider.gameObject.name;
+                        Vector3 pos = hit.collider.gameObject.transform.position;
+                        //Debug.Log(pos);
+                        gm.GetComponent<EditorModeController>().SetTerrainAtPos((int)pos.x, (int)pos.z);
+                    }
+                    //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+                }
+                lastMousePos = Input.mousePosition;
+            }
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-            if (hit.collider != null)
+            if (gm.GetComponent<EditorModeController>().isPlacingElements)
             {
-                if(hit.collider.tag.Equals("Terrain") && gm.GetComponent<EditorModeController>().isDrawingTerrain)
+                //Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, TerrainLayerMask);
+
+                if (hit.collider != null)
                 {
-                    Vector3 pos = hit.collider.gameObject.transform.position;
-                    gm.GetComponent<EditorModeController>().SetTerrainAtPos((int)pos.x, (int)pos.y);
+
+                    if (hit.collider.tag.Equals("Terrain"))
+                    {
+                        //Vector3 pos = hit.collider.gameObject.transform.position;
+                        //Debug.Log(pos);
+                        gm.GetComponent<EditorModeController>().InsertElement(hit.point);
+                    }
+                    //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
                 }
-                //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
             }
         }
     }
