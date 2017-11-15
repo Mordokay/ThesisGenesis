@@ -14,7 +14,7 @@ public class KeyboardController : MonoBehaviour {
 
     void Update()
     {
-        if (gm.GetComponent<EditorModeController>().isDrawingTerrain)
+        if (gm.GetComponent<EditorModeController>().isEditorMode)
         {
             if (Input.GetKey(KeyCode.W))
             {

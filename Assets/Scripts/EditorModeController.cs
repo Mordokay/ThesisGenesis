@@ -15,6 +15,7 @@ public class EditorModeController : MonoBehaviour {
     public InputField nameForLoad;
 
     public GameObject terrainHolder;
+    public GameObject undergroundHolder;
     public GameObject elementHolder;
     public GameObject patrolPointsHolder
         ;
@@ -42,7 +43,8 @@ public class EditorModeController : MonoBehaviour {
     public List<GameObject> selectedElementFeedbackList;
     public List<TexturePack> texturePacks;
     public List<GameObject> npcList;
-    public List<GameObject> elementsList;
+    public List<Element> elementList;
+    public List<Element> patrolPointsList;
 
     public int currentTerrainType;
     public int currentElementIdSelected;
@@ -51,26 +53,39 @@ public class EditorModeController : MonoBehaviour {
 
     public bool isDrawingTerrain = false;
     public bool isPlacingElements = false;
+    public bool isEditorMode = true;
 
     [System.Serializable]
     public class Terrain
     {
         public int terrainType;
-        public string spriteName;
-        public int spriteIndex;
         public GameObject terrainObject;
 
         public Terrain()
         {
             terrainType = -1;
-            spriteName = "";
-            spriteIndex = 0;
+        }
+    }
+
+    [System.Serializable]
+    public class Element
+    {
+        public int elementID;
+        public Vector3 elementPos;
+        public GameObject elementObject;
+
+        public Element(GameObject obj, int id)
+        {
+            elementObject = obj;
+            elementID = id;
         }
     }
 
     public GameObject terrainBasicObject;
+    public GameObject undergroundBasicObject;
     public List<GameObject> elementPrefabs;
     public Terrain[,] tMap;
+    public Terrain[,] uMap;
 
     private void Start()
     {
@@ -129,12 +144,13 @@ public class EditorModeController : MonoBehaviour {
     {
         if (patrolPointEnabled)
         {
-            GameObject myElement = Instantiate(patrolPointPrefab);
+            GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
 
-            myElement.transform.parent = patrolPointsHolder.transform;
-            myElement.transform.position = pos;
-            elementsList.Add(myElement);
-            foreach(GameObject npc in npcList)
+            myPatrolPoint.transform.parent = patrolPointsHolder.transform;
+            myPatrolPoint.transform.position = new Vector3(pos.x, 0.0f, pos.z);
+            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
+            patrolPointsList.Add(new Element(myPatrolPoint, -99));
+            foreach (GameObject npc in npcList)
             {
                 npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
             }
@@ -146,8 +162,8 @@ public class EditorModeController : MonoBehaviour {
                 GameObject myElement = Instantiate(elementPrefabs[currentElementIdSelected]);
 
                 myElement.transform.parent = elementHolder.transform;
-                myElement.transform.position = pos;
-                elementsList.Add(myElement);
+                myElement.transform.position = new Vector3(pos.x, 0.0f, pos.z);
+                elementList.Add(new Element(myElement, currentElementIdSelected));
             }
         }
     }
@@ -191,6 +207,7 @@ public class EditorModeController : MonoBehaviour {
         }
 
         string mapContent = "";
+        bool addedLastComma = false;
 
         for (int i = 0; i < tMap.GetLength(0); i++)
         {
@@ -200,8 +217,59 @@ public class EditorModeController : MonoBehaviour {
             }
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
             mapContent += ";";
+            addedLastComma = true;
         }
-        mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        if (addedLastComma)
+        {
+            addedLastComma = false;
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        mapContent += "|";
+
+        for (int i = 0; i < uMap.GetLength(0); i++)
+        {
+            for (int j = 0; j < uMap.GetLength(1); j++)
+            {
+                mapContent += uMap[i, j].terrainType + " ";
+            }
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            mapContent += ";";
+            addedLastComma = true;
+        }
+        if (addedLastComma)
+        {
+            addedLastComma = false;
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        mapContent += "|";
+
+        for (int i = 0; i < elementList.Count; i++)
+        {
+            Vector3 posOfElm = elementList[i].elementObject.transform.localPosition;
+            mapContent += elementList[i].elementID + " " + posOfElm.x + " " + posOfElm.z;
+            mapContent += ";";
+            addedLastComma = true;
+        }
+        if (addedLastComma)
+        {
+            addedLastComma = false;
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        mapContent += "|";
+
+        for (int i = 0; i < patrolPointsList.Count; i++)
+        {
+            Vector3 posOfElm = patrolPointsList[i].elementObject.transform.position;
+            mapContent += posOfElm.x + " " + posOfElm.z;
+            mapContent += ";";
+            addedLastComma = true;
+        }
+        if (addedLastComma)
+        {
+            addedLastComma = false;
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        mapContent += "|";
 
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, false);
@@ -218,6 +286,15 @@ public class EditorModeController : MonoBehaviour {
         var children = new List<GameObject>();
         foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
+        foreach (Transform child in undergroundHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        foreach (Transform child in elementHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        foreach (Transform child in patrolPointsHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
+        elementList.Clear();
+        patrolPointsList.Clear();
 
         string myFile = "defaultMap";
         if (nameForLoad.text != "")
@@ -227,34 +304,88 @@ public class EditorModeController : MonoBehaviour {
 
         TextAsset asset = Resources.Load(myFile) as TextAsset;
 
-        string[] splitArray = asset.text.Split(char.Parse(";"));
-        string[] splitLine = splitArray[0].Split(char.Parse(" "));
-        mapWidth = splitArray.Length;
-        mapHeight = splitLine.Length;
+        string[] splitGameData = asset.text.Split(char.Parse("|"));
+        string[] splitArrayTerrain = splitGameData[0].Split(char.Parse(";"));
+        string[] splitArrayUnderground = splitGameData[1].Split(char.Parse(";"));
+        string[] splitArrayElements = splitGameData[2].Split(char.Parse(";"));
+        string[] splitArrayPatrolPoints = splitGameData[3].Split(char.Parse(";"));
+
+        //Debug.Log(splitGameData[0]);
+        //Debug.Log(splitGameData[1]);
+        //Debug.Log(splitGameData[2]);
+        //Debug.Log(splitGameData[3]);
+
+        mapWidth = splitArrayTerrain.Length;
+        mapHeight = splitArrayTerrain[0].Split(char.Parse(" ")).Length;
 
         tMap = new Terrain[mapWidth, mapHeight];
+        uMap = new Terrain[mapWidth, mapHeight];
         for (int i = 0; i < tMap.GetLength(0); i++)
         {
             for (int j = 0; j < tMap.GetLength(1); j++)
             {
                 tMap[i, j] = new Terrain();
+                uMap[i, j] = new Terrain();
             }
         }
 
         for (int i = 0; i < mapWidth; i++)
         {
-            string[] myLine = splitArray[i].Split(char.Parse(" "));
+            string[] myLineTerrain = splitArrayTerrain[i].Split(char.Parse(" "));
+            string[] myLineUnderground = splitArrayUnderground[i].Split(char.Parse(" "));
 
             for (int j = 0; j < mapHeight; j++)
             {
-                tMap[i, j].terrainType = System.Int32.Parse(myLine[j]);
+                tMap[i, j].terrainType = System.Int32.Parse(myLineTerrain[j]);
                 GameObject myTerrain = Instantiate(terrainBasicObject);
                 tMap[i, j].terrainObject = myTerrain;
                 myTerrain.name = i + " " + j;
                 myTerrain.transform.parent = terrainHolder.transform;
                 myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
                 myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+
+                uMap[i, j].terrainType = System.Int32.Parse(myLineUnderground[j]);
+                GameObject myUnderground = Instantiate(undergroundBasicObject);
+                uMap[i, j].terrainObject = myUnderground;
+                if (uMap[i, j].terrainType != -1)
+                {
+                    Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[uMap[i, j].terrainType].BasicTerrain);
+                    uMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+
+                    
+                    if (tMap[i, j].terrainType == -1)
+                    {
+                        tMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                    }
+                }
+                myUnderground.name = i + " " + j;
+                myUnderground.transform.parent = undergroundHolder.transform;
+                myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
+        }
+        for(int i = 0; i < splitArrayElements.Length; i++)
+        {
+            string[] myElementData = splitArrayElements[i].Split(char.Parse(" "));
+
+            GameObject myElement = Instantiate(elementPrefabs[System.Int32.Parse(myElementData[0])]);
+
+            myElement.transform.parent = elementHolder.transform;
+            myElement.transform.position = new Vector3(float.Parse(myElementData[1]), 0.0f, float.Parse(myElementData[2]));
+            elementList.Add(new Element(myElement, System.Int32.Parse(myElementData[0])));
+        }
+
+        for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
+        {
+            //Debug.Log(splitArrayPatrolPoints[i]);
+            string[] myPatrolData = splitArrayPatrolPoints[i].Split(char.Parse(" "));
+
+            GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
+
+            myPatrolPoint.transform.parent = patrolPointsHolder.transform;
+            myPatrolPoint.transform.position = new Vector3(float.Parse(myPatrolData[0]), 0.0f, float.Parse(myPatrolData[1]));
+            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
+            patrolPointsList.Add(new Element(myPatrolPoint, -99));
         }
 
         for (int i = 1; i < mapWidth - 1; i++)
@@ -265,8 +396,11 @@ public class EditorModeController : MonoBehaviour {
                 //Debug.Log("mapWidth: " + mapWidth + "mapHeight: " + mapHeight);
             }
         }
+        foreach (GameObject npc in npcList)
+        {
+            npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+        }
     }
-
     public void UpdateSprite(int x, int y)
     {
         //Debug.Log("Updating sprite ( " + x + " , " + y + " )");
@@ -707,6 +841,31 @@ public class EditorModeController : MonoBehaviour {
         }
         //Debug.Log("( " + x + " , " + y + " )  -> " + patern);
     }
+     
+    public void SetUndergroundAtPos(int x, int y)
+    {
+        if (currentTerrainType != -1)
+        {
+            int realX = x + mapWidth / 2;
+            int realY = mapHeight / 2 - y;
+            //Debug.Log("RealX: " + realX + " RealY: " + realY);
+            if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1 &&
+                uMap[realX, realY].terrainType != currentTerrainType)
+            {
+                Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
+                //Debug.Log("mapWidth: " + mapWidth + " mapHeight: " + mapHeight);
+                uMap [realX, realY].terrainType = currentTerrainType;
+
+                Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[currentTerrainType].BasicTerrain);
+                uMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+
+                if(tMap[realX, realY].terrainType == -1)
+                {
+                    tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                }
+            }
+        }
+    }
 
     public void SetTerrainAtPos(int x, int y)
     {
@@ -714,7 +873,7 @@ public class EditorModeController : MonoBehaviour {
         {
             int realX = x + mapWidth / 2;
             int realY = mapHeight / 2 - y;
-            if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1 && 
+            if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1 &&
                 tMap[realX, realY].terrainType != currentTerrainType)
             {
                 //Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
@@ -725,7 +884,7 @@ public class EditorModeController : MonoBehaviour {
                 {
                     for (int j = -1; j <= 1; j++)
                     {
-                        if (realX + i > 0 && realX + i < mapWidth - 1 && realY + j > 0 && 
+                        if (realX + i > 0 && realX + i < mapWidth - 1 && realY + j > 0 &&
                             realY + j < mapHeight - 1 && tMap[realX + i, realY + j].terrainType != -1)
                         {
                             UpdateSprite(realX + i, realY + j);
@@ -756,6 +915,15 @@ public class EditorModeController : MonoBehaviour {
         var children = new List<GameObject>();
         foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
+        foreach (Transform child in undergroundHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        foreach (Transform child in elementHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+        foreach (Transform child in patrolPointsHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+
+        elementList.Clear();
+        patrolPointsList.Clear();
 
         if (widthOfMap.text == "" || heightOfMap.text == "")
         {
@@ -768,11 +936,13 @@ public class EditorModeController : MonoBehaviour {
         }
 
         tMap = new Terrain[mapWidth, mapHeight];
+        uMap = new Terrain[mapWidth, mapHeight];
         for (int i = 0; i < tMap.GetLength(0); i++)
         {
             for (int j = 0; j < tMap.GetLength(1); j++)
             {
                 tMap[i, j] = new Terrain();
+                uMap[i, j] = new Terrain();
             }
         }
 
@@ -781,11 +951,19 @@ public class EditorModeController : MonoBehaviour {
             for (int j = 0; j < mapHeight; j++)
             {
                 GameObject myTerrain = Instantiate(terrainBasicObject);
+                GameObject myUnderground = Instantiate(undergroundBasicObject);
+
                 tMap[i, j].terrainObject = myTerrain;
                 myTerrain.name = i + " " + j;
                 myTerrain.transform.parent = terrainHolder.transform;
                 myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
                 myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+
+                uMap[i, j].terrainObject = myUnderground;
+                myUnderground.name = i + " " + j;
+                myUnderground.transform.parent = undergroundHolder.transform;
+                myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
         }
     }

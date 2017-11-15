@@ -25,7 +25,14 @@ public class NPCPatrolMovement : MonoBehaviour {
     {
         if (patrolMovementPoints.Count > 0)
         {
-            agent.destination = patrolMovementPoints[Random.Range(0, patrolMovementPoints.Count)].position;
+            int index = Random.Range(0, patrolMovementPoints.Count);
+            if (patrolMovementPoints[index] == null)
+            {
+                UpdatePatrolPoints();
+            }
+            else {
+                agent.destination = patrolMovementPoints[index].position;
+            }
         }
     }
 
@@ -38,12 +45,13 @@ public class NPCPatrolMovement : MonoBehaviour {
     public void UpdatePatrolPoints()
     {
         patrolMovementPoints.Clear();
+        patrolMovementPoints.RemoveAll(item => item == null);
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
-        Debug.Log("Updating patrol points of " + this.name + " and there are " + patrolMovementPoints.Count + " total points ");
-        foreach (Transform t in patrolMovementPoints)
-        {
-            Debug.Log(t.position);
-        }
+        //Debug.Log("Updating patrol points of " + this.name + " and there are " + patrolMovementPoints.Count + " total points ");
+        //foreach (Transform t in patrolMovementPoints)
+        //{
+        //    Debug.Log(t.position);
+        //}
     }
 
     void Update () {

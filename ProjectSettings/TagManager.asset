@@ -7,6 +7,7 @@ TagManager:
   - GameManager
   - Terrain
   - PatrolPointsHolder
+  - Underground
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - 
   - Terrain
-  - 
+  - Underground
   - 
   - 
   - 
@@ -41,6 +42,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Underground
+    uniqueID: 3975653653
+    locked: 0
+  - name: Terrain
+    uniqueID: 4224918781
+    locked: 0
+  - name: Element
+    uniqueID: 1867825819
+    locked: 0
+  - name: Feedback
+    uniqueID: 2308042635
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
