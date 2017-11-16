@@ -8,6 +8,9 @@ public class MouseInputController : MonoBehaviour {
 
     public LayerMask TerrainLayerMask;
     public LayerMask UndergroundLayerMask;
+    public LayerMask ElementLayerMask;
+    public LayerMask PatrolLayerMask;
+
     Vector3 lastMousePos;
     string lastTerrainTileClicked;
     string lastUndergroundTileClicked;
@@ -36,7 +39,14 @@ public class MouseInputController : MonoBehaviour {
                         lastTerrainTileClicked = hit.collider.gameObject.name;
                         Vector3 pos = hit.collider.gameObject.transform.position;
                         //Debug.Log(pos);
-                        gm.GetComponent<EditorModeController>().SetTerrainAtPos((int)pos.x, (int)pos.z);
+                        if (gm.GetComponent<EditorModeController>().removeTerrain)
+                        {
+                            gm.GetComponent<EditorModeController>().removeTerrainAtPos((int)pos.x, (int)pos.z);
+                        }
+                        else
+                        {
+                            gm.GetComponent<EditorModeController>().SetTerrainAtPos((int)pos.x, (int)pos.z);
+                        }
                     }
                     Debug.Log("Target Position: " + hit.collider.gameObject.transform.position + " TAG: " + hit.collider.tag);
                 }
@@ -84,6 +94,41 @@ public class MouseInputController : MonoBehaviour {
                         gm.GetComponent<EditorModeController>().InsertElement(hit.point);
                     }
                     //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+                }
+            }
+
+            else if (gm.GetComponent<EditorModeController>().removeElement)
+            {
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, ElementLayerMask);
+
+                if (hit.collider != null)
+                {
+                    Debug.Log("I just removed an element!!!!");
+                    gm.GetComponent<EditorModeController>().RemoveElement(hit.collider.gameObject);
+                    //if (hit.collider.tag.Equals("Element"))
+                    //{
+                    //Vector3 pos = hit.collider.gameObject.transform.position;
+                    //    Debug.Log("I just removed an element!!!!");
+                    //gm.GetComponent<EditorModeController>().InsertElement(hit.point);
+                    //}
+                }
+            }
+            else if (gm.GetComponent<EditorModeController>().removePatrolPoint)
+            {
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, PatrolLayerMask);
+
+                if (hit.collider != null)
+                {
+                    Debug.Log("I just removed a patrol point!!!!");
+                    gm.GetComponent<EditorModeController>().RemovePatrolPoint(hit.collider.gameObject);
+                    //if (hit.collider.tag.Equals("Element"))
+                    //{
+                    //Vector3 pos = hit.collider.gameObject.transform.position;
+                    //   Debug.Log("I just removed a patrol point!!!!");
+                    //gm.GetComponent<EditorModeController>().InsertElement(hit.point);
+                    //}
                 }
             }
         }

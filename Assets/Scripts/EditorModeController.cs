@@ -41,6 +41,10 @@ public class EditorModeController : MonoBehaviour {
 
     public List<GameObject> selectedTextureFeedbackList;
     public List<GameObject> selectedElementFeedbackList;
+    public GameObject removeTerrainFeedback;
+    public GameObject removeElementFeedback;
+    public GameObject removePatrolFeedback;
+
     public List<TexturePack> texturePacks;
     public List<GameObject> npcList;
     public List<Element> elementList;
@@ -54,6 +58,9 @@ public class EditorModeController : MonoBehaviour {
     public bool isDrawingTerrain = false;
     public bool isPlacingElements = false;
     public bool isEditorMode = true;
+    public bool removeTerrain = false;   
+    public bool removePatrolPoint = false;
+    public bool removeElement = false;
 
     [System.Serializable]
     public class Terrain
@@ -92,21 +99,30 @@ public class EditorModeController : MonoBehaviour {
         currentTerrainType = -1;
         currentElementIdSelected = -1;
         patrolPointEnabled = false;
+        Time.timeScale = 0.0f;
     }
 
     public void togglePatrolPoint()
     {
+        removeElementFeedback.SetActive(false);
+        removePatrolFeedback.SetActive(false);
+        removeElement = false;
+        removePatrolPoint = false;
+
         if (patrolPointEnabled)
         {
+            isPlacingElements = false;
             patrolPointEnabled = false;
         }
         else
         {
+            isPlacingElements = true;
             patrolPointEnabled = true;
             currentElementIdSelected = -1;
         }
         UpdateFeedbackElementSelection();
     }
+
     public void UpdateFeedbackTerrainSelection()
     {
         foreach (GameObject SelectedTexture in selectedTextureFeedbackList)
@@ -138,6 +154,43 @@ public class EditorModeController : MonoBehaviour {
                 selectedElementFeedbackList[currentElementIdSelected].SetActive(true);
             }
         }
+    }
+
+    public void RemoveElement(GameObject obj)
+    {
+        for (int i = elementList.Count-1 ; i >=0; i--)
+        {
+            if (elementList[i].elementObject.Equals(obj))
+            {
+                elementList.RemoveAt(i);
+                Destroy(obj);
+            }
+        }
+    }
+
+    void refreshPatrolPointNumber()
+    {
+        for(int i = 0; i < patrolPointsList.Count; i++)
+        {
+            patrolPointsList[i].elementObject.GetComponentInChildren<TextMesh>().text = i.ToString();
+        }
+    }
+
+    public void RemovePatrolPoint(GameObject obj)
+    {
+        for (int i = patrolPointsList.Count - 1; i >= 0; i--)
+        {
+            if (patrolPointsList[i].elementObject.Equals(obj))
+            {
+                patrolPointsList.RemoveAt(i);
+                Destroy(obj);
+            }
+        }
+        foreach (GameObject npc in npcList)
+        {
+            npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+        }
+        refreshPatrolPointNumber();
     }
 
     public void InsertElement(Vector3 pos)
@@ -177,16 +230,74 @@ public class EditorModeController : MonoBehaviour {
         if (currentElementIdSelected == id)
         {
             currentElementIdSelected = -1;
+            isPlacingElements = false;
         }
         else
         {
             currentElementIdSelected = id;
+            isPlacingElements = true;
         }
+        removeElementFeedback.SetActive(false);
+        removePatrolFeedback.SetActive(false);
+        removeElement = false;
+        removePatrolPoint = false;
         UpdateFeedbackElementSelection();
+    }
+
+    public void ToggleRemoveTerrain()
+    {
+        if (removeTerrain)
+        {
+            removeTerrain = false;
+            removeTerrainFeedback.SetActive(false);
+        }
+        else
+        {
+            SetTerrainType(currentTerrainType);
+            removeTerrain = true;
+            removeTerrainFeedback.SetActive(true);
+        }
+    }
+
+    public void ToggleRemoveElement()
+    {
+        if (removeElement)
+        {
+            isPlacingElements = true;
+            removeElement = false;
+            removeElementFeedback.SetActive(false);
+        }
+        else
+        {
+            isPlacingElements = false;
+            SetCurrentElementId(currentElementIdSelected);
+            removeElement = true;
+            removeElementFeedback.SetActive(true);
+        }
+    }
+
+    public void ToggleRemovePatrol()
+    {
+        if (removePatrolPoint)
+        {
+            isPlacingElements = true;
+            removePatrolPoint = false;
+            removePatrolFeedback.SetActive(false);
+        }
+        else
+        {
+            isPlacingElements = false;
+            SetCurrentElementId(currentElementIdSelected);
+            removePatrolPoint = true;
+            removePatrolFeedback.SetActive(true);
+        }
     }
 
     public void SetTerrainType(int type)
     {
+        removeTerrain = false;
+        removeTerrainFeedback.SetActive(false);
+
         if (currentTerrainType == type)
         {
             currentTerrainType = -1;
@@ -849,19 +960,43 @@ public class EditorModeController : MonoBehaviour {
             int realX = x + mapWidth / 2;
             int realY = mapHeight / 2 - y;
             //Debug.Log("RealX: " + realX + " RealY: " + realY);
-            if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1 &&
-                uMap[realX, realY].terrainType != currentTerrainType)
+            if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1)
             {
-                Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
-                //Debug.Log("mapWidth: " + mapWidth + " mapHeight: " + mapHeight);
-                uMap [realX, realY].terrainType = currentTerrainType;
-
-                Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[currentTerrainType].BasicTerrain);
-                uMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
-
-                if(tMap[realX, realY].terrainType == -1)
+                if (uMap[realX, realY].terrainType != currentTerrainType)
                 {
-                    tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                    Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
+                    //Debug.Log("mapWidth: " + mapWidth + " mapHeight: " + mapHeight);
+                    uMap[realX, realY].terrainType = currentTerrainType;
+
+                    Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[currentTerrainType].BasicTerrain);
+                    uMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+
+                    if (tMap[realX, realY].terrainType == -1)
+                    {
+                        tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                    }
+                }
+            }
+        }
+    }
+
+    public void removeTerrainAtPos(int x, int y)
+    {
+        int realX = x + mapWidth / 2;
+        int realY = mapHeight / 2 - y;
+        if (realX != 0 && realX != mapWidth - 1 && realY != 0 && realY != mapHeight - 1)
+        {
+            tMap[realX, realY].terrainType = -1;
+            tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = uMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite;
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (realX + i > 0 && realX + i < mapWidth - 1 && realY + j > 0 &&
+                        realY + j < mapHeight - 1 && tMap[realX + i, realY + j].terrainType != -1)
+                    {
+                        UpdateSprite(realX + i, realY + j);
+                    }
                 }
             }
         }
