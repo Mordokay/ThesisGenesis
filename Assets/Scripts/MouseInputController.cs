@@ -12,7 +12,7 @@ public class MouseInputController : MonoBehaviour {
     public LayerMask PatrolLayerMask;
 
     Vector3 lastMousePos;
-    string lastTerrainTileClicked;
+    public string lastTerrainTileClicked;
     string lastUndergroundTileClicked;
 
     void Start () {

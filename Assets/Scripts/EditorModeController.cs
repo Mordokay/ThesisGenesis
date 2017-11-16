@@ -306,6 +306,7 @@ public class EditorModeController : MonoBehaviour {
         {
             currentTerrainType = type;
         }
+        this.GetComponent<MouseInputController>().lastTerrainTileClicked = "";
         UpdateFeedbackTerrainSelection();
     }
 
