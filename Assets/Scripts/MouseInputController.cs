@@ -121,7 +121,7 @@ public class MouseInputController : MonoBehaviour {
 
                 if (hit.collider != null)
                 {
-                    Debug.Log("I just removed a patrol point!!!!");
+                    //Debug.Log("I just removed a patrol point!!!!");
                     gm.GetComponent<EditorModeController>().RemovePatrolPoint(hit.collider.gameObject);
                     //if (hit.collider.tag.Equals("Element"))
                     //{

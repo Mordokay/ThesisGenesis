@@ -10,6 +10,7 @@ TagManager:
   - Underground
   - Element
   - PatrolPoint
+  - UI
   layers:
   - Default
   - TransparentFX

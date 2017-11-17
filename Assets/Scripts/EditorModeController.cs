@@ -23,9 +23,11 @@ public class EditorModeController : MonoBehaviour {
     public GameObject patrolPointSelectedImage;
     public GameObject patrolPointPrefab;
 
-    [System.Serializable]
-    public class TexturePack
+    public List<string> textureNames;
+
+    class TexturePack
     {
+        //"Terrain/WhitePack/0-BasicTerrain"
         public string BasicTerrain;
         public string BarPoint_Horizontal;
         public string BarPoint_Vertical;
@@ -37,6 +39,21 @@ public class EditorModeController : MonoBehaviour {
         public string TwoPointsBar;
         public string TwoPoints;
         public string Diagonal;
+
+        public TexturePack(string t1, string t2, string t3, string t4, string t5, string t6, string t7, string t8, string t9, string t10, string t11)
+        {
+            BasicTerrain = t1;
+            BarPoint_Horizontal = t2;
+            BarPoint_Vertical = t3;
+            Curve = t4;
+            ExtraParts = t5;
+            InnerCurves = t6;
+            ThreePoints = t7;
+            Tips = t8;
+            TwoPointsBar = t9;
+            TwoPoints = t10;
+            Diagonal = t11;
+        }
     }
 
     public List<GameObject> selectedTextureFeedbackList;
@@ -45,7 +62,7 @@ public class EditorModeController : MonoBehaviour {
     public GameObject removeElementFeedback;
     public GameObject removePatrolFeedback;
 
-    public List<TexturePack> texturePacks;
+    List<TexturePack> texturePacks;
     public List<GameObject> npcList;
     public List<Element> elementList;
     public List<Element> patrolPointsList;
@@ -100,6 +117,26 @@ public class EditorModeController : MonoBehaviour {
         currentElementIdSelected = -1;
         patrolPointEnabled = false;
         Time.timeScale = 0.0f;
+        texturePacks = new List<TexturePack>();
+        GenerateTerrainReferences();
+    }
+
+    void GenerateTerrainReferences()
+    {
+        foreach (string textureString in textureNames)
+        {
+            texturePacks.Add(new TexturePack("Terrain/" + textureString + "/0-BasicTerrain",
+                "Terrain/" + textureString + "/1-BarPoint_Horizontal",
+                "Terrain/" + textureString + "/2-BarPoint_Vertical",
+                "Terrain/" + textureString + "/3-Curve",
+                "Terrain/" + textureString + "/4-ExtraParts",
+                "Terrain/" + textureString + "/5-InnerCurves",
+                "Terrain/" + textureString + "/6-ThreePoints",
+                "Terrain/" + textureString + "/7-Tips",
+                "Terrain/" + textureString + "/8-TwoPointsBar",
+                "Terrain/" + textureString + "/9-TwoPoints",
+                "Terrain/" + textureString + "/10-Diagonal"));
+        }
     }
 
     public void togglePatrolPoint()
@@ -480,11 +517,14 @@ public class EditorModeController : MonoBehaviour {
         {
             string[] myElementData = splitArrayElements[i].Split(char.Parse(" "));
 
-            GameObject myElement = Instantiate(elementPrefabs[System.Int32.Parse(myElementData[0])]);
+            if (myElementData[0] != "")
+            {
+                GameObject myElement = Instantiate(elementPrefabs[System.Int32.Parse(myElementData[0])]);
 
-            myElement.transform.parent = elementHolder.transform;
-            myElement.transform.position = new Vector3(float.Parse(myElementData[1]), 0.0f, float.Parse(myElementData[2]));
-            elementList.Add(new Element(myElement, System.Int32.Parse(myElementData[0])));
+                myElement.transform.parent = elementHolder.transform;
+                myElement.transform.position = new Vector3(float.Parse(myElementData[1]), 0.0f, float.Parse(myElementData[2]));
+                elementList.Add(new Element(myElement, System.Int32.Parse(myElementData[0])));
+            }
         }
 
         for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
@@ -492,12 +532,15 @@ public class EditorModeController : MonoBehaviour {
             //Debug.Log(splitArrayPatrolPoints[i]);
             string[] myPatrolData = splitArrayPatrolPoints[i].Split(char.Parse(" "));
 
-            GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
+            if (myPatrolData[0] != "")
+            {
+                GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
 
-            myPatrolPoint.transform.parent = patrolPointsHolder.transform;
-            myPatrolPoint.transform.position = new Vector3(float.Parse(myPatrolData[0]), 0.0f, float.Parse(myPatrolData[1]));
-            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
-            patrolPointsList.Add(new Element(myPatrolPoint, -99));
+                myPatrolPoint.transform.parent = patrolPointsHolder.transform;
+                myPatrolPoint.transform.position = new Vector3(float.Parse(myPatrolData[0]), 0.0f, float.Parse(myPatrolData[1]));
+                myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
+                patrolPointsList.Add(new Element(myPatrolPoint, -99));
+            }
         }
 
         for (int i = 1; i < mapWidth - 1; i++)
