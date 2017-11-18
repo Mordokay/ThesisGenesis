@@ -13,11 +13,26 @@ public class UIManager : MonoBehaviour {
     public GameObject addNPC_Panel;
     public GameObject canvasBackroundBox;
 
+    public GameObject listNatural;
+    public GameObject listConstruct;
+
     GameObject gm;
 
     void Start()
     {
         gm = GameObject.FindGameObjectWithTag("GameManager");
+    }
+
+    public void ShowNaturals()
+    {
+        listNatural.SetActive(true);
+        listConstruct.SetActive(false);
+    }
+
+    public void ShowConstructs()
+    {
+        listNatural.SetActive(false);
+        listConstruct.SetActive(true);
     }
 
     public void ShowTerrainPanel()
@@ -31,6 +46,8 @@ public class UIManager : MonoBehaviour {
     {
         mainPanel.SetActive(false);
         addElementPanel.SetActive(true);
+
+        ShowNaturals();
 
         gm.GetComponent<EditorModeController>().isPlacingElements = true;
         gm.GetComponent<EditorModeController>().removeElement = false;

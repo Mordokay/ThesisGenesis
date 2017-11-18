@@ -89,9 +89,9 @@ public class MouseInputController : MonoBehaviour {
 
                     if (hit.collider.tag.Equals("Terrain"))
                     {
-                        //Vector3 pos = hit.collider.gameObject.transform.position;
+                        Vector3 pos = hit.collider.gameObject.transform.position;
                         //Debug.Log(pos);
-                        gm.GetComponent<EditorModeController>().InsertElement(hit.point);
+                        gm.GetComponent<EditorModeController>().InsertElement(pos);
                     }
                     //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
                 }

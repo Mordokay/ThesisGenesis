@@ -57,7 +57,9 @@ public class EditorModeController : MonoBehaviour {
     }
 
     public List<GameObject> selectedTextureFeedbackList;
-    public List<GameObject> selectedElementFeedbackList;
+    public List<GameObject> selectedNaturalFeedbackList;
+    public List<GameObject> selectedConstructFeedbackList;
+
     public GameObject removeTerrainFeedback;
     public GameObject removeElementFeedback;
     public GameObject removePatrolFeedback;
@@ -69,6 +71,7 @@ public class EditorModeController : MonoBehaviour {
 
     public int currentTerrainType;
     public int currentElementIdSelected;
+    public int currentConstructIdSelected;
     int mapWidth;
     int mapHeight;
 
@@ -97,17 +100,20 @@ public class EditorModeController : MonoBehaviour {
         public int elementID;
         public Vector3 elementPos;
         public GameObject elementObject;
+        public string type;
 
-        public Element(GameObject obj, int id)
+        public Element(GameObject obj, string t, int id)
         {
             elementObject = obj;
             elementID = id;
+            type = t;
         }
     }
 
     public GameObject terrainBasicObject;
     public GameObject undergroundBasicObject;
-    public List<GameObject> elementPrefabs;
+    public List<GameObject> naturalElementsPrefabs;
+    public List<GameObject> constructElementsPrefabs;
     public Terrain[,] tMap;
     public Terrain[,] uMap;
 
@@ -115,6 +121,7 @@ public class EditorModeController : MonoBehaviour {
     {
         currentTerrainType = -1;
         currentElementIdSelected = -1;
+        currentConstructIdSelected = -1;
         patrolPointEnabled = false;
         Time.timeScale = 0.0f;
         texturePacks = new List<TexturePack>();
@@ -156,6 +163,7 @@ public class EditorModeController : MonoBehaviour {
             isPlacingElements = true;
             patrolPointEnabled = true;
             currentElementIdSelected = -1;
+            currentConstructIdSelected = -1;
         }
         UpdateFeedbackElementSelection();
     }
@@ -174,10 +182,15 @@ public class EditorModeController : MonoBehaviour {
 
     public void UpdateFeedbackElementSelection()
     {
-        foreach (GameObject SelectedTexture in selectedElementFeedbackList)
+        foreach (GameObject SelectedTexture in selectedNaturalFeedbackList)
         {
             SelectedTexture.SetActive(false);
         }
+        foreach (GameObject SelectedTexture in selectedConstructFeedbackList)
+        {
+            SelectedTexture.SetActive(false);
+        }
+
         if (patrolPointEnabled)
         {
             patrolPointSelectedImage.SetActive(true);
@@ -188,7 +201,11 @@ public class EditorModeController : MonoBehaviour {
             
             if (currentElementIdSelected != -1)
             {
-                selectedElementFeedbackList[currentElementIdSelected].SetActive(true);
+                selectedNaturalFeedbackList[currentElementIdSelected].SetActive(true);
+            }
+            if (currentConstructIdSelected != -1)
+            {
+                selectedConstructFeedbackList[currentConstructIdSelected].SetActive(true);
             }
         }
     }
@@ -239,7 +256,7 @@ public class EditorModeController : MonoBehaviour {
             myPatrolPoint.transform.parent = patrolPointsHolder.transform;
             myPatrolPoint.transform.position = new Vector3(pos.x, 0.0f, pos.z);
             myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
-            patrolPointsList.Add(new Element(myPatrolPoint, -99));
+            patrolPointsList.Add(new Element(myPatrolPoint,  "p", -99));
             foreach (GameObject npc in npcList)
             {
                 npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
@@ -249,31 +266,68 @@ public class EditorModeController : MonoBehaviour {
         {
             if (currentElementIdSelected != -1)
             {
-                GameObject myElement = Instantiate(elementPrefabs[currentElementIdSelected]);
+                GameObject myElement = Instantiate(naturalElementsPrefabs[currentElementIdSelected]);
 
                 myElement.transform.parent = elementHolder.transform;
                 myElement.transform.position = new Vector3(pos.x, 0.0f, pos.z);
-                elementList.Add(new Element(myElement, currentElementIdSelected));
+                elementList.Add(new Element(myElement, "n", currentElementIdSelected));
+            }
+            else if (currentConstructIdSelected != -1)
+            {
+                GameObject myElement = Instantiate(constructElementsPrefabs[currentConstructIdSelected]);
+
+                myElement.transform.parent = elementHolder.transform;
+                myElement.transform.position = new Vector3(pos.x, 0.0f, pos.z);
+                elementList.Add(new Element(myElement, "c", currentConstructIdSelected));
             }
         }
     }
 
-    public void SetCurrentElementId(int id)
+    public void SetNaturalElementId(int id)
+    {
+        SetCurrentElementId(id, "n");
+    }
+
+    public void SetConstructElementId(int id)
+    {
+        SetCurrentElementId(id, "c");
+    }
+
+    void SetCurrentElementId(int id, string type)
     {
         if (patrolPointEnabled)
         {
             patrolPointEnabled = false;
         }
-        if (currentElementIdSelected == id)
-        {
-            currentElementIdSelected = -1;
-            isPlacingElements = false;
+        switch (type){
+            case "c":
+                if (currentConstructIdSelected == id)
+                {
+                    currentConstructIdSelected = -1;
+                    isPlacingElements = false;
+                }
+                else
+                {
+                    currentConstructIdSelected = id;
+                    currentElementIdSelected = -1;
+                    isPlacingElements = true;
+                }
+                break;
+            case "n":
+                if (currentElementIdSelected == id)
+                {
+                    currentElementIdSelected = -1;
+                    isPlacingElements = false;
+                }
+                else
+                {
+                    currentElementIdSelected = id;
+                    currentConstructIdSelected = -1;
+                    isPlacingElements = true;
+                }
+                break;
         }
-        else
-        {
-            currentElementIdSelected = id;
-            isPlacingElements = true;
-        }
+        
         removeElementFeedback.SetActive(false);
         removePatrolFeedback.SetActive(false);
         removeElement = false;
@@ -307,9 +361,15 @@ public class EditorModeController : MonoBehaviour {
         else
         {
             isPlacingElements = false;
-            SetCurrentElementId(currentElementIdSelected);
+            currentElementIdSelected = -1;
+            currentConstructIdSelected = -1;
+            isPlacingElements = false;
+            UpdateFeedbackElementSelection();
+            patrolPointSelectedImage.SetActive(false);
             removeElement = true;
             removeElementFeedback.SetActive(true);
+            removePatrolPoint = false;
+            removePatrolFeedback.SetActive(false);
         }
     }
 
@@ -324,9 +384,15 @@ public class EditorModeController : MonoBehaviour {
         else
         {
             isPlacingElements = false;
-            SetCurrentElementId(currentElementIdSelected);
+            currentElementIdSelected = -1;
+            currentConstructIdSelected = -1;
+            isPlacingElements = false;
+            UpdateFeedbackElementSelection();
+            patrolPointSelectedImage.SetActive(false);
             removePatrolPoint = true;
             removePatrolFeedback.SetActive(true);
+            removeElement = false;
+            removeElementFeedback.SetActive(false);
         }
     }
 
@@ -395,7 +461,7 @@ public class EditorModeController : MonoBehaviour {
         for (int i = 0; i < elementList.Count; i++)
         {
             Vector3 posOfElm = elementList[i].elementObject.transform.localPosition;
-            mapContent += elementList[i].elementID + " " + posOfElm.x + " " + posOfElm.z;
+            mapContent += elementList[i].type + " " + elementList[i].elementID + " " + posOfElm.x + " " + posOfElm.z;
             mapContent += ";";
             addedLastComma = true;
         }
@@ -519,12 +585,25 @@ public class EditorModeController : MonoBehaviour {
 
             if (myElementData[0] != "")
             {
-                GameObject myElement = Instantiate(elementPrefabs[System.Int32.Parse(myElementData[0])]);
+                GameObject myElement;
+                switch (myElementData[0])
+                {
+                    case "n":
+                        myElement = Instantiate(naturalElementsPrefabs[System.Int32.Parse(myElementData[1])]);
 
-                myElement.transform.parent = elementHolder.transform;
-                myElement.transform.position = new Vector3(float.Parse(myElementData[1]), 0.0f, float.Parse(myElementData[2]));
-                elementList.Add(new Element(myElement, System.Int32.Parse(myElementData[0])));
-            }
+                        myElement.transform.parent = elementHolder.transform;
+                        myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
+                        elementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
+                        break;
+                    case "c":
+                        myElement = Instantiate(constructElementsPrefabs[System.Int32.Parse(myElementData[1])]);
+
+                        myElement.transform.parent = elementHolder.transform;
+                        myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
+                        elementList.Add(new Element(myElement, "c", System.Int32.Parse(myElementData[1])));
+                        break;
+                }
+            }  
         }
 
         for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
@@ -539,7 +618,7 @@ public class EditorModeController : MonoBehaviour {
                 myPatrolPoint.transform.parent = patrolPointsHolder.transform;
                 myPatrolPoint.transform.position = new Vector3(float.Parse(myPatrolData[0]), 0.0f, float.Parse(myPatrolData[1]));
                 myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
-                patrolPointsList.Add(new Element(myPatrolPoint, -99));
+                patrolPointsList.Add(new Element(myPatrolPoint, "p", -99));
             }
         }
 
