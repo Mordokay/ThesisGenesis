@@ -6,8 +6,7 @@ public class UIManager : MonoBehaviour {
 
     public GameObject SidePanel;
     public GameObject mainPanel;
-    //public GameObject loadMapPanel;
-    //public GameObject saveMapPanel;
+    public GameObject addPlayerPanel;
     public GameObject drawTerrainPanel;
     public GameObject addElementPanel;
     public GameObject addNPC_Panel;
@@ -33,6 +32,12 @@ public class UIManager : MonoBehaviour {
     {
         listNatural.SetActive(false);
         listConstruct.SetActive(true);
+    }
+
+    public void ShowPlayerPanel()
+    {
+        mainPanel.SetActive(false);
+        addPlayerPanel.SetActive(true);
     }
 
     public void ShowTerrainPanel()
@@ -96,13 +101,14 @@ public class UIManager : MonoBehaviour {
     public void ReturnToMainPanel()
     {
         mainPanel.SetActive(true);
-        //loadMapPanel.SetActive(false);
-        //saveMapPanel.SetActive(false);
+        addPlayerPanel.SetActive(false);
         drawTerrainPanel.SetActive(false);
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);
 
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
+        gm.GetComponent<EditorModeController>().isPlacingNPC = false;
+        gm.GetComponent<EditorModeController>().isPlacingPlayer = false;
     }
 }

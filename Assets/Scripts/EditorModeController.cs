@@ -72,11 +72,13 @@ public class EditorModeController : MonoBehaviour {
     public int currentTerrainType;
     public int currentElementIdSelected;
     public int currentConstructIdSelected;
-    int mapWidth;
-    int mapHeight;
+    public int mapWidth;
+    public int mapHeight;
 
     public bool isDrawingTerrain = false;
     public bool isPlacingElements = false;
+    public bool isPlacingPlayer = false;
+    public bool isPlacingNPC = false;
     public bool isEditorMode = true;
     public bool removeTerrain = false;   
     public bool removePatrolPoint = false;
@@ -1151,21 +1153,6 @@ public class EditorModeController : MonoBehaviour {
                 }
             }
         }
-    }
-
-    public void printArrayOfTerrain()
-    {
-        string s = "";
-        for (int i = 0; i < tMap.GetLength(0); i++)
-        {
-            s += "[";
-            for (int j = 0; j < tMap.GetLength(1); j++)
-            {
-                s += tMap[i, j].terrainType;
-            }
-            s += "]" + System.Environment.NewLine;
-        }
-        print(s);
     }
 
     public void GenerateMap()

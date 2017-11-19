@@ -48,7 +48,7 @@ public class MouseInputController : MonoBehaviour {
                             gm.GetComponent<EditorModeController>().SetTerrainAtPos((int)pos.x, (int)pos.z);
                         }
                     }
-                    Debug.Log("Target Position: " + hit.collider.gameObject.transform.position + " TAG: " + hit.collider.tag);
+                    //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position + " TAG: " + hit.collider.tag);
                 }
                 lastMousePos = Input.mousePosition;
             }
@@ -104,7 +104,7 @@ public class MouseInputController : MonoBehaviour {
 
                 if (hit.collider != null)
                 {
-                    Debug.Log("I just removed an element!!!!");
+                    //Debug.Log("I just removed an element!!!!");
                     gm.GetComponent<EditorModeController>().RemoveElement(hit.collider.gameObject);
                     //if (hit.collider.tag.Equals("Element"))
                     //{
