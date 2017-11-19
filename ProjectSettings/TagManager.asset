@@ -11,6 +11,7 @@ TagManager:
   - Element
   - PatrolPoint
   - UI
+  - NPC
   layers:
   - Default
   - TransparentFX

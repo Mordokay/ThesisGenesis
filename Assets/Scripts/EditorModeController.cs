@@ -17,8 +17,9 @@ public class EditorModeController : MonoBehaviour {
     public GameObject terrainHolder;
     public GameObject undergroundHolder;
     public GameObject elementHolder;
-    public GameObject patrolPointsHolder
-        ;
+    public GameObject patrolPointsHolder;
+    public GameObject npcHolder;
+
     public bool patrolPointEnabled;
     public GameObject patrolPointSelectedImage;
     public GameObject patrolPointPrefab;
@@ -65,9 +66,9 @@ public class EditorModeController : MonoBehaviour {
     public GameObject removePatrolFeedback;
 
     List<TexturePack> texturePacks;
-    public List<GameObject> npcList;
     public List<Element> elementList;
     public List<Element> patrolPointsList;
+    public List<GameObject> npcList;
 
     public int currentTerrainType;
     public int currentElementIdSelected;
@@ -242,9 +243,9 @@ public class EditorModeController : MonoBehaviour {
                 Destroy(obj);
             }
         }
-        foreach (GameObject npc in npcList)
+        foreach (Transform npc in npcHolder.transform)
         {
-            npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+            npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
         }
         refreshPatrolPointNumber();
     }
@@ -259,9 +260,9 @@ public class EditorModeController : MonoBehaviour {
             myPatrolPoint.transform.position = new Vector3(pos.x, 0.0f, pos.z);
             myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
             patrolPointsList.Add(new Element(myPatrolPoint,  "p", -99));
-            foreach (GameObject npc in npcList)
+            foreach (Transform npc in npcHolder.transform)
             {
-                npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+                npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
             }
         }
         else
@@ -632,9 +633,9 @@ public class EditorModeController : MonoBehaviour {
                 //Debug.Log("mapWidth: " + mapWidth + "mapHeight: " + mapHeight);
             }
         }
-        foreach (GameObject npc in npcList)
+        foreach (Transform npc in npcHolder.transform)
         {
-            npc.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+            npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
         }
     }
     public void UpdateSprite(int x, int y)

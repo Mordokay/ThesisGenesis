@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class NPCPatrolMovement : MonoBehaviour {
 
-    List<Transform> patrolMovementPoints;
-    NavMeshAgent agent;
+    public List<Transform> patrolMovementPoints;
+    public NavMeshAgent agent;
     public float waitTime;
     public float minimumWaitTime;
     public float maximumWaitTime;
@@ -47,11 +47,6 @@ public class NPCPatrolMovement : MonoBehaviour {
         patrolMovementPoints.Clear();
         patrolMovementPoints.RemoveAll(item => item == null);
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
-        //Debug.Log("Updating patrol points of " + this.name + " and there are " + patrolMovementPoints.Count + " total points ");
-        //foreach (Transform t in patrolMovementPoints)
-        //{
-        //    Debug.Log(t.position);
-        //}
     }
 
     void Update () {
