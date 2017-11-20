@@ -18,7 +18,7 @@ public class KeyboardController : MonoBehaviour {
 
     void Update()
     {
-        if (gm.GetComponent<EditorModeController>().isEditorMode)
+        if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
         {
             if (Input.GetKey(KeyCode.W))
             {

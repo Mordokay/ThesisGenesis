@@ -57,21 +57,15 @@ public class UIManager : MonoBehaviour {
      */
     public void addInterestToNPC()
     {
-        GameObject interestName = Instantiate(interestNameInputField);
-        interestName.transform.parent = interestNPCList.transform;
-        GameObject interestWeight = Instantiate(interestWeightInputField);
-        interestWeight.transform.parent = interestNPCList.transform;
-        GameObject mySeparator = Instantiate(separator);
-        mySeparator.transform.parent = interestNPCList.transform;
+        GameObject interestName = Instantiate(interestNameInputField, interestNPCList.transform);
+        GameObject interestWeight = Instantiate(interestWeightInputField, interestNPCList.transform);
+        GameObject mySeparator = Instantiate(separator, interestNPCList.transform);
     }
     public void addFriendToNPC()
     {
-        GameObject friendName = Instantiate(friendNameInputField);
-        friendName.transform.parent = friendsNPCList.transform;
-        GameObject friendLevel = Instantiate(friendLevelInputField);
-        friendLevel.transform.parent = friendsNPCList.transform;
-        GameObject mySeparator = Instantiate(separator);
-        mySeparator.transform.parent = friendsNPCList.transform;
+        GameObject friendName = Instantiate(friendNameInputField, friendsNPCList.transform);
+        GameObject friendLevel = Instantiate(friendLevelInputField, friendsNPCList.transform);
+        GameObject mySeparator = Instantiate(separator, friendsNPCList.transform);
     }
 
     public void ShowTerrainPanel()
