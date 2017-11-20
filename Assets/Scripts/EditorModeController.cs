@@ -25,6 +25,7 @@ public class EditorModeController : MonoBehaviour {
     public GameObject patrolPointPrefab;
 
     public List<string> textureNames;
+    public GameObject fatNPCPrefab;
 
     class TexturePack
     {
@@ -68,7 +69,6 @@ public class EditorModeController : MonoBehaviour {
     List<TexturePack> texturePacks;
     public List<Element> elementList;
     public List<Element> patrolPointsList;
-    public List<GameObject> npcList;
 
     public int currentTerrainType;
     public int currentElementIdSelected;
@@ -489,6 +489,61 @@ public class EditorModeController : MonoBehaviour {
         }
         mapContent += "|";
 
+        List<GameObject> myNPCs = new List<GameObject>();
+        foreach (Transform npc in npcHolder.transform)
+        {
+            myNPCs.Add(npc.gameObject);
+        }
+
+        for (int i = 0; i < myNPCs.Count; i++)
+        {
+            Vector3 npcPos = myNPCs[i].transform.position;
+            mapContent += npcPos.x + " " + npcPos.z + ";";
+
+            mapContent += myNPCs[i].GetComponent<NPCData>().npcName + ";";
+
+            foreach (NPCData.Interest interest in myNPCs[i].GetComponent<NPCData>().interests)
+            {
+                mapContent += interest.name + " " + interest.weight + ",";
+            }
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            mapContent += ";";
+
+            foreach (NPCData.Aquaintance aquaintance in myNPCs[i].GetComponent<NPCData>().aquaintances)
+            {
+                mapContent += aquaintance.npcName + " " + aquaintance.friendshipLevel + ",";
+               
+            }
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+
+            //separates all other stuff from messages
+            mapContent += "#";
+
+            foreach (Message message in myNPCs[i].GetComponent<NPCData>().messages)
+            {
+                mapContent += message.id + " " + message.messageTimeOfLife + "&" + message.description + "&";
+                foreach(Message.Tag tag in message.tags)
+                {
+                    mapContent += tag.name + " " + tag.weight + ",";
+                }
+                if(message.tags.Count > 0)
+                {
+                    mapContent = mapContent.Substring(0, mapContent.Length - 1);
+                }
+                mapContent += ";";
+            }
+            if (myNPCs[i].GetComponent<NPCData>().messages.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
+            mapContent += "@";
+        }
+        if (myNPCs.Count > 0)
+        {
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        mapContent += "|";
+
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, false);
         writer.Write(mapContent);
@@ -527,6 +582,7 @@ public class EditorModeController : MonoBehaviour {
         string[] splitArrayUnderground = splitGameData[1].Split(char.Parse(";"));
         string[] splitArrayElements = splitGameData[2].Split(char.Parse(";"));
         string[] splitArrayPatrolPoints = splitGameData[3].Split(char.Parse(";"));
+        string[] splitArrayPlayers = splitGameData[4].Split(char.Parse("@"));
 
         //Debug.Log(splitGameData[0]);
         //Debug.Log(splitGameData[1]);
@@ -624,7 +680,30 @@ public class EditorModeController : MonoBehaviour {
                 patrolPointsList.Add(new Element(myPatrolPoint, "p", -99));
             }
         }
+        
+        foreach(string s in splitArrayPlayers)
+        {
+            string[] playerData = s.Split('#');
 
+            string[] playerbasicInfo = playerData[0].Split(';');
+            string[] npcPos = playerbasicInfo[0].Split(' ');
+            string npcName = playerbasicInfo[1];
+
+            GameObject myNPC = Instantiate(fatNPCPrefab);
+
+            myNPC.name = npcName;
+            myNPC.transform.parent = npcHolder.transform;
+            myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
+
+            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, playerbasicInfo[2], playerbasicInfo[3], playerData[1]);
+            myNPC.GetComponent<NPCPatrolMovement>().Start();
+            //foreach (string ss in playerData)
+            //{
+            //    Debug.Log(ss);
+            //}
+
+        }
+        
         for (int i = 1; i < mapWidth - 1; i++)
         {
             for (int j = 1; j < mapHeight - 1; j++)

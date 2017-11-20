@@ -5,11 +5,11 @@ using UnityEngine;
 public class Social : MonoBehaviour {
 
     bool isMoving;
-    bool isTalking;
+    public bool isTalking;
     EditorModeController em;
     public float talkDistance;
-    GameObject talkPartner;
     public float lookSpeed;
+    GameObject talkPartner;
     public Message choosedMessage;
     public bool isReceivingMessage;
     public float remainingMessageTransmissionTime;
@@ -27,7 +27,9 @@ public class Social : MonoBehaviour {
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         talkDistance = 1.0f;
+        lookSpeed = 5.0f;
         isReceivingMessage = false;
+        listenerLevel = 0.5f;
     }
 	
 	void Update () {
@@ -38,8 +40,6 @@ public class Social : MonoBehaviour {
                 if (!npc.name.Equals(this.name) && Vector3.Distance(npc.position, this.transform.position) <= talkDistance &&
                     !npc.gameObject.GetComponent<Social>().isTalking)
                 {
-                    //Debug.Log("we are close!!! " + npc.name + " <> " + this.name + Vector3.Distance(npc.position, this.transform.position));
-
                     //Randomly choose who starts to talk
                     if (Random.Range(0, 2) == 0)
                     {

@@ -39,18 +39,20 @@ public class Message
         return msg;
     }
 
-    public Message(int id, float messageTimeOfLife, string tagsText, string description)
+    public Message(int id, float messageTimeOfLife, string description, string tagsText)
     {
+        //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);
         this.id = id;
         this.messageTimeOfLife = messageTimeOfLife;
 
+        this.description = description;
+
+        tags = new List<Tag>();
         string[] tagsList = tagsText.Split(',');
         foreach (string t in tagsList)
         {
             string[] tagData = t.Split(' ');
             tags.Add(new Tag(tagData[0], System.Int32.Parse(tagData[1])));
         }
-
-        this.description = description;
     }
 }

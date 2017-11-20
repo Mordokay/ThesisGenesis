@@ -15,6 +15,14 @@ public class UIManager : MonoBehaviour {
     public GameObject listNatural;
     public GameObject listConstruct;
 
+    public GameObject interestNPCList;
+    public GameObject friendsNPCList;
+    public GameObject interestNameInputField;
+    public GameObject interestWeightInputField;
+    public GameObject friendNameInputField;
+    public GameObject friendLevelInputField;
+    public GameObject separator;
+
     GameObject gm;
 
     void Start()
@@ -38,6 +46,32 @@ public class UIManager : MonoBehaviour {
     {
         mainPanel.SetActive(false);
         addPlayerPanel.SetActive(true);
+    }
+
+    /*
+     * public GameObject interestNameInputField;
+    public GameObject interestWeightInputField;
+    public GameObject friendNameInputField;
+    public GameObject friendLevelInputField;
+    public GameObject separator;
+     */
+    public void addInterestToNPC()
+    {
+        GameObject interestName = Instantiate(interestNameInputField);
+        interestName.transform.parent = interestNPCList.transform;
+        GameObject interestWeight = Instantiate(interestWeightInputField);
+        interestWeight.transform.parent = interestNPCList.transform;
+        GameObject mySeparator = Instantiate(separator);
+        mySeparator.transform.parent = interestNPCList.transform;
+    }
+    public void addFriendToNPC()
+    {
+        GameObject friendName = Instantiate(friendNameInputField);
+        friendName.transform.parent = friendsNPCList.transform;
+        GameObject friendLevel = Instantiate(friendLevelInputField);
+        friendLevel.transform.parent = friendsNPCList.transform;
+        GameObject mySeparator = Instantiate(separator);
+        mySeparator.transform.parent = friendsNPCList.transform;
     }
 
     public void ShowTerrainPanel()

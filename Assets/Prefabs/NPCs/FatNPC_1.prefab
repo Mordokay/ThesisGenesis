@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 114777424240751338}
   - component: {fileID: 114579533997588458}
   - component: {fileID: 114395536632903996}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FatNPC_1
   m_TagString: NPC
   m_Icon: {fileID: 0}
@@ -85,15 +85,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87eee8b766b94264abf1561b00d19fcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcName: Charlie
-  interests:
-  - name: 
-    weight: 0
-  - name: 
-    weight: 0
-  aquaintances:
-  - npcName: Jessy
-    friendshipLevel: 2
+  npcName: 
+  interests: []
+  aquaintances: []
   messages: []
 --- !u!114 &114579533997588458
 MonoBehaviour:
@@ -106,7 +100,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b716e40718ae874297f0269f618b801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTalking: 0
   talkDistance: 0
+  lookSpeed: 0
+  choosedMessage:
+    id: 0
+    messageTimeOfLife: 0
+    tags: []
+    description: 
+  isReceivingMessage: 0
+  remainingMessageTransmissionTime: 0
+  listenerLevel: 0
 --- !u!114 &114777424240751338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,8 +157,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.5000001
-  m_BaseOffset: 0.25000006
+  m_Height: 0.1
+  m_BaseOffset: -0.1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!212 &212274518175928762
@@ -188,8 +192,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1867825819
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6711ad1e079c20546a0232274efaf0a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
