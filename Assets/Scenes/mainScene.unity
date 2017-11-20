@@ -4125,6 +4125,10 @@ MonoBehaviour:
   - DirtFarmPack
   fatNPCPrefab: {fileID: 1533624389395732, guid: 96a3dd60103967f469b5402948a8d632,
     type: 2}
+  npcNameInput: {fileID: 2079511742}
+  npcInterestHolder: {fileID: 1738758192}
+  npcFriendsHolder: {fileID: 1205591694}
+  npcMessagesHolder: {fileID: 0}
   selectedTextureFeedbackList:
   - {fileID: 1702006239}
   - {fileID: 1682671441}
@@ -7550,11 +7554,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114248603392798070, guid: 0666d51a83a6e5d4eadd681f46a6d19c,
-        type: 2}
-      propertyPath: m_Text
-      value: Interest name
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0666d51a83a6e5d4eadd681f46a6d19c, type: 2}
   m_IsPrefabParent: 0
@@ -9664,11 +9663,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114248603392798070, guid: 0666d51a83a6e5d4eadd681f46a6d19c,
-        type: 2}
-      propertyPath: m_Text
-      value: NPC Name
-      objectReference: {fileID: 0}
     - target: {fileID: 1852088421428962, guid: 0666d51a83a6e5d4eadd681f46a6d19c, type: 2}
       propertyPath: m_Name
       value: NPC_Name
@@ -11196,7 +11190,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 5bb7237d03fda58469a481a705bf5131, type: 3}
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
@@ -15182,6 +15176,11 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2069923816}
+--- !u!1 &2079511742 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1852088421428962, guid: 0666d51a83a6e5d4eadd681f46a6d19c,
+    type: 2}
+  m_PrefabInternal: {fileID: 1315969338}
 --- !u!1 &2080236196
 GameObject:
   m_ObjectHideFlags: 0

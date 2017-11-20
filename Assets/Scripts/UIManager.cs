@@ -97,6 +97,7 @@ public class UIManager : MonoBehaviour {
 
     public void ShowAddNPCPanel()
     {
+        gm.GetComponent<EditorModeController>().isPlacingNPC = true;
         mainPanel.SetActive(false);
         addNPC_Panel.SetActive(true);
     }

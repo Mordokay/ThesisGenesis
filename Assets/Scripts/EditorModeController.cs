@@ -27,6 +27,11 @@ public class EditorModeController : MonoBehaviour {
     public List<string> textureNames;
     public GameObject fatNPCPrefab;
 
+    public GameObject npcNameInput;
+    public GameObject npcInterestHolder;
+    public GameObject npcFriendsHolder;
+    public GameObject npcMessagesHolder;
+
     class TexturePack
     {
         //"Terrain/WhitePack/0-BasicTerrain"
@@ -249,6 +254,71 @@ public class EditorModeController : MonoBehaviour {
         }
         refreshPatrolPointNumber();
     }
+    public void InsertNPC(Vector3 pos)
+    {
+        List<GameObject> NPCs = new List<GameObject>();
+        foreach (Transform npc in npcHolder.transform)
+        {
+            NPCs.Add(npc.gameObject);
+        }
+        //Only creates a NPC if it has a unique name
+        if (NPCs.Find(x => x.name == npcNameInput.GetComponent<InputField>().textComponent.text) == null)
+        {
+
+            GameObject myNPC = Instantiate(fatNPCPrefab);
+
+            myNPC.transform.parent = npcHolder.transform;
+            myNPC.transform.localPosition = new Vector3(pos.x, 0.0f, pos.z);
+
+            myNPC.name = npcNameInput.GetComponent<InputField>().text;
+
+            List<GameObject> Interests = new List<GameObject>();
+            foreach (Transform npc in npcInterestHolder.transform)
+            {
+                Interests.Add(npc.gameObject);
+            }
+
+            List<GameObject> Friends = new List<GameObject>();
+            foreach (Transform npc in npcFriendsHolder.transform)
+            {
+                Friends.Add(npc.gameObject);
+            }
+
+            string interestString = "";
+            for(int i = 0; i < Interests.Count; i =i + 3)
+            {
+                interestString += Interests[i].GetComponent<InputField>().text +
+                    " " + Interests[i + 1].GetComponent<InputField>().text + ",";
+            }
+            if(Interests.Count > 0)
+            {
+                interestString = interestString.Substring(0, interestString.Length - 1);
+            }
+            Debug.Log(interestString);
+
+            string aquaintancesString = "";
+            for (int i = 0; i < Friends.Count; i = i + 3)
+            {
+                aquaintancesString += Friends[i].GetComponent<InputField>().text +
+                    " " + Friends[i + 1].GetComponent<InputField>().text + ",";
+            }
+            if (Friends.Count > 0)
+            {
+                aquaintancesString = aquaintancesString.Substring(0, aquaintancesString.Length - 1);
+            }
+            Debug.Log(aquaintancesString);
+
+            myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, aquaintancesString, "");
+            myNPC.GetComponent<NPCPatrolMovement>().Start();
+
+        }
+        //public GameObject npcInterestHolder;
+        //public GameObject npcFriendsHolder;
+        //public GameObject npcMessagesHolder;
+        /*
+        
+        */
+    }
 
     public void InsertElement(Vector3 pos)
     {
@@ -418,8 +488,12 @@ public class EditorModeController : MonoBehaviour {
 
     public void SaveToTxt()
     {
-        string path = "Assets/Resources/defaultMap.txt";
-        if (nameForSave.text != "")
+        string path = "";
+        if (nameForSave.text == "")
+        {
+            return;
+        }
+        else if (nameForSave.text != "")
         {
             path = "Assets/Resources/" + nameForSave.text + ".txt";
         }
@@ -565,11 +639,13 @@ public class EditorModeController : MonoBehaviour {
         children.ForEach(child => Destroy(child));
         foreach (Transform child in patrolPointsHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
+        foreach (Transform child in npcHolder.transform) children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
 
         elementList.Clear();
         patrolPointsList.Clear();
 
-        string myFile = "defaultMap";
+        string myFile = "default";
         if (nameForLoad.text != "")
         {
             myFile = nameForLoad.text;

@@ -61,7 +61,7 @@ public class NPCPatrolMovement : MonoBehaviour {
             }
         }
         else if (dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && 
-            agent.remainingDistance == 0)
+            agent.remainingDistance < 0.5)
         {
             SetWaitTime();
         }

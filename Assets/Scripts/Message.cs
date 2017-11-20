@@ -41,18 +41,25 @@ public class Message
 
     public Message(int id, float messageTimeOfLife, string description, string tagsText)
     {
-        //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);
-        this.id = id;
-        this.messageTimeOfLife = messageTimeOfLife;
-
-        this.description = description;
-
-        tags = new List<Tag>();
-        string[] tagsList = tagsText.Split(',');
-        foreach (string t in tagsList)
+        if (id == -99)
         {
-            string[] tagData = t.Split(' ');
-            tags.Add(new Tag(tagData[0], System.Int32.Parse(tagData[1])));
+            tags = new List<Tag>();
+        }
+        else
+        {
+            //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);
+            this.id = id;
+            this.messageTimeOfLife = messageTimeOfLife;
+
+            this.description = description;
+
+            tags = new List<Tag>();
+            string[] tagsList = tagsText.Split(',');
+            foreach (string t in tagsList)
+            {
+                string[] tagData = t.Split(' ');
+                tags.Add(new Tag(tagData[0], System.Int32.Parse(tagData[1])));
+            }
         }
     }
 }

@@ -96,6 +96,22 @@ public class MouseInputController : MonoBehaviour {
                     //Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
                 }
             }
+            else if (gm.GetComponent<EditorModeController>().isPlacingNPC)
+            {
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+
+                if (hit.collider != null)
+                {
+
+                    if (hit.collider.tag.Equals("Terrain"))
+                    {
+                        Vector3 pos = hit.collider.gameObject.transform.position;
+                        gm.GetComponent<EditorModeController>().InsertNPC(pos);
+                    }
+                }
+            }
+
 
             else if (gm.GetComponent<EditorModeController>().removeElement)
             {

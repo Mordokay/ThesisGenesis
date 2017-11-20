@@ -118,92 +118,109 @@ public class Social : MonoBehaviour {
         float mostAtractiveMessageScore = 0;
         Message mostAttractiveMessage = null;
 
-        //When considering messages fromn self, if listenerLevel is 1 this messages will not be considered
-        foreach (Message m1 in NPC_A.messages)
+        if (NPC_A.messages != null)
         {
-            //Check if message from NPC_A exists in NPC_B
-            Message message = NPC_B.messages.Find(x => x.id == m1.id);
-            //if NPC_B doesn't have the message
-            if(message == null)
-            {   
-                float messageScore = 0;
-                foreach (Message.Tag tag in m1.tags)
+            //When considering messages fromn self, if listenerLevel is 1 this messages will not be considered
+            foreach (Message m1 in NPC_A.messages)
+            {
+                //Check if message from NPC_A exists in NPC_B
+                if (NPC_B.messages != null)
                 {
-                    foreach (NPCData.Interest interest in NPC_B.interests)
+                    Message message = NPC_B.messages.Find(x => x.id == m1.id);
+                    //if NPC_B doesn't have the message
+                    if (message == null)
                     {
-                        if (interest.name.Equals(tag.name)){
-                            messageScore += interest.weight * tag.weight * (1 - listenerLevel);
-                        }
-                    }
-                    
-                }
-
-                //I have to multiply this message m1 for my interests based on listener level
-                //The less listener NPC_A is the more he will talk about his messages
-                foreach (Message.Tag tag in m1.tags)
-                {
-                    foreach (NPCData.Interest interest in NPC_A.interests)
-                    {
-                        if (interest.name.Equals(tag.name))
+                        float messageScore = 0;
+                        if (m1.tags != null)
                         {
-                            messageScore += interest.weight * tag.weight * (1 - listenerLevel);
+                            foreach (Message.Tag tag in m1.tags)
+                            {
+                                foreach (NPCData.Interest interest in NPC_B.interests)
+                                {
+                                    if (interest.name.Equals(tag.name))
+                                    {
+                                        messageScore += interest.weight * tag.weight * (1 - listenerLevel);
+                                    }
+                                }
+                            }
+                        }
+
+                        //I have to multiply this message m1 for my interests based on listener level
+                        //The less listener NPC_A is the more he will talk about his messages
+                        foreach (Message.Tag tag in m1.tags)
+                        {
+                            foreach (NPCData.Interest interest in NPC_A.interests)
+                            {
+                                if (interest.name.Equals(tag.name))
+                                {
+                                    messageScore += interest.weight * tag.weight * (1 - listenerLevel);
+                                }
+                            }
+
+                        }
+
+                        if (messageScore > mostAtractiveMessageScore)
+                        {
+                            mostAtractiveMessageScore = messageScore;
+                            mostAttractiveMessage = m1;
+
+                            Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                            Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                         }
                     }
-
-                }
-
-                if (messageScore > mostAtractiveMessageScore)
-                {
-                    mostAtractiveMessageScore = messageScore;
-                    mostAttractiveMessage = m1;
-
-                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
 
-        //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
-        foreach (Message m2 in NPC_B.messages)
+        if (NPC_B.messages != null)
         {
-            //Check if message from NPC_B exists in NPC_A
-            Message message = NPC_A.messages.Find(x => x.id == m2.id);
-            //if NPC_A doesn't have the message ...
-            if (message == null)
+            //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
+            foreach (Message m2 in NPC_B.messages)
             {
-                float messageScore = 0;
-                foreach (Message.Tag tag in m2.tags)
+                //Check if message from NPC_B exists in NPC_A
+                if (NPC_A.messages != null)
                 {
-                    foreach (NPCData.Interest interest in NPC_A.interests)
+                    Message message = NPC_A.messages.Find(x => x.id == m2.id);
+                    //if NPC_A doesn't have the message ...
+                    if (message == null)
                     {
-                        if (interest.name.Equals(tag.name))
+                        float messageScore = 0;
+                        if (m2.tags != null)
                         {
-                            messageScore += interest.weight * tag.weight * listenerLevel;
+                            foreach (Message.Tag tag in m2.tags)
+                            {
+                                foreach (NPCData.Interest interest in NPC_A.interests)
+                                {
+                                    if (interest.name.Equals(tag.name))
+                                    {
+                                        messageScore += interest.weight * tag.weight * listenerLevel;
+                                    }
+                                }
+                            }
+                        }
+
+                        //I have to multiply this message m2 for my interests based on listener level
+                        //The less listener NPC_B is the more he will talk about his messages
+                        foreach (Message.Tag tag in m2.tags)
+                        {
+                            foreach (NPCData.Interest interest in NPC_B.interests)
+                            {
+                                if (interest.name.Equals(tag.name))
+                                {
+                                    messageScore += interest.weight * tag.weight * listenerLevel;
+                                }
+                            }
+                        }
+
+                        if (messageScore > mostAtractiveMessageScore)
+                        {
+                            mostAtractiveMessageScore = messageScore;
+                            mostAttractiveMessage = m2;
+
+                            Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                            Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                         }
                     }
-
-                }
-
-                //I have to multiply this message m2 for my interests based on listener level
-                //The less listener NPC_B is the more he will talk about his messages
-                foreach (Message.Tag tag in m2.tags)
-                {
-                    foreach (NPCData.Interest interest in NPC_B.interests)
-                    {
-                        if (interest.name.Equals(tag.name))
-                        {
-                            messageScore += interest.weight * tag.weight * listenerLevel;
-                        }
-                    }
-                }
-
-                if (messageScore > mostAtractiveMessageScore)
-                {
-                    mostAtractiveMessageScore = messageScore;
-                    mostAttractiveMessage = m2;
-
-                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224807907385110016}
   - component: {fileID: 222724566089017044}
   - component: {fileID: 114689719160935076}
+  - component: {fileID: 132660873400561180}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -158,7 +159,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tag name
+  m_Text: Interest name
 --- !u!114 &114689719160935076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,11 +180,11 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 5bb7237d03fda58469a481a705bf5131, type: 3}
-    m_FontSize: 30
+    m_Font: {fileID: 12800000, guid: 41f06dbde21372941995db63ddfa9b65, type: 3}
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -219,6 +220,29 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!132 &132660873400561180
+GUIText:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1008699649080464}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Text: 
+  m_Anchor: 0
+  m_Alignment: 0
+  m_PixelOffset: {x: 0, y: 0}
+  m_LineSpacing: 1
+  m_TabSize: 4
+  m_Font: {fileID: 12800000, guid: c98e4b076d287574d81f1a4bef763540, type: 3}
+  m_Material: {fileID: 0}
+  m_FontSize: 0
+  m_FontStyle: 0
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_PixelCorrect: 1
+  m_RichText: 1
 --- !u!222 &222229714261094502
 CanvasRenderer:
   m_ObjectHideFlags: 1
