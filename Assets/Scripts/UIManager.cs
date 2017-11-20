@@ -123,6 +123,7 @@ public class UIManager : MonoBehaviour {
         SidePanel.SetActive(false);
         canvasBackroundBox.SetActive(false);
         gm.GetComponent<EditorModeController>().isEditorMode = false;
+        gm.GetComponent<Zoom>().zoomToPlayMode = true;
     }
 
     public void Pause()
