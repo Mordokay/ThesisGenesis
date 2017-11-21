@@ -22,7 +22,7 @@ public class KeyboardController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (gm.GetComponent<EditorModeController>().isEditorMode)
+            if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
             {
                 uiManager.Play();
             }

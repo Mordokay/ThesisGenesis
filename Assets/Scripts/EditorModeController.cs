@@ -502,6 +502,7 @@ public class EditorModeController : MonoBehaviour {
 
     public void SaveToTxt()
     {
+        Debug.Log(Application.persistentDataPath);
         string path = "";
         if (nameForSave.text == "")
         {
@@ -509,7 +510,7 @@ public class EditorModeController : MonoBehaviour {
         }
         else if (nameForSave.text != "")
         {
-            path = "Assets/Resources/" + nameForSave.text + ".txt";
+            path = Application.persistentDataPath + "/" + nameForSave.text + ".txt";
         }
 
         string mapContent = "";
@@ -667,9 +668,13 @@ public class EditorModeController : MonoBehaviour {
             myFile = nameForLoad.text;
         }
 
-        TextAsset asset = Resources.Load(myFile) as TextAsset;
+        //Application.persistentDataPath
 
-        string[] splitGameData = asset.text.Split(char.Parse("|"));
+        StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + myFile + ".txt");
+        string mySaveString = reader.ReadLine();
+        //TextAsset asset = Resources.Load(myFile) as TextAsset;
+
+        string[] splitGameData = mySaveString.Split(char.Parse("|"));
         int messageIdCount = System.Int32.Parse(splitGameData[0]);
         string[] splitArrayTerrain = splitGameData[1].Split(char.Parse(";"));
         string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
