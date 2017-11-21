@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4218168051779110}
   - component: {fileID: 208071195287706592}
   - component: {fileID: 135256869182273590}
+  - component: {fileID: 114148586374601012}
   m_Layer: 10
   m_Name: 1-Rock
   m_TagString: Element
@@ -71,6 +72,27 @@ Transform:
   m_Father: {fileID: 4218168051779110}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &114148586374601012
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1724716541881416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c38f9dcb030184d95d25cf0b92b676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 50
+  messageTime: 5
+  tags:
+  - name: Destruction
+    weight: 2
+  - name: Rock
+    weight: 4
+  - name: Strength
+    weight: 3
+  description: The player managed to break a rock with his axe!!
 --- !u!135 &135256869182273590
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -130,7 +152,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1867825819
-  m_SortingLayer: -2
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: f849b563669aa1f419fae088cf18e085, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -16,14 +16,18 @@ public class MouseInputController : MonoBehaviour {
     public string lastTerrainTileClicked;
     string lastUndergroundTileClicked;
 
+    GameObject player;
+
     void Start () {
+        player = GameObject.FindGameObjectWithTag("Player");
         lastMousePos = Vector3.zero;
         gm = GameObject.FindGameObjectWithTag("GameManager");
         lastTerrainTileClicked = "";
         lastUndergroundTileClicked = "";
     }
-	
-	void Update () {
+
+    void Update()
+    {
         if (Input.GetMouseButton(0))
         {
             if (!lastMousePos.Equals(Input.mousePosition) && gm.GetComponent<EditorModeController>().isDrawingTerrain)
@@ -70,65 +74,83 @@ public class MouseInputController : MonoBehaviour {
                 lastMousePos = Input.mousePosition;
             }
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            //player stops attacking
+            if (!gm.GetComponent<EditorModeController>().isEditorMode)
+            {
+                player.GetComponent<PlayerMovement>().isAtacking = false;
+                player.GetComponent<Animator>().SetBool("Attack", false);
+            }
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            if (gm.GetComponent<EditorModeController>().isPlacingElements)
+            //player attacks
+            if (!gm.GetComponent<EditorModeController>().isEditorMode)
             {
-                RaycastHit hit;
-                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
-
-                if (hit.collider != null)
+                player.GetComponent<PlayerMovement>().isAtacking = true;
+                player.GetComponent<Animator>().SetBool("Attack", true);
+            }
+            else
+            {
+                if (gm.GetComponent<EditorModeController>().isPlacingElements)
                 {
-                    if (hit.collider.tag.Equals("Terrain"))
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+
+                    if (hit.collider != null)
                     {
-                        Vector3 pos = hit.collider.gameObject.transform.position;
-                        gm.GetComponent<EditorModeController>().InsertElement(pos);
+                        if (hit.collider.tag.Equals("Terrain"))
+                        {
+                            Vector3 pos = hit.collider.gameObject.transform.position;
+                            gm.GetComponent<EditorModeController>().InsertElement(pos);
+                        }
                     }
                 }
-            }
-            else if (gm.GetComponent<EditorModeController>().isPlacingNPC)
-            {
-                RaycastHit hit;
-                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
-
-                if (hit.collider != null)
+                else if (gm.GetComponent<EditorModeController>().isPlacingNPC)
                 {
-                    if (hit.collider.tag.Equals("Terrain"))
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+
+                    if (hit.collider != null)
                     {
-                        Vector3 pos = hit.collider.gameObject.transform.position;
-                        gm.GetComponent<EditorModeController>().InsertNPC(pos);
+                        if (hit.collider.tag.Equals("Terrain"))
+                        {
+                            Vector3 pos = hit.collider.gameObject.transform.position;
+                            gm.GetComponent<EditorModeController>().InsertNPC(pos);
+                        }
                     }
                 }
-            }
 
-            else if (gm.GetComponent<EditorModeController>().removeElement)
-            {
-                RaycastHit hit;
-                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, ElementLayerMask);
-
-                if (hit.collider != null)
+                else if (gm.GetComponent<EditorModeController>().removeElement)
                 {
-                    gm.GetComponent<EditorModeController>().RemoveElement(hit.collider.gameObject);
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, ElementLayerMask);
+
+                    if (hit.collider != null)
+                    {
+                        gm.GetComponent<EditorModeController>().RemoveElement(hit.collider.gameObject);
+                    }
                 }
-            }
-            else if (gm.GetComponent<EditorModeController>().removePatrolPoint)
-            {
-                RaycastHit hit;
-                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, PatrolLayerMask);
-
-                if (hit.collider != null)
+                else if (gm.GetComponent<EditorModeController>().removePatrolPoint)
                 {
-                    gm.GetComponent<EditorModeController>().RemovePatrolPoint(hit.collider.gameObject);
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, PatrolLayerMask);
+
+                    if (hit.collider != null)
+                    {
+                        gm.GetComponent<EditorModeController>().RemovePatrolPoint(hit.collider.gameObject);
+                    }
                 }
-            }
-            else if (gm.GetComponent<EditorModeController>().removeNPC)
-            {
-                RaycastHit hit;
-                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, NPCLayerMask);
-
-                if (hit.collider.tag == "NPC")
+                else if (gm.GetComponent<EditorModeController>().removeNPC)
                 {
-                    Destroy(hit.collider.gameObject);
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, NPCLayerMask);
+
+                    if (hit.collider != null && hit.collider.tag == "NPC")
+                    {
+                        Destroy(hit.collider.gameObject);
+                    }
                 }
             }
         }

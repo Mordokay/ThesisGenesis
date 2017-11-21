@@ -57,15 +57,15 @@ public class UIManager : MonoBehaviour {
      */
     public void addInterestToNPC()
     {
-        GameObject interestName = Instantiate(interestNameInputField, interestNPCList.transform);
-        GameObject interestWeight = Instantiate(interestWeightInputField, interestNPCList.transform);
-        GameObject mySeparator = Instantiate(separator, interestNPCList.transform);
+        Instantiate(interestNameInputField, interestNPCList.transform);
+        Instantiate(interestWeightInputField, interestNPCList.transform);
+        Instantiate(separator, interestNPCList.transform);
     }
     public void addFriendToNPC()
     {
-        GameObject friendName = Instantiate(friendNameInputField, friendsNPCList.transform);
-        GameObject friendLevel = Instantiate(friendLevelInputField, friendsNPCList.transform);
-        GameObject mySeparator = Instantiate(separator, friendsNPCList.transform);
+        Instantiate(friendNameInputField, friendsNPCList.transform);
+        Instantiate(friendLevelInputField, friendsNPCList.transform);
+        Instantiate(separator, friendsNPCList.transform);
     }
 
     public void RemoveLast(int type)
@@ -175,9 +175,9 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingPlayer = false;
         gm.GetComponent<EditorModeController>().removeElement = false;
         gm.GetComponent<EditorModeController>().removeTerrain = false;
-        if (gm.GetComponent<EditorModeController>().removeNPC)
-        {
-            gm.GetComponent<EditorModeController>().ToggleRemoveNPC();
-        }
+
+        gm.GetComponent<EditorModeController>().isPlacingNPC = false;
+        gm.GetComponent<EditorModeController>().removeNPC = false;
+        gm.GetComponent<EditorModeController>().removeNPCButtonImage.color = Color.white;
     }
 }

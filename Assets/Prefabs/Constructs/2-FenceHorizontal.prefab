@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4220040585323058}
   - component: {fileID: 208209907373894166}
   - component: {fileID: 135798973730233452}
+  - component: {fileID: 114695500398713812}
   m_Layer: 10
   m_Name: 2-FenceHorizontal
   m_TagString: Element
@@ -71,6 +72,18 @@ Transform:
   m_Father: {fileID: 4220040585323058}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &114695500398713812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1659923436744600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c38f9dcb030184d95d25cf0b92b676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 60
 --- !u!135 &135798973730233452
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -130,7 +143,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1867825819
-  m_SortingLayer: -2
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 286b4ab8845bbea4ca0febd794fcc5d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

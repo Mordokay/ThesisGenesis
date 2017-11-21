@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Social : MonoBehaviour {
-
-    bool isMoving;
+    
     public bool isTalking;
     EditorModeController em;
     public float talkDistance;
@@ -23,7 +22,6 @@ public class Social : MonoBehaviour {
     public float listenerLevel;
 
     void Start () {
-        isMoving = true;
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         talkDistance = 1.0f;
@@ -43,12 +41,12 @@ public class Social : MonoBehaviour {
                     //Randomly choose who starts to talk
                     if (Random.Range(0, 2) == 0)
                     {
-                        Debug.Log(this.name + " initiated conversation");
+                        //Debug.Log(this.name + " initiated conversation");
                         choosedMessage = getBestMessageToTalk(this.GetComponent<NPCData>(), npc.gameObject.GetComponent<NPCData>());
                         npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
                     else{
-                        Debug.Log(npc.gameObject.name + " initiated conversation");
+                       // Debug.Log(npc.gameObject.name + " initiated conversation");
                         choosedMessage = npc.gameObject.GetComponent<Social>().getBestMessageToTalk(
                             npc.gameObject.GetComponent<NPCData>(), this.GetComponent<NPCData>());
                         npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
@@ -93,9 +91,9 @@ public class Social : MonoBehaviour {
                 Vector3 targetDir = talkPartner.transform.position - transform.position;
                 float step = lookSpeed * Time.deltaTime;
                 Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
-                Debug.DrawRay(transform.position, newDir, Color.green);
+                //Debug.DrawRay(transform.position, newDir, Color.green);
                 transform.rotation = Quaternion.LookRotation(newDir);
-                Debug.Log("Rotating Towards player!!!");
+                //Debug.Log("Rotating Towards player!!!");
             }
 
             //Duration of message being sent

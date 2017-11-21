@@ -515,6 +515,8 @@ public class EditorModeController : MonoBehaviour {
         string mapContent = "";
         bool addedLastComma = false;
 
+        mapContent += this.GetComponent<PlayModeManager>().messageID + "|";
+
         for (int i = 0; i < tMap.GetLength(0); i++)
         {
             for (int j = 0; j < tMap.GetLength(1); j++)
@@ -668,11 +670,14 @@ public class EditorModeController : MonoBehaviour {
         TextAsset asset = Resources.Load(myFile) as TextAsset;
 
         string[] splitGameData = asset.text.Split(char.Parse("|"));
-        string[] splitArrayTerrain = splitGameData[0].Split(char.Parse(";"));
-        string[] splitArrayUnderground = splitGameData[1].Split(char.Parse(";"));
-        string[] splitArrayElements = splitGameData[2].Split(char.Parse(";"));
-        string[] splitArrayPatrolPoints = splitGameData[3].Split(char.Parse(";"));
-        string[] splitArrayPlayers = splitGameData[4].Split(char.Parse("@"));
+        int messageIdCount = System.Int32.Parse(splitGameData[0]);
+        string[] splitArrayTerrain = splitGameData[1].Split(char.Parse(";"));
+        string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
+        string[] splitArrayElements = splitGameData[3].Split(char.Parse(";"));
+        string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse(";"));
+        string[] splitArrayPlayers = splitGameData[5].Split(char.Parse("@"));
+
+        this.GetComponent<PlayModeManager>().messageID = messageIdCount;
 
         //Debug.Log(splitGameData[0]);
         //Debug.Log(splitGameData[1]);

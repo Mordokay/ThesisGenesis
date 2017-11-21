@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4493941304542426}
   - component: {fileID: 208664142934397130}
   - component: {fileID: 135037436829778156}
+  - component: {fileID: 114308252637343178}
   m_Layer: 10
   m_Name: 2-Tree
   m_TagString: Element
@@ -71,6 +72,18 @@ Transform:
   m_Father: {fileID: 4493941304542426}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &114308252637343178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1398669890038370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c38f9dcb030184d95d25cf0b92b676, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 30
 --- !u!135 &135037436829778156
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -130,7 +143,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1867825819
-  m_SortingLayer: -2
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bcc82ffa82b6d634ebcf6bb7d71a7e92, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

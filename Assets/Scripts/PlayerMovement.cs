@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    bool isMoving;
+    public bool isWalking;
+    public bool isAtacking;
+
     public float moveSpeed;
     EditorModeController em;
 
@@ -26,24 +28,30 @@ public class PlayerMovement : MonoBehaviour
 
             if (Input.GetKey(KeyCode.W)){
                 direction += new Vector3(0.0f, 0.0f, moveSpeed);
-                //this.GetComponent<Animator>().SetTrigger("SomeMoveAnimation");
             }
             if (Input.GetKey(KeyCode.A))
             {
                 direction += new Vector3(-moveSpeed, 0.0f, 0.0f);
-                //this.GetComponent<Animator>().SetTrigger("SomeMoveAnimation");
             }
             if (Input.GetKey(KeyCode.S))
             {
                 direction += new Vector3(0.0f, 0.0f, -moveSpeed);
-                //this.GetComponent<Animator>().SetTrigger("SomeMoveAnimation");
             }
             if (Input.GetKey(KeyCode.D))
             {
                 direction += new Vector3(moveSpeed, 0.0f, 0.0f);
-                //this.GetComponent<Animator>().SetTrigger("SomeMoveAnimation");
             }
             this.GetComponent<Rigidbody>().velocity = direction;
+
+            if (direction.Equals(Vector3.zero)){
+                this.GetComponent<Animator>().SetBool("Walk", false);
+                isWalking = false;
+            }
+            else
+            {
+                this.GetComponent<Animator>().SetBool("Walk", true);
+                isWalking = true;
+            }
         }
     }
 }

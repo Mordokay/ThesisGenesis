@@ -37,10 +37,10 @@ public class NPCData : MonoBehaviour {
 
     public void InitializeNPCData(string npcName, string thisInterests, string aquaintancesText, string messagesText)
     {
-        Debug.Log("npcName: " + npcName);
-        Debug.Log("thisInterests:<" + thisInterests + ">");
-        Debug.Log("aquaintancesText:<" + aquaintancesText + ">");
-        Debug.Log("messagesText:<" + messagesText + ">");
+        //Debug.Log("npcName: " + npcName);
+        //Debug.Log("thisInterests:<" + thisInterests + ">");
+        //Debug.Log("aquaintancesText:<" + aquaintancesText + ">");
+        //Debug.Log("messagesText:<" + messagesText + ">");
         this.npcName = npcName;
         messages = new List<Message>();
 

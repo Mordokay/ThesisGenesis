@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayModeManager : MonoBehaviour {
 
-    int messageID;
+    public int messageID;
 
 	void Start () {
         messageID = 0;		

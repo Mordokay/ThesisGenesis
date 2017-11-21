@@ -58,6 +58,9 @@ TagManager:
   - name: NPC
     uniqueID: 985129917
     locked: 0
+  - name: Player
+    uniqueID: 2096196347
+    locked: 0
   - name: Feedback
     uniqueID: 2308042635
     locked: 0
