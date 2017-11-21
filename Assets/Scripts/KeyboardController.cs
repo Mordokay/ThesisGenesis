@@ -9,6 +9,7 @@ public class KeyboardController : MonoBehaviour {
 
     //30 frames per second
     float fakeDeltaTime = 0.0333f;
+    public UIManager uiManager;
 
     void Start()
     {
@@ -18,6 +19,19 @@ public class KeyboardController : MonoBehaviour {
 
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (gm.GetComponent<EditorModeController>().isEditorMode)
+            {
+                uiManager.Play();
+            }
+            else
+            {
+                uiManager.Pause();
+            }
+        }
+
         if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
         {
             if (Input.GetKey(KeyCode.W))

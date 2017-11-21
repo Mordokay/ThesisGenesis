@@ -1264,8 +1264,6 @@ public class EditorModeController : MonoBehaviour {
             {
                 if (uMap[realX, realY].terrainType != currentTerrainType)
                 {
-                    Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
-                    //Debug.Log("mapWidth: " + mapWidth + " mapHeight: " + mapHeight);
                     uMap[realX, realY].terrainType = currentTerrainType;
 
                     Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[currentTerrainType].BasicTerrain);
