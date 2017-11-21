@@ -38,13 +38,13 @@ public class NPCData : MonoBehaviour {
     public void InitializeNPCData(string npcName, string thisInterests, string aquaintancesText, string messagesText)
     {
         Debug.Log("npcName: " + npcName);
-        Debug.Log("thisInterests: " + thisInterests);
-        Debug.Log("aquaintancesText: " + aquaintancesText);
-        Debug.Log("messagesText: " + messagesText);
+        Debug.Log("thisInterests:<" + thisInterests + ">");
+        Debug.Log("aquaintancesText:<" + aquaintancesText + ">");
+        Debug.Log("messagesText:<" + messagesText + ">");
         this.npcName = npcName;
         messages = new List<Message>();
 
-        if (thisInterests != "")
+        if (thisInterests != "" && thisInterests != " ")
         {
             string[] interestsList = thisInterests.Split(',');
             foreach (string i in interestsList)
@@ -53,7 +53,7 @@ public class NPCData : MonoBehaviour {
                 interests.Add(new Interest(interestData[0], System.Int32.Parse(interestData[1])));
             }
         }
-        if (aquaintancesText != "")
+        if (aquaintancesText != "" && aquaintancesText != " ")
         {
             string[] aquaintancesList = aquaintancesText.Split(',');
             foreach (string j in aquaintancesList)
@@ -78,10 +78,6 @@ public class NPCData : MonoBehaviour {
 
                 messages.Add(new Message(id, timeOfLife, description, tagsText));
             }
-        }
-        else if (messagesText != "")
-        {
-
         }
     }
 }

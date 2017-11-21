@@ -55,6 +55,9 @@ TagManager:
   - name: Element
     uniqueID: 1867825819
     locked: 0
+  - name: NPC
+    uniqueID: 985129917
+    locked: 0
   - name: Feedback
     uniqueID: 2308042635
     locked: 0

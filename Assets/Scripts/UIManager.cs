@@ -68,6 +68,34 @@ public class UIManager : MonoBehaviour {
         GameObject mySeparator = Instantiate(separator, friendsNPCList.transform);
     }
 
+    public void RemoveLast(int type)
+    {
+        if (type == 0)
+        {
+            List<GameObject> Interests = new List<GameObject>();
+            foreach (Transform npc in interestNPCList.transform)
+            {
+                Interests.Add(npc.gameObject);
+            }
+            for (int i = Interests.Count - 1; i >= Interests.Count - 3; i--)
+            {
+                Destroy(Interests[i]);
+            }
+        }
+        else
+        {
+            List<GameObject> Friends = new List<GameObject>();
+            foreach (Transform npc in friendsNPCList.transform)
+            {
+                Friends.Add(npc.gameObject);
+            }
+            for (int i = Friends.Count - 1; i >= Friends.Count - 3; i--)
+            {
+                Destroy(Friends[i]);
+            }
+        }
+    }
+
     public void ShowTerrainPanel()
     {
         mainPanel.SetActive(false);
@@ -85,8 +113,8 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingElements = true;
         gm.GetComponent<EditorModeController>().removeElement = false;
         gm.GetComponent<EditorModeController>().removePatrolPoint = false;
-        gm.GetComponent<EditorModeController>().removeElementFeedback.SetActive(false);
-        gm.GetComponent<EditorModeController>().removePatrolFeedback.SetActive(false);
+        gm.GetComponent<EditorModeController>().removeElementButtonImage.color = Color.white;
+        gm.GetComponent<EditorModeController>().removePatrolButtonImage.color = Color.white;
     }
 
     public void ShowAddNPCPanel()
@@ -109,6 +137,11 @@ public class UIManager : MonoBehaviour {
     public void ToggleRemovePatrol()
     {
         gm.GetComponent<EditorModeController>().ToggleRemovePatrol();
+    }
+
+    public void ToggleRemoveNPC()
+    {
+        gm.GetComponent<EditorModeController>().ToggleRemoveNPC();
     }
 
     public void Play()
@@ -140,5 +173,11 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;
         gm.GetComponent<EditorModeController>().isPlacingPlayer = false;
+        gm.GetComponent<EditorModeController>().removeElement = false;
+        gm.GetComponent<EditorModeController>().removeTerrain = false;
+        if (gm.GetComponent<EditorModeController>().removeNPC)
+        {
+            gm.GetComponent<EditorModeController>().ToggleRemoveNPC();
+        }
     }
 }

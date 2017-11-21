@@ -45,11 +45,13 @@ public class Social : MonoBehaviour {
                     {
                         Debug.Log(this.name + " initiated conversation");
                         choosedMessage = getBestMessageToTalk(this.GetComponent<NPCData>(), npc.gameObject.GetComponent<NPCData>());
+                        npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
                     else{
                         Debug.Log(npc.gameObject.name + " initiated conversation");
                         choosedMessage = npc.gameObject.GetComponent<Social>().getBestMessageToTalk(
                             npc.gameObject.GetComponent<NPCData>(), this.GetComponent<NPCData>());
+                        npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
 
                     if (choosedMessage != null)
@@ -69,7 +71,7 @@ public class Social : MonoBehaviour {
                         this.isTalking = true;
                         npc.gameObject.GetComponent<Social>().isTalking = true;
                         npc.gameObject.GetComponent<Social>().talkPartner = this.gameObject;
-                        npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
+                        
                         if (!isReceivingMessage)
                         {
                             npc.gameObject.GetComponent<Social>().isReceivingMessage = true;
@@ -103,7 +105,7 @@ public class Social : MonoBehaviour {
                 remainingMessageTransmissionTime = 0;
                 this.GetComponent<NPCPatrolMovement>().agent.isStopped = false;
                 isTalking = false;
-                if (isReceivingMessage)
+                if (isReceivingMessage && choosedMessage != null)
                 {
                     this.GetComponent<NPCData>().messages.Add(choosedMessage);
                     isReceivingMessage = false;

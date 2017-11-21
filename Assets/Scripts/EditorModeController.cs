@@ -30,7 +30,6 @@ public class EditorModeController : MonoBehaviour {
     public GameObject npcNameInput;
     public GameObject npcInterestHolder;
     public GameObject npcFriendsHolder;
-    public GameObject npcMessagesHolder;
 
     class TexturePack
     {
@@ -63,13 +62,14 @@ public class EditorModeController : MonoBehaviour {
         }
     }
 
-    public List<GameObject> selectedTextureFeedbackList;
-    public List<GameObject> selectedNaturalFeedbackList;
-    public List<GameObject> selectedConstructFeedbackList;
+    public List<Image> terrainButtonImageList;
+    public List<Image> naturalElementButtonImageList;
+    public List<Image> constructElementButtonImageList;
 
-    public GameObject removeTerrainFeedback;
-    public GameObject removeElementFeedback;
-    public GameObject removePatrolFeedback;
+    public Image removeTerrainButtonImage;
+    public Image removeElementButtonImage;
+    public Image removePatrolButtonImage;
+    public Image removeNPCButtonImage;
 
     List<TexturePack> texturePacks;
     public List<Element> elementList;
@@ -89,6 +89,7 @@ public class EditorModeController : MonoBehaviour {
     public bool removeTerrain = false;   
     public bool removePatrolPoint = false;
     public bool removeElement = false;
+    public bool removeNPC = false;
 
     [System.Serializable]
     public class Terrain
@@ -156,8 +157,8 @@ public class EditorModeController : MonoBehaviour {
 
     public void togglePatrolPoint()
     {
-        removeElementFeedback.SetActive(false);
-        removePatrolFeedback.SetActive(false);
+        removeElementButtonImage.color = Color.white;
+        removePatrolButtonImage.color = Color.white;
         removeElement = false;
         removePatrolPoint = false;
 
@@ -178,25 +179,25 @@ public class EditorModeController : MonoBehaviour {
 
     public void UpdateFeedbackTerrainSelection()
     {
-        foreach (GameObject SelectedTexture in selectedTextureFeedbackList)
+        foreach (Image img in terrainButtonImageList)
         {
-            SelectedTexture.SetActive(false);
+            img.color = Color.white;
         }
         if (currentTerrainType != -1)
         {
-            selectedTextureFeedbackList[currentTerrainType].SetActive(true);
+            terrainButtonImageList[currentTerrainType].color = Color.yellow;
         }
     }
 
     public void UpdateFeedbackElementSelection()
     {
-        foreach (GameObject SelectedTexture in selectedNaturalFeedbackList)
+        foreach (Image img in naturalElementButtonImageList)
         {
-            SelectedTexture.SetActive(false);
+            img.color = Color.white;
         }
-        foreach (GameObject SelectedTexture in selectedConstructFeedbackList)
+        foreach (Image img in constructElementButtonImageList)
         {
-            SelectedTexture.SetActive(false);
+            img.color = Color.white;
         }
 
         if (patrolPointEnabled)
@@ -209,11 +210,11 @@ public class EditorModeController : MonoBehaviour {
             
             if (currentElementIdSelected != -1)
             {
-                selectedNaturalFeedbackList[currentElementIdSelected].SetActive(true);
+                naturalElementButtonImageList[currentElementIdSelected].color = Color.yellow;
             }
             if (currentConstructIdSelected != -1)
             {
-                selectedConstructFeedbackList[currentConstructIdSelected].SetActive(true);
+                constructElementButtonImageList[currentConstructIdSelected].color = Color.yellow;
             }
         }
     }
@@ -256,68 +257,63 @@ public class EditorModeController : MonoBehaviour {
     }
     public void InsertNPC(Vector3 pos)
     {
+        if(npcNameInput.GetComponent<InputField>().textComponent.text != "") { 
         List<GameObject> NPCs = new List<GameObject>();
         foreach (Transform npc in npcHolder.transform)
         {
             NPCs.Add(npc.gameObject);
         }
-        //Only creates a NPC if it has a unique name
-        if (NPCs.Find(x => x.name == npcNameInput.GetComponent<InputField>().textComponent.text) == null)
-        {
-
-            GameObject myNPC = Instantiate(fatNPCPrefab);
-
-            myNPC.transform.parent = npcHolder.transform;
-            myNPC.transform.localPosition = new Vector3(pos.x, 0.0f, pos.z);
-
-            myNPC.name = npcNameInput.GetComponent<InputField>().text;
-
-            List<GameObject> Interests = new List<GameObject>();
-            foreach (Transform npc in npcInterestHolder.transform)
+            //Only creates a NPC if it has a unique name
+            if (NPCs.Find(x => x.name == npcNameInput.GetComponent<InputField>().textComponent.text) == null)
             {
-                Interests.Add(npc.gameObject);
-            }
 
-            List<GameObject> Friends = new List<GameObject>();
-            foreach (Transform npc in npcFriendsHolder.transform)
-            {
-                Friends.Add(npc.gameObject);
-            }
+                GameObject myNPC = Instantiate(fatNPCPrefab);
 
-            string interestString = "";
-            for(int i = 0; i < Interests.Count; i =i + 3)
-            {
-                interestString += Interests[i].GetComponent<InputField>().text +
-                    " " + Interests[i + 1].GetComponent<InputField>().text + ",";
-            }
-            if(Interests.Count > 0)
-            {
-                interestString = interestString.Substring(0, interestString.Length - 1);
-            }
-            Debug.Log(interestString);
+                myNPC.transform.parent = npcHolder.transform;
+                myNPC.transform.localPosition = new Vector3(pos.x, 0.0f, pos.z);
 
-            string aquaintancesString = "";
-            for (int i = 0; i < Friends.Count; i = i + 3)
-            {
-                aquaintancesString += Friends[i].GetComponent<InputField>().text +
-                    " " + Friends[i + 1].GetComponent<InputField>().text + ",";
-            }
-            if (Friends.Count > 0)
-            {
-                aquaintancesString = aquaintancesString.Substring(0, aquaintancesString.Length - 1);
-            }
-            Debug.Log(aquaintancesString);
+                myNPC.name = npcNameInput.GetComponent<InputField>().text;
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, aquaintancesString, "");
-            myNPC.GetComponent<NPCPatrolMovement>().Start();
+                List<GameObject> Interests = new List<GameObject>();
+                foreach (Transform npc in npcInterestHolder.transform)
+                {
+                    Interests.Add(npc.gameObject);
+                }
 
+                List<GameObject> Friends = new List<GameObject>();
+                foreach (Transform npc in npcFriendsHolder.transform)
+                {
+                    Friends.Add(npc.gameObject);
+                }
+
+                string interestString = null;
+                if (Interests.Count > 0)
+                {
+                    for (int i = 0; i < Interests.Count; i = i + 3)
+                    {
+                        interestString += Interests[i].GetComponent<InputField>().text +
+                            " " + Interests[i + 1].GetComponent<InputField>().text + ",";
+                    }
+                    interestString = interestString.Substring(0, interestString.Length - 1);
+                }
+                Debug.Log(interestString);
+
+                string friendsString = null;
+                if (Friends.Count > 0)
+                {
+                    for (int i = 0; i < Friends.Count; i = i + 3)
+                    {
+                        friendsString += Friends[i].GetComponent<InputField>().text +
+                            " " + Friends[i + 1].GetComponent<InputField>().text + ",";
+                    }
+                    friendsString = friendsString.Substring(0, friendsString.Length - 1);
+                }
+                Debug.Log(friendsString);
+
+                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "");
+                myNPC.GetComponent<NPCPatrolMovement>().Start();
+            }
         }
-        //public GameObject npcInterestHolder;
-        //public GameObject npcFriendsHolder;
-        //public GameObject npcMessagesHolder;
-        /*
-        
-        */
     }
 
     public void InsertElement(Vector3 pos)
@@ -400,9 +396,9 @@ public class EditorModeController : MonoBehaviour {
                 }
                 break;
         }
-        
-        removeElementFeedback.SetActive(false);
-        removePatrolFeedback.SetActive(false);
+
+        removeElementButtonImage.color = Color.white;
+        removePatrolButtonImage.color = Color.white;
         removeElement = false;
         removePatrolPoint = false;
         UpdateFeedbackElementSelection();
@@ -413,13 +409,13 @@ public class EditorModeController : MonoBehaviour {
         if (removeTerrain)
         {
             removeTerrain = false;
-            removeTerrainFeedback.SetActive(false);
+            removeTerrainButtonImage.color = Color.white;
         }
         else
         {
             SetTerrainType(currentTerrainType);
             removeTerrain = true;
-            removeTerrainFeedback.SetActive(true);
+            removeTerrainButtonImage.color = Color.yellow;
         }
     }
 
@@ -429,7 +425,7 @@ public class EditorModeController : MonoBehaviour {
         {
             isPlacingElements = true;
             removeElement = false;
-            removeElementFeedback.SetActive(false);
+            removeElementButtonImage.color = Color.white;
         }
         else
         {
@@ -440,9 +436,9 @@ public class EditorModeController : MonoBehaviour {
             UpdateFeedbackElementSelection();
             patrolPointSelectedImage.SetActive(false);
             removeElement = true;
-            removeElementFeedback.SetActive(true);
+            removeElementButtonImage.color = Color.yellow;
             removePatrolPoint = false;
-            removePatrolFeedback.SetActive(false);
+            removePatrolButtonImage.color = Color.white;
         }
     }
 
@@ -452,7 +448,7 @@ public class EditorModeController : MonoBehaviour {
         {
             isPlacingElements = true;
             removePatrolPoint = false;
-            removePatrolFeedback.SetActive(false);
+            removePatrolButtonImage.color = Color.white;
         }
         else
         {
@@ -463,16 +459,34 @@ public class EditorModeController : MonoBehaviour {
             UpdateFeedbackElementSelection();
             patrolPointSelectedImage.SetActive(false);
             removePatrolPoint = true;
-            removePatrolFeedback.SetActive(true);
+            removePatrolButtonImage.color = Color.yellow;
             removeElement = false;
-            removeElementFeedback.SetActive(false);
+            removeElementButtonImage.color = Color.white;
+        }
+    }
+
+    public void ToggleRemoveNPC()
+    {
+        if (removeNPC)
+        {
+            isPlacingNPC = true;
+            removeNPC = false;
+
+            removeNPCButtonImage.color = Color.white;
+        }
+        else
+        {
+            isPlacingNPC = false;
+            removeNPC = true;
+
+            removeNPCButtonImage.color = Color.yellow;
         }
     }
 
     public void SetTerrainType(int type)
     {
         removeTerrain = false;
-        removeTerrainFeedback.SetActive(false);
+        removeTerrainButtonImage.color = Color.white;
 
         if (currentTerrainType == type)
         {
