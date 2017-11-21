@@ -15,7 +15,6 @@ public class ElementController : MonoBehaviour {
 
     private void Start()
     {
-        messageSendDistance = 3.0f;
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
     }
@@ -38,7 +37,7 @@ public class ElementController : MonoBehaviour {
                     {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
-                    npc.gameObject.GetComponent<NPCData>().messages.Add(new Message(pm.getMessageId(), messageTime, description, tagString));
+                    npc.gameObject.GetComponent<NPCData>().messages.Add(new Message(eventId, messageTime, description, tagString));
                 }
                 npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
             }

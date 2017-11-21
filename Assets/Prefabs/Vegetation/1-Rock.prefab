@@ -84,7 +84,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
-  messageTime: 5
+  messageSendDistance: 2
+  messageTime: 4
   tags:
   - name: Destruction
     weight: 2

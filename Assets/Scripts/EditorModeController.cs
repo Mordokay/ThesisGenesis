@@ -675,7 +675,7 @@ public class EditorModeController : MonoBehaviour {
         string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
         string[] splitArrayElements = splitGameData[3].Split(char.Parse(";"));
         string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse(";"));
-        string[] splitArrayPlayers = splitGameData[5].Split(char.Parse("@"));
+        string[] splitArrayNPC = splitGameData[5].Split(char.Parse("@"));
 
         this.GetComponent<PlayModeManager>().messageID = messageIdCount;
 
@@ -776,13 +776,13 @@ public class EditorModeController : MonoBehaviour {
             }
         }
         
-        foreach(string s in splitArrayPlayers)
+        foreach(string s in splitArrayNPC)
         {
-            string[] playerData = s.Split('#');
+            string[] npcData = s.Split('#');
 
-            string[] playerbasicInfo = playerData[0].Split(';');
-            string[] npcPos = playerbasicInfo[0].Split(' ');
-            string npcName = playerbasicInfo[1];
+            string[] npcBasicInfo = npcData[0].Split(';');
+            string[] npcPos = npcBasicInfo[0].Split(' ');
+            string npcName = npcBasicInfo[1];
 
             GameObject myNPC = Instantiate(fatNPCPrefab);
 
@@ -790,7 +790,7 @@ public class EditorModeController : MonoBehaviour {
             myNPC.transform.parent = npcHolder.transform;
             myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, playerbasicInfo[2], playerbasicInfo[3], playerData[1]);
+            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[2], npcBasicInfo[3], npcData[1]);
             myNPC.GetComponent<NPCPatrolMovement>().Start();
             //foreach (string ss in playerData)
             //{

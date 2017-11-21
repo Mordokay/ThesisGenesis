@@ -84,6 +84,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 30
+  messageSendDistance: 2
+  messageTime: 4
+  tags:
+  - name: Wood
+    weight: 3
+  - name: Gather
+    weight: 2
+  - name: Lumberjack
+    weight: 5
+  description: The player is chopping some trees;
 --- !u!135 &135037436829778156
 SphereCollider:
   m_ObjectHideFlags: 1
