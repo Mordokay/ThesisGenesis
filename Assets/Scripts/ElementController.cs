@@ -57,7 +57,7 @@ public class ElementController : MonoBehaviour {
         myDamageText.GetComponent<DamageTextController>().Initialize(this.transform.position, 0.5f, 1.5f, attackDamage.ToString());
 
         
-            slider.SetActive(true);
+        slider.SetActive(true);
         slider.GetComponent<Slider>().value = health / maxHealth;
         Debug.Log(health / maxHealth);
     }
