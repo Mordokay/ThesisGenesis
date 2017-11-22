@@ -155,6 +155,8 @@ public class Social : MonoBehaviour {
                 {
                     mostAtractiveMessageScore = messageScore;
                     mostAttractiveMessage = m1;
+                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+            Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
@@ -196,11 +198,13 @@ public class Social : MonoBehaviour {
                 {
                     mostAtractiveMessageScore = messageScore;
                     mostAttractiveMessage = m2;
+                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
 
-        if (mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) > Constants.MINIMUM_SCORE_FOR_MESSAGE)
+        if (mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) + mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
         {
             Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
             Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));

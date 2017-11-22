@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class Constants : MonoBehaviour {
 
-    public const int MINIMUM_SCORE_FOR_MESSAGE = 50;
+    public const int MINIMUM_SCORE_FOR_MESSAGE = 15;
     public const int MINIMUM_FRIENDSHIP_LEVEL = 0;
 }
