@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ElementController : MonoBehaviour {
 
@@ -13,8 +14,12 @@ public class ElementController : MonoBehaviour {
     public List<Message.Tag> tags;
     public string description;
 
+    public GameObject slider;
+    float maxHealth;
+
     private void Start()
     {
+        maxHealth = health;
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
     }
@@ -41,7 +46,6 @@ public class ElementController : MonoBehaviour {
                 }
                 npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
             }
-
             emc.RemoveElement(this.gameObject);
         }
 	}
@@ -51,5 +55,10 @@ public class ElementController : MonoBehaviour {
         health -= attackDamage;
         GameObject myDamageText = Instantiate(Resources.Load("DamageText")) as GameObject;
         myDamageText.GetComponent<DamageTextController>().Initialize(this.transform.position, 0.5f, 1.5f, attackDamage.ToString());
+
+        
+            slider.SetActive(true);
+        slider.GetComponent<Slider>().value = health / maxHealth;
+        Debug.Log(health / maxHealth);
     }
 }
