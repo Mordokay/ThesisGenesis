@@ -31,18 +31,18 @@ public class Zoom : MonoBehaviour {
         //Debug.Log(myCamera.WorldToScreenPoint(rightUIBox.transform.position));
         if (zoomToPlayMode)
         {
-            if (Camera.main.orthographicSize - 5.0f < 0.05f)
+            if (Camera.main.orthographicSize - 3.0f < 0.05f)
             {
-                Camera.main.orthographicSize = 5.0f;
+                Camera.main.orthographicSize = 3.0f;
                 zoomToPlayMode = false;
             }
-            else if (Camera.main.orthographicSize > 5.0)
+            else if (Camera.main.orthographicSize > 3.0)
             {
-                Camera.main.orthographicSize -= Time.deltaTime * 5.0f;
+                Camera.main.orthographicSize -= Time.deltaTime * 3.0f;
             }
             else
             {
-                Camera.main.orthographicSize += Time.deltaTime * 5.0f;
+                Camera.main.orthographicSize += Time.deltaTime * 3.0f;
             }
         }
 

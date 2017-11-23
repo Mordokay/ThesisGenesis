@@ -52,6 +52,12 @@ public class PlayerMovement : MonoBehaviour
                 this.GetComponent<Animator>().SetBool("Walk", true);
                 isWalking = true;
             }
+
+            int mapWidth = em.mapWidth;
+            int mapHeight = em.mapHeight;
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, -mapWidth / 2 + 1, mapWidth / 2 - 1), transform.position.y,
+                    Mathf.Clamp(transform.position.z, -mapHeight / 2 + 1, mapHeight / 2 - 1));
+
         }
     }
 }

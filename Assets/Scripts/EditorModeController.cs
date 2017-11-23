@@ -504,6 +504,7 @@ public class EditorModeController : MonoBehaviour {
     {
         Debug.Log(Application.persistentDataPath);
         string path = "";
+        string localPath = "";
         if (nameForSave.text == "")
         {
             return;
@@ -511,6 +512,7 @@ public class EditorModeController : MonoBehaviour {
         else if (nameForSave.text != "")
         {
             path = Application.persistentDataPath + "/" + nameForSave.text + ".txt";
+            localPath = "Assets/Resources/" + nameForSave.text + ".txt";
         }
 
         string mapContent = "";
@@ -637,8 +639,11 @@ public class EditorModeController : MonoBehaviour {
 
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, false);
+        StreamWriter writerLocal = new StreamWriter(localPath, false);
         writer.Write(mapContent);
+        writerLocal.Write(mapContent);
         writer.Close();
+        writerLocal.Close();
 
 #if UNITY_EDITOR
         AssetDatabase.Refresh();
