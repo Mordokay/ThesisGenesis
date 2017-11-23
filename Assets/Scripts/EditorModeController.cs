@@ -31,6 +31,10 @@ public class EditorModeController : MonoBehaviour {
     public GameObject npcInterestHolder;
     public GameObject npcFriendsHolder;
 
+    public Image bodyColorImage;
+    public Image headColorImage;
+    public Image handsColorImage;
+
     class TexturePack
     {
         //"Terrain/WhitePack/0-BasicTerrain"
@@ -86,6 +90,7 @@ public class EditorModeController : MonoBehaviour {
     public bool isPlacingPlayer = false;
     public bool isPlacingNPC = false;
     public bool isEditorMode = true;
+    public bool isInspectingElement = false;
     public bool removeTerrain = false;   
     public bool removePatrolPoint = false;
     public bool removeElement = false;
@@ -289,12 +294,18 @@ public class EditorModeController : MonoBehaviour {
                 string interestString = null;
                 if (Interests.Count > 0)
                 {
-                    for (int i = 0; i < Interests.Count; i = i + 3)
+                    for (int i = 0; i < Interests.Count; i = i + 4)
                     {
-                        interestString += Interests[i].GetComponent<InputField>().text +
-                            " " + Interests[i + 1].GetComponent<InputField>().text + ",";
+                        if(!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+                        {
+                            interestString += Interests[i].GetComponentInChildren<Text>().text +
+                            " " + Interests[i + 2].GetComponent<InputField>().text + ",";
+                        }
                     }
-                    interestString = interestString.Substring(0, interestString.Length - 1);
+                    if (interestString != null)
+                    {
+                        interestString = interestString.Substring(0, interestString.Length - 1);
+                    }
                 }
                 Debug.Log(interestString);
 
@@ -310,7 +321,9 @@ public class EditorModeController : MonoBehaviour {
                 }
                 Debug.Log(friendsString);
 
-                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "");
+
+                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
+                    bodyColorImage.color, headColorImage.color, handsColorImage.color);
                 myNPC.GetComponent<NPCPatrolMovement>().Start();
             }
         }
@@ -483,6 +496,24 @@ public class EditorModeController : MonoBehaviour {
         }
     }
 
+    public void ToggleInspectMode()
+    {
+        if (removeNPC)
+        {
+            isPlacingNPC = true;
+            removeNPC = false;
+
+            removeNPCButtonImage.color = Color.white;
+        }
+        else
+        {
+            isPlacingNPC = false;
+            removeNPC = true;
+
+            removeNPCButtonImage.color = Color.yellow;
+        }
+    }
+    
     public void SetTerrainType(int type)
     {
         removeTerrain = false;
@@ -559,11 +590,9 @@ public class EditorModeController : MonoBehaviour {
             Vector3 posOfElm = elementList[i].elementObject.transform.localPosition;
             mapContent += elementList[i].type + " " + elementList[i].elementID + " " + posOfElm.x + " " + posOfElm.z;
             mapContent += ";";
-            addedLastComma = true;
         }
-        if (addedLastComma)
+        if (elementList.Count > 0)
         {
-            addedLastComma = false;
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
         }
         mapContent += "|";
@@ -573,11 +602,9 @@ public class EditorModeController : MonoBehaviour {
             Vector3 posOfElm = patrolPointsList[i].elementObject.transform.position;
             mapContent += posOfElm.x + " " + posOfElm.z;
             mapContent += ";";
-            addedLastComma = true;
         }
-        if (addedLastComma)
+        if (patrolPointsList.Count > 0)
         {
-            addedLastComma = false;
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
         }
         mapContent += "|";
@@ -595,19 +622,34 @@ public class EditorModeController : MonoBehaviour {
 
             mapContent += myNPCs[i].GetComponent<NPCData>().npcName + ";";
 
+            mapContent += myNPCs[i].GetComponent<NPCData>().Body.color.r + "," +
+                myNPCs[i].GetComponent<NPCData>().Body.color.g + "," +
+                myNPCs[i].GetComponent<NPCData>().Body.color.b + ",";
+            mapContent += myNPCs[i].GetComponent<NPCData>().Head.color.r + "," +
+                myNPCs[i].GetComponent<NPCData>().Head.color.g + "," +
+                myNPCs[i].GetComponent<NPCData>().Head.color.b + ",";
+            mapContent += myNPCs[i].GetComponent<NPCData>().LeftHand.color.r + "," +
+                myNPCs[i].GetComponent<NPCData>().LeftHand.color.g + "," +
+                myNPCs[i].GetComponent<NPCData>().LeftHand.color.b + ";";
+
             foreach (NPCData.Interest interest in myNPCs[i].GetComponent<NPCData>().interests)
             {
                 mapContent += interest.name + " " + interest.weight + ",";
             }
-            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            if (myNPCs[i].GetComponent<NPCData>().interests.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
             mapContent += ";";
 
             foreach (NPCData.Aquaintance aquaintance in myNPCs[i].GetComponent<NPCData>().aquaintances)
             {
                 mapContent += aquaintance.npcName + " " + aquaintance.friendshipLevel + ",";
-               
             }
-            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            if (myNPCs[i].GetComponent<NPCData>().aquaintances.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
 
             //separates all other stuff from messages
             mapContent += "#";
@@ -793,6 +835,7 @@ public class EditorModeController : MonoBehaviour {
             string[] npcBasicInfo = npcData[0].Split(';');
             string[] npcPos = npcBasicInfo[0].Split(' ');
             string npcName = npcBasicInfo[1];
+            string[] myNpcColors = npcBasicInfo[2].Split(',');
 
             GameObject myNPC = Instantiate(fatNPCPrefab);
 
@@ -800,13 +843,13 @@ public class EditorModeController : MonoBehaviour {
             myNPC.transform.parent = npcHolder.transform;
             myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[2], npcBasicInfo[3], npcData[1]);
-            myNPC.GetComponent<NPCPatrolMovement>().Start();
-            //foreach (string ss in playerData)
-            //{
-            //    Debug.Log(ss);
-            //}
 
+            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+                new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
+                new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
+                new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
+                
+            myNPC.GetComponent<NPCPatrolMovement>().Start();
         }
         
         for (int i = 1; i < mapWidth - 1; i++)

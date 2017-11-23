@@ -200,7 +200,7 @@ MonoBehaviour:
   tags:
   - name: Wood
     weight: 3
-  - name: Gather
+  - name: Gathering
     weight: 2
   - name: Lumberjack
     weight: 5

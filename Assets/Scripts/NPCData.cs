@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NPCData : MonoBehaviour {
 
@@ -8,6 +9,11 @@ public class NPCData : MonoBehaviour {
     public List<Interest> interests;
     public List<Aquaintance> aquaintances;
     public List<Message> messages;
+
+    public SpriteRenderer Body;
+    public SpriteRenderer Head;
+    public SpriteRenderer LeftHand;
+    public SpriteRenderer RightHand;
 
     [System.Serializable]
     public class Interest
@@ -35,8 +41,14 @@ public class NPCData : MonoBehaviour {
         }
     };
 
-    public void InitializeNPCData(string npcName, string thisInterests, string aquaintancesText, string messagesText)
+    public void InitializeNPCData(string npcName, string thisInterests, string aquaintancesText, string messagesText,
+        Color bodyColor, Color headColor, Color handsColor)
     {
+        Body.color = bodyColor;
+        Head.color = headColor;
+        LeftHand.color = handsColor;
+        RightHand.color = handsColor;
+
         //Debug.Log("npcName: " + npcName);
         //Debug.Log("thisInterests:<" + thisInterests + ">");
         //Debug.Log("aquaintancesText:<" + aquaintancesText + ">");

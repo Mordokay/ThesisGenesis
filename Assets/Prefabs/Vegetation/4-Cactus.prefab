@@ -242,9 +242,9 @@ MonoBehaviour:
   tags:
   - name: Cactus
     weight: 4
-  - name: Gatherer
+  - name: Gathering
     weight: 2
-  - name: Brave
+  - name: Bravery
     weight: 5
   description: I saw the player break a cactus! he was carefull with those spikes.
   slider: {fileID: 1196321479463534}

@@ -204,7 +204,7 @@ public class Social : MonoBehaviour {
             }
         }
 
-        if (mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) + mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
+        if (/*mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*/ mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
         {
             Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
             Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));

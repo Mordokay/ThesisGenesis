@@ -213,8 +213,8 @@ MonoBehaviour:
   messageSendDistance: 4
   messageTime: 4
   tags:
-  - name: Gatherer
-    weight: 2
+  - name: Gathering
+    weight: 5
   - name: Berries
     weight: 4
   description: Player is picking some berries!

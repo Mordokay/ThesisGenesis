@@ -171,11 +171,13 @@ MonoBehaviour:
   messageSendDistance: 4
   messageTime: 4
   tags:
-  - name: Destruction
+  - name: Mining
     weight: 2
   - name: Rock
     weight: 4
   - name: Strength
+    weight: 3
+  - name: Gathering
     weight: 3
   description: The player managed to break a rock with his axe!!
   slider: {fileID: 1127986361561310}

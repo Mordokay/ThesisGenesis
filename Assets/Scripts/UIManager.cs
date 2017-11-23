@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour {
 
@@ -10,6 +11,7 @@ public class UIManager : MonoBehaviour {
     public GameObject drawTerrainPanel;
     public GameObject addElementPanel;
     public GameObject addNPC_Panel;
+    public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
     public GameObject listNatural;
@@ -17,7 +19,8 @@ public class UIManager : MonoBehaviour {
 
     public GameObject interestNPCList;
     public GameObject friendsNPCList;
-    public GameObject interestNameInputField;
+    public GameObject interestChangeTagButton;
+    public GameObject interestChangeTagList;
     public GameObject interestWeightInputField;
     public GameObject friendNameInputField;
     public GameObject friendLevelInputField;
@@ -48,19 +51,21 @@ public class UIManager : MonoBehaviour {
         addPlayerPanel.SetActive(true);
     }
 
-    /*
-     * public GameObject interestNameInputField;
-    public GameObject interestWeightInputField;
-    public GameObject friendNameInputField;
-    public GameObject friendLevelInputField;
-    public GameObject separator;
-     */
     public void addInterestToNPC()
     {
-        Instantiate(interestNameInputField, interestNPCList.transform);
+        GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, interestNPCList.transform);
+        GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, interestNPCList.transform);
+        myInterestChangeTagButton.GetComponent<TagListSelectorController>().listOfTags = myInterestChangeTagList;
+
+        foreach(SingleTagController stc in myInterestChangeTagList.GetComponentsInChildren<SingleTagController>())
+        {
+            stc.tagButton = myInterestChangeTagButton;
+        }
+
         Instantiate(interestWeightInputField, interestNPCList.transform);
         Instantiate(separator, interestNPCList.transform);
     }
+
     public void addFriendToNPC()
     {
         Instantiate(friendNameInputField, friendsNPCList.transform);
@@ -70,6 +75,7 @@ public class UIManager : MonoBehaviour {
 
     public void RemoveLast(int type)
     {
+        //TAGS
         if (type == 0)
         {
             List<GameObject> Interests = new List<GameObject>();
@@ -77,11 +83,15 @@ public class UIManager : MonoBehaviour {
             {
                 Interests.Add(npc.gameObject);
             }
-            for (int i = Interests.Count - 1; i >= Interests.Count - 3; i--)
+            if (Interests.Count > 0)
             {
-                Destroy(Interests[i]);
+                for (int i = Interests.Count - 1; i >= Interests.Count - 4; i--)
+                {
+                    Destroy(Interests[i]);
+                }
             }
         }
+        //FRIENDS
         else
         {
             List<GameObject> Friends = new List<GameObject>();
@@ -89,9 +99,12 @@ public class UIManager : MonoBehaviour {
             {
                 Friends.Add(npc.gameObject);
             }
-            for (int i = Friends.Count - 1; i >= Friends.Count - 3; i--)
+            if (Friends.Count > 0)
             {
-                Destroy(Friends[i]);
+                for (int i = Friends.Count - 1; i >= Friends.Count - 3; i--)
+                {
+                    Destroy(Friends[i]);
+                }
             }
         }
     }
@@ -122,6 +135,14 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingNPC = true;
         mainPanel.SetActive(false);
         addNPC_Panel.SetActive(true);
+    }
+
+    public void ShowInspectorPanel()
+    {
+        mainPanel.SetActive(false);
+        inspectorPanel.SetActive(true);
+
+        gm.GetComponent<EditorModeController>().isInspectingElement = true;
     }
 
     public void ToggleRemoveTerrain()
@@ -168,6 +189,7 @@ public class UIManager : MonoBehaviour {
         drawTerrainPanel.SetActive(false);
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);
+        inspectorPanel.SetActive(false);
 
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
@@ -175,6 +197,8 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingPlayer = false;
         gm.GetComponent<EditorModeController>().removeElement = false;
         gm.GetComponent<EditorModeController>().removeTerrain = false;
+
+        gm.GetComponent<EditorModeController>().isInspectingElement = false;
 
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;
         gm.GetComponent<EditorModeController>().removeNPC = false;
