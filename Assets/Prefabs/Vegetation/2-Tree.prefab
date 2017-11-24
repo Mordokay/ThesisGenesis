@@ -274,11 +274,9 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Wood
-    weight: 3
-  - name: Gathering
-    weight: 2
+    weight: 50
   - name: Lumberjack
-    weight: 5
+    weight: 50
   description: The player is chopping some trees;
   slider: {fileID: 1620376602118312}
 --- !u!114 &114309587801313222

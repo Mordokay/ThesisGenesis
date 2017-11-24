@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Social : MonoBehaviour {
     
@@ -18,8 +19,6 @@ public class Social : MonoBehaviour {
     * 1 -> NPC choses a message he doesn't know from NPC_Other (receives message)
     * 0.5 -> Equal weight between messages from NPC ot NPC_Other
     */
-    [Range(0.0f, 1.0f)]
-    public float listenerLevel;
 
     void Start () {
         isTalking = false;
@@ -27,7 +26,6 @@ public class Social : MonoBehaviour {
         talkDistance = 1.0f;
         lookSpeed = 5.0f;
         isReceivingMessage = false;
-        listenerLevel = 0.5f;
     }
 	
 	void Update () {
@@ -91,9 +89,7 @@ public class Social : MonoBehaviour {
                 Vector3 targetDir = talkPartner.transform.position - transform.position;
                 float step = lookSpeed * Time.deltaTime;
                 Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
-                //Debug.DrawRay(transform.position, newDir, Color.green);
                 transform.rotation = Quaternion.LookRotation(newDir);
-                //Debug.Log("Rotating Towards player!!!");
             }
 
             //Duration of message being sent
@@ -129,34 +125,48 @@ public class Social : MonoBehaviour {
 
             if (doesntHaveMessage)
             {
+                /**
+                 * AA = Assertiveness A
+                 * CA = Cooperativeness A
+                 * AB = Assertiveness B
+                 * CB = Cooperativeness B
+                 * M1 = Message1
+                 * 
+                 * TagsM1_IA = Tags that are in M1 that match an Interest of A
+                 * 
+                 * To determine how good M1 M1 is we use this formula:
+                 * MessageScore = TagsM1_IA * AA + TagsM1_IB * CA + TagsM1_IB * AB + TagsM1_IA * CB
+                 * or 
+                 * MessageScore = TagsM1_IA * (AA, CB) + TagsM1_IB * (CA + AB)
+                 */
                 float messageScore = 0;
-                foreach (Message.Tag tag in m1.tags)
-                {
-                    foreach (NPCData.Interest interest in NPC_B.interests)
-                    {
-                        if (interest.name.Equals(tag.name))
-                        {
-                            messageScore += interest.weight * tag.weight * (1 - listenerLevel);
-                        }
-                    }
-                }
 
                 foreach (Message.Tag tag in m1.tags)
                 {
+                    //TagsM1_IA * (AA, CB)
                     foreach (NPCData.Interest interest in NPC_A.interests)
                     {
                         if (interest.name.Equals(tag.name))
                         {
-                            messageScore += interest.weight * tag.weight * (1 - listenerLevel);
+                            messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
+                        }
+                    }
+                    //TagsM1_IB * (CA + AB)
+                    foreach (NPCData.Interest interest in NPC_B.interests)
+                    {
+                        if (interest.name.Equals(tag.name))
+                        {
+                            messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
                         }
                     }
                 }
+                
                 if (messageScore > mostAtractiveMessageScore)
                 {
                     mostAtractiveMessageScore = messageScore;
                     mostAttractiveMessage = m1;
                     Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-            Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
+                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
@@ -175,22 +185,20 @@ public class Social : MonoBehaviour {
                 float messageScore = 0;
                 foreach (Message.Tag tag in m2.tags)
                 {
+                    //TagsM2_IA * (AA, CB)
                     foreach (NPCData.Interest interest in NPC_A.interests)
                     {
                         if (interest.name.Equals(tag.name))
                         {
-                            messageScore += interest.weight * tag.weight * listenerLevel;
+                            messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
                         }
                     }
-                }
-
-                foreach (Message.Tag tag in m2.tags)
-                {
+                    //TagsM2_IB * (CA + AB)
                     foreach (NPCData.Interest interest in NPC_B.interests)
                     {
                         if (interest.name.Equals(tag.name))
                         {
-                            messageScore += interest.weight * tag.weight * listenerLevel;
+                            messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
                         }
                     }
                 }
@@ -204,7 +212,8 @@ public class Social : MonoBehaviour {
             }
         }
 
-        if (/*mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*/ mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
+        if (/*mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*/
+        mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
         {
             Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
             Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));

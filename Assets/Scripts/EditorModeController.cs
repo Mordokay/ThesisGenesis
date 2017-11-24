@@ -35,6 +35,9 @@ public class EditorModeController : MonoBehaviour {
     public Image headColorImage;
     public Image handsColorImage;
 
+    public Slider assertivenessSlider;
+    public Slider cooperativenessSlider;
+
     class TexturePack
     {
         //"Terrain/WhitePack/0-BasicTerrain"
@@ -263,16 +266,16 @@ public class EditorModeController : MonoBehaviour {
     }
     public void InsertNPC(Vector3 pos)
     {
-        if(npcNameInput.GetComponent<InputField>().textComponent.text != "") { 
-        List<GameObject> NPCs = new List<GameObject>();
-        foreach (Transform npc in npcHolder.transform)
+        if (npcNameInput.GetComponent<InputField>().textComponent.text != "")
         {
-            NPCs.Add(npc.gameObject);
-        }
+            List<GameObject> NPCs = new List<GameObject>();
+            foreach (Transform npc in npcHolder.transform)
+            {
+                NPCs.Add(npc.gameObject);
+            }
             //Only creates a NPC if it has a unique name
             if (NPCs.Find(x => x.name == npcNameInput.GetComponent<InputField>().textComponent.text) == null)
             {
-
                 GameObject myNPC = Instantiate(fatNPCPrefab);
 
                 myNPC.transform.parent = npcHolder.transform;
@@ -303,7 +306,7 @@ public class EditorModeController : MonoBehaviour {
                 {
                     for (int i = 0; i < Interests.Count; i = i + 4)
                     {
-                        if(!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+                        if (!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
                         {
                             interestString += Interests[i].GetComponentInChildren<Text>().text +
                             " " + Interests[i + 2].GetComponent<InputField>().text + ",";
@@ -339,8 +342,8 @@ public class EditorModeController : MonoBehaviour {
                 }
                 Debug.Log(patrolPointsString);
 
-                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "", 
-                    patrolPointsString, bodyColorImage.color, headColorImage.color, handsColorImage.color);
+                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
+                    patrolPointsString, assertivenessSlider.value, cooperativenessSlider.value, bodyColorImage.color, headColorImage.color, handsColorImage.color);
                 myNPC.GetComponent<NPCPatrolMovement>().Start();
             }
         }
@@ -677,6 +680,8 @@ public class EditorModeController : MonoBehaviour {
             {
                 mapContent = mapContent.Substring(0, mapContent.Length - 1);
             }
+            mapContent += ";" + myNPCs[i].GetComponent<NPCData>().assertiveness;
+            mapContent += ";" + myNPCs[i].GetComponent<NPCData>().cooperativeness;
 
             //separates all other stuff from messages
             mapContent += "#";
@@ -871,7 +876,8 @@ public class EditorModeController : MonoBehaviour {
             myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1], npcBasicInfo[5],
+            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1], 
+                npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]),
                 new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
                 new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
                 new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));

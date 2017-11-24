@@ -236,9 +236,9 @@ MonoBehaviour:
   messageTime: 3
   tags:
   - name: Destruction
-    weight: 2
+    weight: 70
   - name: Fence
-    weight: 3
+    weight: 30
   description: Player is breaking the fence! Someone please stop him!
   slider: {fileID: 1193006506699594}
 --- !u!114 &114829632930872698

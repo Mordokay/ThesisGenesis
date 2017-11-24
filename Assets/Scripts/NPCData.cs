@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class NPCData : MonoBehaviour {
 
     public string npcName;
+    public float assertiveness;
+    public float cooperativeness;
     public List<Interest> interests;
     public List<Aquaintance> aquaintances;
     public List<Message> messages;
@@ -15,14 +17,14 @@ public class NPCData : MonoBehaviour {
     public SpriteRenderer Head;
     public SpriteRenderer LeftHand;
     public SpriteRenderer RightHand;
-
+    
     [System.Serializable]
     public class Interest
     {
         public string name;
-        public int weight;
+        public float weight;
 
-        public Interest(string name, int weight)
+        public Interest(string name, float weight)
         {
             this.name = name;
             this.weight = weight;
@@ -44,6 +46,7 @@ public class NPCData : MonoBehaviour {
 
     public void InitializeNPCData(string npcName, string thisInterests, 
         string aquaintancesText, string messagesText, string patrolPointIndexText,
+        float assertivenessLevel, float cooperativenessLevel,
         Color bodyColor, Color headColor, Color handsColor)
     {
         Body.color = bodyColor;
@@ -56,15 +59,32 @@ public class NPCData : MonoBehaviour {
         //Debug.Log("aquaintancesText:<" + aquaintancesText + ">");
         //Debug.Log("messagesText:<" + messagesText + ">");
         this.npcName = npcName;
+
+        cooperativeness = cooperativenessLevel;
+        assertiveness = assertivenessLevel;
+
         messages = new List<Message>();
+
+
+
 
         if (thisInterests != "" && thisInterests != " ")
         {
             string[] interestsList = thisInterests.Split(',');
+
+            //Normalize interest so the total is equal to 100
+            float interestTotalWeight = 0;
             foreach (string i in interestsList)
             {
                 string[] interestData = i.Split(' ');
-                interests.Add(new Interest(interestData[0], System.Int32.Parse(interestData[1])));
+                interestTotalWeight += float.Parse(interestData[1]);
+            }
+
+            foreach (string i in interestsList)
+            {
+                string[] interestData = i.Split(' ');
+                //All interests are normalized
+                interests.Add(new Interest(interestData[0], float.Parse(interestData[1]) / interestTotalWeight));
             }
         }
         if (aquaintancesText != "" && aquaintancesText != " ")
