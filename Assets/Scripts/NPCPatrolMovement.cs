@@ -11,31 +11,37 @@ public class NPCPatrolMovement : MonoBehaviour {
     public float minimumWaitTime;
     public float maximumWaitTime;
     GameObject patrolPointHolder;
-    
+
+    public int patrolIndex;
+
     public void Start () {
+        patrolIndex = 0;
         patrolMovementPoints = new List<Transform>();
         patrolPointHolder = GameObject.FindGameObjectWithTag("PatrolPointsHolder");
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
         agent = GetComponent<NavMeshAgent>();
         agent.ResetPath();
         waitTime = 0;
-        //this.transform.position = patrolMovementPoints[Random.Range(0, patrolMovementPoints.Length)].position;
     }
 	
     void GetNewGoal()
     {
+        if(patrolIndex == this.GetComponent<NPCData>().patrolPointIndex.Count){
+            patrolIndex = 0;
+        }
+        if(System.Int32.Parse(this.GetComponent<NPCData>().patrolPointIndex[patrolIndex]) > patrolMovementPoints.Count)
+        {
+            this.GetComponent<NPCData>().patrolPointIndex.RemoveAt(patrolIndex);
+            GetNewGoal();
+            return;
+        }
         if (patrolMovementPoints.Count > 0)
         {
-            int index = Random.Range(0, patrolMovementPoints.Count);
-            if (patrolMovementPoints[index] == null)
-            {
-                UpdatePatrolPoints();
-            }
-            else {
-                agent.destination = patrolMovementPoints[index].position;
-            }
+            agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponent<NPCData>().patrolPointIndex[patrolIndex])].position;
+            patrolIndex += 1;
         }
     }
+
     //When NPC reaches a position he waits for a couple of seconds before starting to move again
     void SetWaitTime()
     {

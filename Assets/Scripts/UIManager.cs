@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour {
     public GameObject friendLevelInputField;
     public GameObject separator;
 
+    public GameObject patrolPointNumber;
+    public GameObject listPatrolPoints;
+
     GameObject gm;
 
     void Start()
@@ -73,6 +76,12 @@ public class UIManager : MonoBehaviour {
         Instantiate(separator, friendsNPCList.transform);
     }
 
+    public void addNumberToPatrolNPC()
+    {
+        Instantiate(patrolPointNumber, listPatrolPoints.transform);
+        
+    }
+
     public void RemoveLast(int type)
     {
         //TAGS
@@ -92,7 +101,7 @@ public class UIManager : MonoBehaviour {
             }
         }
         //FRIENDS
-        else
+        else if(type == 1)
         {
             List<GameObject> Friends = new List<GameObject>();
             foreach (Transform npc in friendsNPCList.transform)
@@ -105,6 +114,18 @@ public class UIManager : MonoBehaviour {
                 {
                     Destroy(Friends[i]);
                 }
+            }
+        }
+        else
+        {
+            List<GameObject> PatrolPointNumber = new List<GameObject>();
+            foreach (Transform patrol in listPatrolPoints.transform)
+            {
+                PatrolPointNumber.Add(patrol.gameObject);
+            }
+            if (PatrolPointNumber.Count > 0)
+            {
+                Destroy(PatrolPointNumber[PatrolPointNumber.Count - 1]);
             }
         }
     }

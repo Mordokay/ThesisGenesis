@@ -9,6 +9,7 @@ public class NPCData : MonoBehaviour {
     public List<Interest> interests;
     public List<Aquaintance> aquaintances;
     public List<Message> messages;
+    public List<string> patrolPointIndex;
 
     public SpriteRenderer Body;
     public SpriteRenderer Head;
@@ -41,7 +42,8 @@ public class NPCData : MonoBehaviour {
         }
     };
 
-    public void InitializeNPCData(string npcName, string thisInterests, string aquaintancesText, string messagesText,
+    public void InitializeNPCData(string npcName, string thisInterests, 
+        string aquaintancesText, string messagesText, string patrolPointIndexText,
         Color bodyColor, Color headColor, Color handsColor)
     {
         Body.color = bodyColor;
@@ -89,6 +91,14 @@ public class NPCData : MonoBehaviour {
                 string tagsText = messageInfo[2];
 
                 messages.Add(new Message(id, timeOfLife, description, tagsText));
+            }
+        }
+        if (patrolPointIndexText != "" && patrolPointIndexText != " ")
+        {
+            string[] patrolPointIndexList = patrolPointIndexText.Split(',');
+            foreach (string j in patrolPointIndexList)
+            {
+                patrolPointIndex.Add(j);
             }
         }
     }

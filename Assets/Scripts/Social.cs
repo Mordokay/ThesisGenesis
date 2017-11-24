@@ -208,7 +208,7 @@ public class Social : MonoBehaviour {
         {
             Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
             Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));
-            Debug.Log("TotalScore: " + mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B));
+            Debug.Log("TotalScore: " + mostAtractiveMessageScore);
             Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
 
             return mostAttractiveMessage;

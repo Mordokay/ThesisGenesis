@@ -21,7 +21,6 @@ public class EditorModeController : MonoBehaviour {
     public GameObject npcHolder;
 
     public bool patrolPointEnabled;
-    public GameObject patrolPointSelectedImage;
     public GameObject patrolPointPrefab;
 
     public List<string> textureNames;
@@ -30,6 +29,7 @@ public class EditorModeController : MonoBehaviour {
     public GameObject npcNameInput;
     public GameObject npcInterestHolder;
     public GameObject npcFriendsHolder;
+    public GameObject listPatrolPointNPCIndex;
 
     public Image bodyColorImage;
     public Image headColorImage;
@@ -74,6 +74,7 @@ public class EditorModeController : MonoBehaviour {
     public Image removeElementButtonImage;
     public Image removePatrolButtonImage;
     public Image removeNPCButtonImage;
+    public Image insertPatrolPointButtonImage;
 
     List<TexturePack> texturePacks;
     public List<Element> elementList;
@@ -207,12 +208,12 @@ public class EditorModeController : MonoBehaviour {
 
         if (patrolPointEnabled)
         {
-            patrolPointSelectedImage.SetActive(true);
+            insertPatrolPointButtonImage.color = Color.yellow;
         }
         else
         {
-            patrolPointSelectedImage.SetActive(false);
-            
+            insertPatrolPointButtonImage.color = Color.white;
+
             if (currentElementIdSelected != -1)
             {
                 naturalElementButtonImageList[currentElementIdSelected].color = Color.yellow;
@@ -291,6 +292,12 @@ public class EditorModeController : MonoBehaviour {
                     Friends.Add(npc.gameObject);
                 }
 
+                List<GameObject> PatrolPointNumber = new List<GameObject>();
+                foreach (Transform patrol in listPatrolPointNPCIndex.transform)
+                {
+                    PatrolPointNumber.Add(patrol.gameObject);
+                }
+
                 string interestString = null;
                 if (Interests.Count > 0)
                 {
@@ -321,9 +328,19 @@ public class EditorModeController : MonoBehaviour {
                 }
                 Debug.Log(friendsString);
 
+                string patrolPointsString = null;
+                if (PatrolPointNumber.Count > 0)
+                {
+                    for (int i = 0; i < PatrolPointNumber.Count; i++)
+                    {
+                        patrolPointsString += PatrolPointNumber[i].GetComponent<InputField>().text + ",";
+                    }
+                    patrolPointsString = patrolPointsString.Substring(0, patrolPointsString.Length - 1);
+                }
+                Debug.Log(patrolPointsString);
 
-                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
-                    bodyColorImage.color, headColorImage.color, handsColorImage.color);
+                myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "", 
+                    patrolPointsString, bodyColorImage.color, headColorImage.color, handsColorImage.color);
                 myNPC.GetComponent<NPCPatrolMovement>().Start();
             }
         }
@@ -447,7 +464,7 @@ public class EditorModeController : MonoBehaviour {
             currentConstructIdSelected = -1;
             isPlacingElements = false;
             UpdateFeedbackElementSelection();
-            patrolPointSelectedImage.SetActive(false);
+            insertPatrolPointButtonImage.color = Color.white;
             removeElement = true;
             removeElementButtonImage.color = Color.yellow;
             removePatrolPoint = false;
@@ -470,7 +487,7 @@ public class EditorModeController : MonoBehaviour {
             currentConstructIdSelected = -1;
             isPlacingElements = false;
             UpdateFeedbackElementSelection();
-            patrolPointSelectedImage.SetActive(false);
+            insertPatrolPointButtonImage.color = Color.white;
             removePatrolPoint = true;
             removePatrolButtonImage.color = Color.yellow;
             removeElement = false;
@@ -647,6 +664,16 @@ public class EditorModeController : MonoBehaviour {
                 mapContent += aquaintance.npcName + " " + aquaintance.friendshipLevel + ",";
             }
             if (myNPCs[i].GetComponent<NPCData>().aquaintances.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
+            mapContent += ";";
+
+            foreach (string patrolPointIndex in myNPCs[i].GetComponent<NPCData>().patrolPointIndex)
+            {
+                mapContent += patrolPointIndex  + ",";
+            }
+            if (myNPCs[i].GetComponent<NPCData>().patrolPointIndex.Count > 0)
             {
                 mapContent = mapContent.Substring(0, mapContent.Length - 1);
             }
@@ -844,7 +871,7 @@ public class EditorModeController : MonoBehaviour {
             myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1], npcBasicInfo[5],
                 new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
                 new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
                 new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
