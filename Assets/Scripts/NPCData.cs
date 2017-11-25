@@ -8,6 +8,8 @@ public class NPCData : MonoBehaviour {
     public string npcName;
     public float assertiveness;
     public float cooperativeness;
+    public int NPCType;
+
     public List<Interest> interests;
     public List<Aquaintance> aquaintances;
     public List<Message> messages;
@@ -17,7 +19,7 @@ public class NPCData : MonoBehaviour {
     public SpriteRenderer Head;
     public SpriteRenderer LeftHand;
     public SpriteRenderer RightHand;
-    
+
     [System.Serializable]
     public class Interest
     {
@@ -46,20 +48,20 @@ public class NPCData : MonoBehaviour {
 
     public void InitializeNPCData(string npcName, string thisInterests, 
         string aquaintancesText, string messagesText, string patrolPointIndexText,
-        float assertivenessLevel, float cooperativenessLevel,
+        float assertivenessLevel, float cooperativenessLevel, int NPCType,
         Color bodyColor, Color headColor, Color handsColor)
     {
         Body.color = bodyColor;
         Head.color = headColor;
         LeftHand.color = handsColor;
         RightHand.color = handsColor;
-
+        
         //Debug.Log("npcName: " + npcName);
         //Debug.Log("thisInterests:<" + thisInterests + ">");
         //Debug.Log("aquaintancesText:<" + aquaintancesText + ">");
         //Debug.Log("messagesText:<" + messagesText + ">");
         this.npcName = npcName;
-
+        this.NPCType = NPCType;
         cooperativeness = cooperativenessLevel;
         assertiveness = assertivenessLevel;
 

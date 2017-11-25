@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 208381547001949300}
   - component: {fileID: 135029325455942780}
   - component: {fileID: 114243781502622214}
+  - component: {fileID: 65468971468377172}
   m_Layer: 10
   m_Name: 6-FenceCorner4
   m_TagString: Element
@@ -156,6 +157,18 @@ Transform:
   m_Father: {fileID: 4579750534995584}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &65468971468377172
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1650962346311992}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114156006104306974
 MonoBehaviour:
   m_ObjectHideFlags: 1

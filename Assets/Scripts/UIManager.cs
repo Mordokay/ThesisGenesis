@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour {
     public GameObject patrolPointNumber;
     public GameObject listPatrolPoints;
 
+    public GameObject npcTypeList;
+    public GameObject npcTypeButton;
+
     GameObject gm;
 
     void Start()
@@ -184,6 +187,33 @@ public class UIManager : MonoBehaviour {
     public void ToggleRemoveNPC()
     {
         gm.GetComponent<EditorModeController>().ToggleRemoveNPC();
+    }
+
+    public void SetNPCType(int x)
+    {
+        gm.GetComponent<EditorModeController>().selectedNPCType = x;
+        npcTypeList.SetActive(false);
+        switch (x)
+        {
+            case 0:
+                npcTypeButton.GetComponentInChildren<Text>().text = "Fat NPC";
+                break;
+            case 1:
+                npcTypeButton.GetComponentInChildren<Text>().text = "Wizard NPC";
+                break;
+        }
+    }
+
+    public void ToggleNPCTypeList()
+    {
+        if (npcTypeList.activeSelf)
+        {
+            npcTypeList.SetActive(false);
+        }
+        else
+        {
+            npcTypeList.SetActive(true);
+        }
     }
 
     public void Play()

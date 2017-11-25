@@ -24,7 +24,6 @@ public class EditorModeController : MonoBehaviour {
     public GameObject patrolPointPrefab;
 
     public List<string> textureNames;
-    public GameObject fatNPCPrefab;
 
     public GameObject npcNameInput;
     public GameObject npcInterestHolder;
@@ -135,8 +134,12 @@ public class EditorModeController : MonoBehaviour {
     public Terrain[,] tMap;
     public Terrain[,] uMap;
 
+    public List<GameObject> npcTypes;
+    public int selectedNPCType;
+
     private void Start()
     {
+        selectedNPCType = 0;
         currentTerrainType = -1;
         currentElementIdSelected = -1;
         currentConstructIdSelected = -1;
@@ -276,7 +279,7 @@ public class EditorModeController : MonoBehaviour {
             //Only creates a NPC if it has a unique name
             if (NPCs.Find(x => x.name == npcNameInput.GetComponent<InputField>().textComponent.text) == null)
             {
-                GameObject myNPC = Instantiate(fatNPCPrefab);
+                GameObject myNPC = Instantiate(npcTypes[selectedNPCType]);
 
                 myNPC.transform.parent = npcHolder.transform;
                 myNPC.transform.localPosition = new Vector3(pos.x, 0.0f, pos.z);
@@ -343,7 +346,8 @@ public class EditorModeController : MonoBehaviour {
                 Debug.Log(patrolPointsString);
 
                 myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
-                    patrolPointsString, assertivenessSlider.value, cooperativenessSlider.value, bodyColorImage.color, headColorImage.color, handsColorImage.color);
+                    patrolPointsString, assertivenessSlider.value, cooperativenessSlider.value, selectedNPCType,
+                    bodyColorImage.color, headColorImage.color, handsColorImage.color);
                 myNPC.GetComponent<NPCPatrolMovement>().Start();
             }
         }
@@ -682,7 +686,7 @@ public class EditorModeController : MonoBehaviour {
             }
             mapContent += ";" + myNPCs[i].GetComponent<NPCData>().assertiveness;
             mapContent += ";" + myNPCs[i].GetComponent<NPCData>().cooperativeness;
-
+            mapContent += ";" + myNPCs[i].GetComponent<NPCData>().NPCType;
             //separates all other stuff from messages
             mapContent += "#";
 
@@ -869,7 +873,7 @@ public class EditorModeController : MonoBehaviour {
             string npcName = npcBasicInfo[1];
             string[] myNpcColors = npcBasicInfo[2].Split(',');
 
-            GameObject myNPC = Instantiate(fatNPCPrefab);
+            GameObject myNPC = Instantiate(npcTypes[selectedNPCType]);
 
             myNPC.name = npcName;
             myNPC.transform.parent = npcHolder.transform;
@@ -877,7 +881,7 @@ public class EditorModeController : MonoBehaviour {
 
 
             myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1], 
-                npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]),
+                npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
                 new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
                 new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
                 new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));

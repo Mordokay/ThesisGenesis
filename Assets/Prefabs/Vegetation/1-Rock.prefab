@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 208071195287706592}
   - component: {fileID: 135256869182273590}
   - component: {fileID: 114148586374601012}
+  - component: {fileID: 65701088793331694}
   m_Layer: 10
   m_Name: 1-Rock
   m_TagString: Element
@@ -156,6 +157,18 @@ Transform:
   m_Father: {fileID: 4218168051779110}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &65701088793331694
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1724716541881416}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114148586374601012
 MonoBehaviour:
   m_ObjectHideFlags: 1

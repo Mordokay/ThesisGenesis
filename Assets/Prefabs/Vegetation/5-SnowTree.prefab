@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 208640006624104004}
   - component: {fileID: 135133813980269544}
   - component: {fileID: 114397875744009024}
+  - component: {fileID: 65711645500102922}
   m_Layer: 10
   m_Name: 5-SnowTree
   m_TagString: Element
@@ -156,6 +157,18 @@ Transform:
   m_Father: {fileID: 4298667046175532}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &65711645500102922
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1767939985580876}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114256386556708046
 MonoBehaviour:
   m_ObjectHideFlags: 1

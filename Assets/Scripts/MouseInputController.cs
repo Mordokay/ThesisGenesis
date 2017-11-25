@@ -9,6 +9,7 @@ public class MouseInputController : MonoBehaviour {
     public LayerMask TerrainLayerMask;
     public LayerMask UndergroundLayerMask;
     public LayerMask ElementLayerMask;
+    public LayerMask PlacingElementLayerMask;
     public LayerMask PatrolLayerMask;
     public LayerMask NPCLayerMask;
 
@@ -96,7 +97,7 @@ public class MouseInputController : MonoBehaviour {
                 if (gm.GetComponent<EditorModeController>().isPlacingElements)
                 {
                     RaycastHit hit;
-                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, PlacingElementLayerMask);
 
                     if (hit.collider != null)
                     {

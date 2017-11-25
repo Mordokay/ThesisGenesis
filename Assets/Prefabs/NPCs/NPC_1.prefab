@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114579533997588458}
   - component: {fileID: 114395536632903996}
   m_Layer: 13
-  m_Name: FatNPC_1
+  m_Name: NPC_1
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,9 +176,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcName: 
+  assertiveness: 0
+  cooperativeness: 0
   interests: []
   aquaintances: []
   messages: []
+  patrolPointIndex: []
   Body: {fileID: 212773520774872126}
   Head: {fileID: 212991073276426132}
   LeftHand: {fileID: 212151000867919762}
@@ -204,7 +207,6 @@ MonoBehaviour:
     description: 
   isReceivingMessage: 0
   remainingMessageTransmissionTime: 0
-  listenerLevel: 0
 --- !u!114 &114777424240751338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -221,6 +223,7 @@ MonoBehaviour:
   waitTime: 0
   minimumWaitTime: 1
   maximumWaitTime: 2
+  patrolIndex: 0
 --- !u!136 &136350934492118702
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -290,7 +293,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c65f219a96fee3c4399f283fdaa5a4b9, type: 3}
-  m_Color: {r: 0.8205838, g: 0.9485294, b: 0.020923464, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -334,7 +337,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 4697a7d83c82778449aebc38f0c0f78b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0.3931036, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -378,7 +381,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 519024827ec940149b06c38e3048bac3, type: 3}
-  m_Color: {r: 0.8205838, g: 0.9485294, b: 0.020923464, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -422,7 +425,7 @@ SpriteRenderer:
   m_SortingLayer: -2
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: e5bfb376c2a8236448c6e0741c9ecbe4, type: 3}
-  m_Color: {r: 1, g: 0.08823532, b: 0.08823532, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

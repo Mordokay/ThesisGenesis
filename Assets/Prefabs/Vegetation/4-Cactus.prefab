@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 208486379698449928}
   - component: {fileID: 135583848723243210}
   - component: {fileID: 114318327795833136}
+  - component: {fileID: 65350848605566226}
   m_Layer: 10
   m_Name: 4-Cactus
   m_TagString: Element
@@ -156,6 +157,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &65350848605566226
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446249953789040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114069318469455082
 MonoBehaviour:
   m_ObjectHideFlags: 1
