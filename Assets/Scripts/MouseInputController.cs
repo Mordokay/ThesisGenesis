@@ -150,7 +150,7 @@ public class MouseInputController : MonoBehaviour {
 
                     if (hit.collider != null && hit.collider.tag == "NPC")
                     {
-                        Destroy(hit.collider.gameObject);
+                        Destroy(hit.collider.gameObject.transform.parent.gameObject);
                     }
                 }
             }

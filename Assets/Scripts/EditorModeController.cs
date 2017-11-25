@@ -9,6 +9,7 @@ using UnityEditor;
 
 public class EditorModeController : MonoBehaviour {
 
+    public UIManager UI_Manager;
     public InputField widthOfMap;
     public InputField heightOfMap;
     public InputField nameForSave;
@@ -304,7 +305,7 @@ public class EditorModeController : MonoBehaviour {
                     PatrolPointNumber.Add(patrol.gameObject);
                 }
 
-                string interestString = null;
+                string interestString = "";
                 if (Interests.Count > 0)
                 {
                     for (int i = 0; i < Interests.Count; i = i + 4)
@@ -322,7 +323,7 @@ public class EditorModeController : MonoBehaviour {
                 }
                 Debug.Log(interestString);
 
-                string friendsString = null;
+                string friendsString = "";
                 if (Friends.Count > 0)
                 {
                     for (int i = 0; i < Friends.Count; i = i + 3)
@@ -334,7 +335,7 @@ public class EditorModeController : MonoBehaviour {
                 }
                 Debug.Log(friendsString);
 
-                string patrolPointsString = null;
+                string patrolPointsString = "";
                 if (PatrolPointNumber.Count > 0)
                 {
                     for (int i = 0; i < PatrolPointNumber.Count; i++)
@@ -348,7 +349,11 @@ public class EditorModeController : MonoBehaviour {
                 myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
                     patrolPointsString, assertivenessSlider.value, cooperativenessSlider.value, selectedNPCType,
                     bodyColorImage.color, headColorImage.color, handsColorImage.color);
-                myNPC.GetComponent<NPCPatrolMovement>().Start();
+                if (UI_Manager.isFeedbackEnabled)
+                {
+                    myNPC.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(true);
+                }
+                myNPC.GetComponentInChildren<NPCPatrolMovement>().Start();
             }
         }
     }
@@ -873,7 +878,7 @@ public class EditorModeController : MonoBehaviour {
             string npcName = npcBasicInfo[1];
             string[] myNpcColors = npcBasicInfo[2].Split(',');
 
-            GameObject myNPC = Instantiate(npcTypes[selectedNPCType]);
+            GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
 
             myNPC.name = npcName;
             myNPC.transform.parent = npcHolder.transform;
