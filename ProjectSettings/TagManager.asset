@@ -12,6 +12,7 @@ TagManager:
   - PatrolPoint
   - UI
   - NPC
+  - Canvas
   layers:
   - Default
   - TransparentFX

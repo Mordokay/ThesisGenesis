@@ -26,18 +26,18 @@ public class NPCPatrolMovement : MonoBehaviour {
 	
     void GetNewGoal()
     {
-        if(patrolIndex == this.GetComponent<NPCData>().patrolPointIndex.Count){
+        if(patrolIndex == this.GetComponentInParent<NPCData>().patrolPointIndex.Count){
             patrolIndex = 0;
         }
-        if(System.Int32.Parse(this.GetComponent<NPCData>().patrolPointIndex[patrolIndex]) > patrolMovementPoints.Count)
+        if(System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex]) > patrolMovementPoints.Count)
         {
-            this.GetComponent<NPCData>().patrolPointIndex.RemoveAt(patrolIndex);
+            this.GetComponentInParent<NPCData>().patrolPointIndex.RemoveAt(patrolIndex);
             GetNewGoal();
             return;
         }
         if (patrolMovementPoints.Count > 0)
         {
-            agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponent<NPCData>().patrolPointIndex[patrolIndex])].position;
+            agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
             patrolIndex += 1;
         }
     }

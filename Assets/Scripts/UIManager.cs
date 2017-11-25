@@ -32,10 +32,15 @@ public class UIManager : MonoBehaviour {
     public GameObject npcTypeList;
     public GameObject npcTypeButton;
 
+    public GameObject npcHolder;
+
     GameObject gm;
+
+    public bool isFeedbackEnabled;
 
     void Start()
     {
+        isFeedbackEnabled = false;
         gm = GameObject.FindGameObjectWithTag("GameManager");
     }
 
@@ -55,6 +60,27 @@ public class UIManager : MonoBehaviour {
     {
         mainPanel.SetActive(false);
         addPlayerPanel.SetActive(true);
+    }
+
+    public void ToggleFeedback()
+    {
+        if (isFeedbackEnabled)
+        {
+            foreach (Transform npc in npcHolder.transform)
+            {
+                npc.gameObject.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(false);
+            }
+            isFeedbackEnabled = false;
+        }
+        else
+        {
+            foreach (Transform npc in npcHolder.transform)
+            {
+                npc.gameObject.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(true);
+                npc.gameObject.GetComponent<NPCFeedbackUpdater>().refreshFeedbackCanvas();
+            }
+            isFeedbackEnabled = true;
+        }
     }
 
     public void addInterestToNPC()

@@ -886,7 +886,7 @@ public class EditorModeController : MonoBehaviour {
                 new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
                 new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
                 
-            myNPC.GetComponent<NPCPatrolMovement>().Start();
+            myNPC.GetComponentInChildren<NPCPatrolMovement>().Start();
         }
         
         for (int i = 1; i < mapWidth - 1; i++)
@@ -899,7 +899,7 @@ public class EditorModeController : MonoBehaviour {
         }
         foreach (Transform npc in npcHolder.transform)
         {
-            npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+            npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
         }
     }
     public void UpdateSprite(int x, int y)

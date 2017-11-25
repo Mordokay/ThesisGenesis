@@ -8959,8 +8959,8 @@ MonoBehaviour:
   - {fileID: 1095322940446120, guid: ee3a619e158f2f543b29c9aafaaface1, type: 2}
   - {fileID: 1650962346311992, guid: 71310bb2bc5017f40bdfb61454e9aa3f, type: 2}
   npcTypes:
-  - {fileID: 1533624389395732, guid: 96a3dd60103967f469b5402948a8d632, type: 2}
-  - {fileID: 1804204937235528, guid: d04f99df0a13d354eb77cb8f88303e58, type: 2}
+  - {fileID: 1027037823838178, guid: 96a3dd60103967f469b5402948a8d632, type: 2}
+  - {fileID: 1705752703422042, guid: d04f99df0a13d354eb77cb8f88303e58, type: 2}
   selectedNPCType: 0
 --- !u!4 &524205395
 Transform:
@@ -13165,7 +13165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 878201079}
   m_Layer: 0
-  m_Name: npcHolder
+  m_Name: NpcHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17425,7 +17425,7 @@ GameObject:
   - component: {fileID: 1205624279}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: UI
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17469,6 +17469,8 @@ MonoBehaviour:
   listPatrolPoints: {fileID: 2032639268}
   npcTypeList: {fileID: 1613423393}
   npcTypeButton: {fileID: 1526200771}
+  npcHolder: {fileID: 878201078}
+  isFeedbackEnabled: 0
 --- !u!114 &1205624280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28509,7 +28511,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1968388868}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1205624279}
+        m_MethodName: ToggleFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1968388868
