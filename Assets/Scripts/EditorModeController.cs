@@ -264,7 +264,8 @@ public class EditorModeController : MonoBehaviour {
         }
         foreach (Transform npc in npcHolder.transform)
         {
-            npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+            Debug.Log("banana");
+            npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
         }
         refreshPatrolPointNumber();
     }
@@ -370,7 +371,7 @@ public class EditorModeController : MonoBehaviour {
             patrolPointsList.Add(new Element(myPatrolPoint,  "p", -99));
             foreach (Transform npc in npcHolder.transform)
             {
-                npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+                npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
         }
         else
