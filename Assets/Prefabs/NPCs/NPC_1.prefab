@@ -745,6 +745,8 @@ MonoBehaviour:
   minimumWaitTime: 1
   maximumWaitTime: 2
   patrolIndex: 0
+  lineGoalFeedback: {fileID: 1544830809429228, guid: a1d42ccce8a692741ad60995c3150f20,
+    type: 2}
 --- !u!114 &114550224514435808
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -40,7 +40,7 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     public void refreshFeedbackCanvas()
     {
-        Debug.Log("Refreshing feedback canvas of " + this.name);
+        //Debug.Log("Refreshing feedback canvas of " + this.name);
 
         npcNameText.text = "Name: " + this.GetComponent<NPCData>().npcName;
         timeText.text = "Time: " + Time.deltaTime.ToString();

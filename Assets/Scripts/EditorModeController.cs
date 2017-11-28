@@ -354,7 +354,7 @@ public class EditorModeController : MonoBehaviour {
                 {
                     myNPC.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(true);
                 }
-                myNPC.GetComponentInChildren<NPCPatrolMovement>().Start();
+                myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
             }
         }
     }
@@ -892,7 +892,7 @@ public class EditorModeController : MonoBehaviour {
                 new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
                 new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
                 
-            myNPC.GetComponentInChildren<NPCPatrolMovement>().Start();
+            myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
         }
         
         for (int i = 1; i < mapWidth - 1; i++)
