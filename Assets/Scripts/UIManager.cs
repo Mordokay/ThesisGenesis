@@ -38,8 +38,19 @@ public class UIManager : MonoBehaviour {
 
     public bool isFeedbackEnabled;
 
+    public GameObject npcUpdaterPanel;
+    public GameObject npcUpdaterName;
+    public GameObject npcUpdaterAssertiveness;
+    public GameObject npcUpdaterCooperativeness;
+    public GameObject npcUpdaterInterestHolder;
+    public GameObject npcUpdaterMessagesHolder;
+    public GameObject messageElement;
+    public GameObject NPCBeingUpdated;
+    public List<int> messageIdsToRemoveNPCUpdater;
+
     void Start()
     {
+        messageIdsToRemoveNPCUpdater = new List<int>();
         isFeedbackEnabled = false;
         gm = GameObject.FindGameObjectWithTag("GameManager");
     }
@@ -81,6 +92,137 @@ public class UIManager : MonoBehaviour {
             }
             isFeedbackEnabled = true;
         }
+    }
+
+    public void RefreshNPCUpdater(NPCData data)
+    {
+        messageIdsToRemoveNPCUpdater = new List<int>();
+        npcUpdaterPanel.SetActive(true);
+        NPCBeingUpdated = data.gameObject;
+
+        npcUpdaterName.GetComponent<InputField>().text = data.npcName;
+        npcUpdaterAssertiveness.GetComponent<Slider>().value = data.assertiveness;
+        npcUpdaterCooperativeness.GetComponent<Slider>().value = data.cooperativeness;
+
+        foreach (Transform child in npcUpdaterInterestHolder.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        foreach (Transform child in npcUpdaterMessagesHolder.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (NPCData.Interest i in data.interests)
+        {
+            GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, npcUpdaterInterestHolder.transform);
+            GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, npcUpdaterInterestHolder.transform);
+            myInterestChangeTagButton.GetComponent<TagListSelectorController>().listOfTags = myInterestChangeTagList;
+
+            foreach (SingleTagController stc in myInterestChangeTagList.GetComponentsInChildren<SingleTagController>())
+            {
+                stc.tagButton = myInterestChangeTagButton;
+            }
+
+            Instantiate(interestWeightInputField, npcUpdaterInterestHolder.transform);
+            Instantiate(separator, npcUpdaterInterestHolder.transform);
+
+            myInterestChangeTagButton.GetComponentInChildren<Text>().text = i.name;
+            interestWeightInputField.GetComponent<InputField>().text = i.weight.ToString();
+        }
+
+        foreach (Message message in data.messages)
+        {
+            GameObject myMessageElement = Instantiate(messageElement, npcUpdaterMessagesHolder.transform);
+            string messageText = "";
+            messageText += "ID: " + message.id + "Transmission Time: " + message.messageTimeOfLife + System.Environment.NewLine;
+            foreach(Message.Tag t in message.tags)
+            {
+                messageText += "(" + t.name + "," + t.weight + "),";
+            }
+            if(message.tags.Count > 0)
+            {
+                messageText = messageText.Substring(0, messageText.Length - 1);
+            }
+            myMessageElement.GetComponentInChildren<Text>().text = messageText;
+
+            myMessageElement.GetComponent<SingleMessageController>().messageId = message.id;
+        }
+    }
+
+    public void UpdateNPC()
+    {
+        NPCBeingUpdated.GetComponent<NPCData>().npcName = npcUpdaterName.GetComponent<InputField>().text;
+        NPCBeingUpdated.GetComponent<NPCData>().assertiveness = npcUpdaterAssertiveness.GetComponent<Slider>().value;
+        NPCBeingUpdated.GetComponent<NPCData>().cooperativeness = npcUpdaterCooperativeness.GetComponent<Slider>().value;
+
+        List<GameObject> Interests = new List<GameObject>();
+        foreach (Transform npc in npcUpdaterInterestHolder.transform)
+        {
+            Interests.Add(npc.gameObject);
+        }
+
+        NPCBeingUpdated.GetComponent<NPCData>().interests = new List<NPCData.Interest>();
+
+        if (Interests.Count > 0)
+        {
+            float interestTotalWeight = 0;
+            for (int i = 0; i < Interests.Count; i = i + 4)
+            {
+                if (!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+                {
+                    interestTotalWeight += float.Parse(Interests[i + 2].GetComponent<InputField>().text);
+                }
+            }
+
+            for (int i = 0; i < Interests.Count; i = i + 4)
+            {
+                if (!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+                {
+                    NPCBeingUpdated.GetComponent<NPCData>().interests.Add(
+                        new NPCData.Interest(Interests[i].GetComponentInChildren<Text>().text,
+                        float.Parse(Interests[i + 2].GetComponent<InputField>().text) / interestTotalWeight));
+                    Interests[i + 2].GetComponent<InputField>().text = 
+                        (float.Parse(Interests[i + 2].GetComponent<InputField>().text) / interestTotalWeight).ToString();
+                }
+            }
+        }
+
+        foreach (int id in messageIdsToRemoveNPCUpdater)
+        {
+            Message m = NPCBeingUpdated.GetComponent<NPCData>().messages.Find(x => x.id == id);
+            if (m != null)
+            {
+                NPCBeingUpdated.GetComponent<NPCData>().messages.Remove(m);
+            }
+        }
+    }
+
+    public void addUpdatedInterestToNPC()
+    {
+        GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, npcUpdaterInterestHolder.transform);
+        GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, npcUpdaterInterestHolder.transform);
+        myInterestChangeTagButton.GetComponent<TagListSelectorController>().listOfTags = myInterestChangeTagList;
+
+        foreach (SingleTagController stc in myInterestChangeTagList.GetComponentsInChildren<SingleTagController>())
+        {
+            stc.tagButton = myInterestChangeTagButton;
+        }
+
+        Instantiate(interestWeightInputField, npcUpdaterInterestHolder.transform);
+        Instantiate(separator, npcUpdaterInterestHolder.transform);
+    }
+
+    public void removeMessageWithId(int id)
+    {
+        messageIdsToRemoveNPCUpdater.Add(id);
+        /*
+        Message m = NPCBeingUpdated.GetComponent<NPCData>().messages.Find(x => x.id == id);
+        if(m != null)
+        {
+            NPCBeingUpdated.GetComponent<NPCData>().messages.Remove(m);
+        }
+        */
     }
 
     public void addInterestToNPC()
@@ -145,7 +287,7 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
-        else
+        else if (type == 2)
         {
             List<GameObject> PatrolPointNumber = new List<GameObject>();
             foreach (Transform patrol in listPatrolPoints.transform)
@@ -155,6 +297,22 @@ public class UIManager : MonoBehaviour {
             if (PatrolPointNumber.Count > 0)
             {
                 Destroy(PatrolPointNumber[PatrolPointNumber.Count - 1]);
+            }
+        }
+        //Removes last Interest from NPC Updater
+        else if (type == 3)
+        {
+            List<GameObject> Interests = new List<GameObject>();
+            foreach (Transform npc in npcUpdaterInterestHolder.transform)
+            {
+                Interests.Add(npc.gameObject);
+            }
+            if (Interests.Count > 0)
+            {
+                for (int i = Interests.Count - 1; i >= Interests.Count - 4; i--)
+                {
+                    Destroy(Interests[i]);
+                }
             }
         }
     }
@@ -267,7 +425,7 @@ public class UIManager : MonoBehaviour {
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);
         inspectorPanel.SetActive(false);
-
+        npcUpdaterPanel.SetActive(false);
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;
@@ -280,5 +438,7 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;
         gm.GetComponent<EditorModeController>().removeNPC = false;
         gm.GetComponent<EditorModeController>().removeNPCButtonImage.color = Color.white;
+
+        NPCBeingUpdated = null;
     }
 }

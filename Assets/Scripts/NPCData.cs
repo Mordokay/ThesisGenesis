@@ -88,6 +88,7 @@ public class NPCData : MonoBehaviour {
                     lessInterestingMessageScore = totalScore;
                 }
             }
+
             Debug.Log("lessInterestingMessageScore " + lessInterestingMessageScore);
             Debug.Log("lessInterestingMessage " + lessInterestingMessage.ToString());
             //If the message we recieved is more interesting than one of our messages ...

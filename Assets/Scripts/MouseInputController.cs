@@ -19,7 +19,10 @@ public class MouseInputController : MonoBehaviour {
 
     GameObject player;
 
+    UIManager uiManager;
+
     void Start () {
+        uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         player = GameObject.FindGameObjectWithTag("Player");
         lastMousePos = Vector3.zero;
         gm = GameObject.FindGameObjectWithTag("GameManager");
@@ -151,6 +154,17 @@ public class MouseInputController : MonoBehaviour {
                     if (hit.collider != null && hit.collider.tag == "NPC")
                     {
                         Destroy(hit.collider.gameObject.transform.parent.gameObject);
+                    }
+                }
+                else if (gm.GetComponent<EditorModeController>().isInspectingElement)
+                {
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, NPCLayerMask);
+
+                    if (hit.collider != null && hit.collider.tag == "NPC")
+                    {
+                        Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
+                        uiManager.RefreshNPCUpdater(hit.collider.gameObject.GetComponentInParent<NPCData>());
                     }
                 }
             }
