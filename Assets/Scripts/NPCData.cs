@@ -20,6 +20,8 @@ public class NPCData : MonoBehaviour {
     public SpriteRenderer LeftHand;
     public SpriteRenderer RightHand;
 
+    float messageLimit = 7;
+
     [System.Serializable]
     public class Interest
     {
@@ -46,6 +48,62 @@ public class NPCData : MonoBehaviour {
         }
     };
 
+    public void RecieveMessage(Message msg)
+    {
+        Debug.Log("messages count: " + messages.Count);
+        if(messages.Count < messageLimit)
+        {
+            Debug.Log("Add new message");
+            messages.Add(msg);
+        }
+        else
+        {
+            float recievedMessageScore = 0.0f;
+            float lessInterestingMessageScore = Mathf.Infinity;
+            Message lessInterestingMessage = null;
+            foreach (Message.Tag tag in msg.tags)
+            {
+                Interest foundInterest = interests.Find(x => x.name == tag.name);
+                if (foundInterest != null)
+                {
+                    recievedMessageScore += foundInterest.weight * tag.weight;
+                }
+            }
+            Debug.Log("recievedMessageScore " + recievedMessageScore);
+            Debug.Log("recievedMessage " + msg.ToString());
+            foreach (Message m in messages)
+            {
+                float totalScore = 0.0f;
+                foreach (Message.Tag tag in m.tags)
+                {
+                    Interest foundInterest = interests.Find(x => x.name == tag.name);
+                    if (foundInterest != null)
+                    {
+                        totalScore += foundInterest.weight * tag.weight;
+                    }
+                }
+                if(totalScore < lessInterestingMessageScore)
+                {
+                    lessInterestingMessage = m;
+                    lessInterestingMessageScore = totalScore;
+                }
+            }
+            Debug.Log("lessInterestingMessageScore " + lessInterestingMessageScore);
+            Debug.Log("lessInterestingMessage " + lessInterestingMessage.ToString());
+            //If the message we recieved is more interesting than one of our messages ...
+            //We replace the least interesting message with our new recieved message
+            if (recievedMessageScore > lessInterestingMessageScore)
+            {
+                Debug.Log("Score comparison: " + recievedMessageScore + " <> " + lessInterestingMessageScore);
+                Debug.Log("Replaced message: " + lessInterestingMessage.ToString());
+                Debug.Log("With new message: " + msg.ToString());
+                messages.Remove(lessInterestingMessage);
+                //messages.RemoveAll(p => p.id == lessInterestingMessage.id);
+                messages.Add(msg);
+            }
+        }
+    }
+
     public void InitializeNPCData(string npcName, string thisInterests, 
         string aquaintancesText, string messagesText, string patrolPointIndexText,
         float assertivenessLevel, float cooperativenessLevel, int NPCType,
@@ -64,11 +122,7 @@ public class NPCData : MonoBehaviour {
         this.NPCType = NPCType;
         cooperativeness = cooperativenessLevel;
         assertiveness = assertivenessLevel;
-
         messages = new List<Message>();
-
-
-
 
         if (thisInterests != "" && thisInterests != " ")
         {

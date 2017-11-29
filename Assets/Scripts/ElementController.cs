@@ -30,8 +30,9 @@ public class ElementController : MonoBehaviour {
             int eventId = pm.getMessageId();
             foreach (Transform npc in emc.npcHolder.transform)
             {
+                Debug.Log(npc.GetChild(1).name);
                 //check if NPC is at a close distance;
-                if (Vector3.Distance(npc.position, this.transform.position) < messageSendDistance)
+                if (Vector3.Distance(npc.GetChild(1).position, this.transform.position) < messageSendDistance)
                 {
                     string tagString = "";
                     foreach (Message.Tag t in tags)
@@ -42,9 +43,9 @@ public class ElementController : MonoBehaviour {
                     {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
-                    npc.gameObject.GetComponent<NPCData>().messages.Add(new Message(eventId, messageTime, description, tagString));
+                    npc.gameObject.GetComponent<NPCData>().RecieveMessage(new Message(eventId, messageTime, description, tagString));
                 }
-                npc.gameObject.GetComponent<NPCPatrolMovement>().UpdatePatrolPoints();
+                npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
             emc.RemoveElement(this.gameObject);
         }
@@ -55,10 +56,9 @@ public class ElementController : MonoBehaviour {
         health -= attackDamage;
         GameObject myDamageText = Instantiate(Resources.Load("DamageText")) as GameObject;
         myDamageText.GetComponent<DamageTextController>().Initialize(this.transform.position, 0.5f, 1.5f, attackDamage.ToString());
-
         
         slider.SetActive(true);
         slider.GetComponent<Slider>().value = health / maxHealth;
-        Debug.Log(health / maxHealth);
+        //Debug.Log(health / maxHealth);
     }
 }

@@ -28,7 +28,7 @@ public class WeaponController : MonoBehaviour {
             {
                 other.GetComponent<ElementController>().Attack(attackDamageAxe);
                 timeSinceLastAtack = Time.timeSinceLevelLoad;
-                Debug.Log(other.gameObject.name);
+                //Debug.Log(other.gameObject.name);
             }
         }
     }
