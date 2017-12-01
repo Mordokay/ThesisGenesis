@@ -50,6 +50,7 @@ public class NPCPatrolMovement : MonoBehaviour {
             {
                 this.GetComponentInParent<NPCData>().patrolPointIndex.RemoveAt(patrolIndex);
                 GetNewGoal();
+                return;
             }
             else if (patrolMovementPoints.Count > 0)
             {

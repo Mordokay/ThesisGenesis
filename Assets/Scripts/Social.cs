@@ -33,7 +33,10 @@ public class Social : MonoBehaviour {
         {
             foreach (Transform npc in em.npcHolder.transform)
             {
-                if (!npc.name.Equals(this.name) && Vector3.Distance(npc.position, this.transform.position) <= talkDistance &&
+                //Debug.Log("npcName: " + npc.name + " this.name " + this.name);
+                //Debug.Log("distance: " + Vector3.Distance(npc.position, this.transform.GetChild(1).transform.position));
+                if (!npc.name.Equals(this.name) && 
+                    Vector3.Distance(npc.transform.GetChild(1).transform.position, this.transform.GetChild(1).transform.position) <= talkDistance &&
                     !npc.gameObject.GetComponent<Social>().isTalking)
                 {
                     //Randomly choose who starts to talk
@@ -44,14 +47,25 @@ public class Social : MonoBehaviour {
                         npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
                     else{
-                       // Debug.Log(npc.gameObject.name + " initiated conversation");
+                        //Debug.Log(npc.gameObject.name + " initiated conversation");
                         choosedMessage = npc.gameObject.GetComponent<Social>().getBestMessageToTalk(
                             npc.gameObject.GetComponent<NPCData>(), this.GetComponent<NPCData>());
                         npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
 
-                    if (choosedMessage != null)
+                    bool messageOfInterest = false;
+                    //If there is a message and npc is recieving the message 
+                    //and message is of interest for him (this happens when NPC did not exceed limit of messages and 
+                    //this message is more interesting then at least one of the messages he is holding)
+                    if (choosedMessage != null && !this.GetComponent<NPCData>().messages.Contains(choosedMessage) &&
+                        this.GetComponent<NPCData>().isMessageOfInterest(choosedMessage))
                     {
+                        messageOfInterest = true;
+                    }
+                    Debug.Log("messageOfInterest: " + messageOfInterest.ToString());
+                    if (choosedMessage != null && messageOfInterest)
+                    {
+                        Debug.Log("Start talking!!!");
                         talkPartner = npc.gameObject;
 
                         if (this.GetComponent<NPCData>().messages.Contains(choosedMessage))
@@ -76,28 +90,29 @@ public class Social : MonoBehaviour {
                         {
                             npc.gameObject.GetComponent<Social>().isReceivingMessage = false;
                         }
-                        this.GetComponent<NPCPatrolMovement>().agent.isStopped = true;
-                        npc.GetComponent<NPCPatrolMovement>().agent.isStopped = true;
+                        this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = true;
+                        npc.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = true;
                     }
                 }
             }
         }
         else if (isTalking)
         {
-            if (Mathf.Abs(Vector3.Angle(this.transform.forward, this.transform.position - talkPartner.transform.position) - 180.0f) > 1.0f)
+            if (Mathf.Abs(Vector3.Angle(this.transform.GetChild(1).transform.forward, 
+                this.transform.GetChild(1).transform.position - talkPartner.transform.GetChild(1).transform.position) - 180.0f) > 1.0f)
             {
-                Vector3 targetDir = talkPartner.transform.position - transform.position;
+                Vector3 targetDir = talkPartner.transform.GetChild(1).transform.position - this.transform.GetChild(1).transform.position;
                 float step = lookSpeed * Time.deltaTime;
-                Vector3 newDir = Vector3.RotateTowards(transform.forward, targetDir, step, 0.0F);
-                transform.rotation = Quaternion.LookRotation(newDir);
+                Vector3 newDir = Vector3.RotateTowards(this.transform.GetChild(1).transform.forward, targetDir, step, 0.0F);
+                this.transform.GetChild(1).transform.rotation = Quaternion.LookRotation(newDir);
             }
-
+            
             //Duration of message being sent
             remainingMessageTransmissionTime -= Time.deltaTime;
             if (remainingMessageTransmissionTime <= 0)
             {
                 remainingMessageTransmissionTime = 0;
-                this.GetComponent<NPCPatrolMovement>().agent.isStopped = false;
+                this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = false;
                 isTalking = false;
                 if (isReceivingMessage && choosedMessage != null)
                 {
@@ -165,8 +180,8 @@ public class Social : MonoBehaviour {
                 {
                     mostAtractiveMessageScore = messageScore;
                     mostAttractiveMessage = m1;
-                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
+                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
@@ -206,8 +221,8 @@ public class Social : MonoBehaviour {
                 {
                     mostAtractiveMessageScore = messageScore;
                     mostAttractiveMessage = m2;
-                    Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
+                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
             }
         }
@@ -215,8 +230,8 @@ public class Social : MonoBehaviour {
         if (/*mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*/
         mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
         {
-            Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-            Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));
+            //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+            //Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));
             Debug.Log("TotalScore: " + mostAtractiveMessageScore);
             Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
 

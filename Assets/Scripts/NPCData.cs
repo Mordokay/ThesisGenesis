@@ -48,13 +48,13 @@ public class NPCData : MonoBehaviour {
         }
     };
 
-    public void RecieveMessage(Message msg)
+    public bool isMessageOfInterest(Message msg)
     {
-        Debug.Log("messages count: " + messages.Count);
-        if(messages.Count < messageLimit)
+        //Debug.Log("messages count: " + messages.Count);
+        if (messages.Count < messageLimit)
         {
-            Debug.Log("Add new message");
-            messages.Add(msg);
+            //Debug.Log("Add new message");
+            return true;
         }
         else
         {
@@ -82,7 +82,7 @@ public class NPCData : MonoBehaviour {
                         totalScore += foundInterest.weight * tag.weight;
                     }
                 }
-                if(totalScore < lessInterestingMessageScore)
+                if (totalScore < lessInterestingMessageScore)
                 {
                     lessInterestingMessage = m;
                     lessInterestingMessageScore = totalScore;
@@ -100,8 +100,17 @@ public class NPCData : MonoBehaviour {
                 Debug.Log("With new message: " + msg.ToString());
                 messages.Remove(lessInterestingMessage);
                 //messages.RemoveAll(p => p.id == lessInterestingMessage.id);
-                messages.Add(msg);
+                return true;
             }
+        }
+        return false;
+    }
+
+    public void RecieveMessage(Message msg)
+    {
+        if (isMessageOfInterest(msg))
+        {
+            messages.Add(msg);
         }
     }
 

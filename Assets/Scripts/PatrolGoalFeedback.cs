@@ -26,7 +26,7 @@ public class PatrolGoalFeedback : MonoBehaviour {
 	
     public void ClearAllArrows()
     {
-        Debug.Log("Clearing line with " + Arrows.Count + " arrows");
+        //Debug.Log("Clearing line with " + Arrows.Count + " arrows");
         for (int i = Arrows.Count - 1; i >= 0; i--)
         {
             Destroy(Arrows[i]);

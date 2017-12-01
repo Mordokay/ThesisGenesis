@@ -163,7 +163,7 @@ public class MouseInputController : MonoBehaviour {
 
                     if (hit.collider != null && hit.collider.tag == "NPC")
                     {
-                        Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
+                        //Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
                         uiManager.RefreshNPCUpdater(hit.collider.gameObject.GetComponentInParent<NPCData>());
                     }
                 }

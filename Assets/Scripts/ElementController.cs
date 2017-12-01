@@ -30,7 +30,6 @@ public class ElementController : MonoBehaviour {
             int eventId = pm.getMessageId();
             foreach (Transform npc in emc.npcHolder.transform)
             {
-                Debug.Log(npc.GetChild(1).name);
                 //check if NPC is at a close distance;
                 if (Vector3.Distance(npc.GetChild(1).position, this.transform.position) < messageSendDistance)
                 {
