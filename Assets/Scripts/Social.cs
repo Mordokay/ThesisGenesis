@@ -9,7 +9,7 @@ public class Social : MonoBehaviour {
     EditorModeController em;
     public float talkDistance;
     public float lookSpeed;
-    GameObject talkPartner;
+    public GameObject talkPartner;
     public Message choosedMessage;
     public bool isReceivingMessage;
     public float remainingMessageTransmissionTime;
@@ -23,7 +23,7 @@ public class Social : MonoBehaviour {
     void Start () {
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
-        talkDistance = 1.0f;
+        talkDistance = 2.0f;
         lookSpeed = 5.0f;
         isReceivingMessage = false;
     }
@@ -62,10 +62,10 @@ public class Social : MonoBehaviour {
                     {
                         messageOfInterest = true;
                     }
-                    Debug.Log("messageOfInterest: " + messageOfInterest.ToString());
+                    //Debug.Log("messageOfInterest: " + messageOfInterest.ToString());
                     if (choosedMessage != null && messageOfInterest)
                     {
-                        Debug.Log("Start talking!!!");
+                        //Debug.Log("Start talking!!!");
                         talkPartner = npc.gameObject;
 
                         if (this.GetComponent<NPCData>().messages.Contains(choosedMessage))

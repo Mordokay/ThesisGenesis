@@ -34,8 +34,15 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     private void Update()
     {
-        feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
-        refreshFeedbackCanvas();
+        if (this.gameObject.GetComponent<Social>().isTalking)
+        {
+            feedbackCanvas.SetActive(false);
+        }
+        else
+        {
+            feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
+            refreshFeedbackCanvas();
+        }
     }
 
     public void refreshFeedbackCanvas()

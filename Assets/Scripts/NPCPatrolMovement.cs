@@ -16,6 +16,7 @@ public class NPCPatrolMovement : MonoBehaviour {
 
     public GameObject lineGoalFeedback;
     GameObject myLineGoalFeedback;
+    GameObject myTalkLine;
 
     UIManager uiManager;
 
@@ -24,6 +25,10 @@ public class NPCPatrolMovement : MonoBehaviour {
 
         myLineGoalFeedback = Instantiate(lineGoalFeedback);
         myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().origin = this.transform;
+
+        myTalkLine = Instantiate(lineGoalFeedback);
+        myTalkLine.GetComponent<PatrolGoalFeedback>().origin = this.transform;
+        myTalkLine.GetComponent<PatrolGoalFeedback>().isTalkArrow = true;
 
         agent = GetComponent<NavMeshAgent>();
         agent.ResetPath();
@@ -83,21 +88,43 @@ public class NPCPatrolMovement : MonoBehaviour {
     void Update () {
         if (uiManager.isFeedbackEnabled)
         {
-            if (!myLineGoalFeedback.activeSelf)
+            if (this.GetComponentInParent<Social>().isTalking)
             {
-                myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().ClearAllArrows();
-                myLineGoalFeedback.SetActive(true);
+                myLineGoalFeedback.SetActive(false);
+                if (!this.GetComponentInParent<Social>().isReceivingMessage)
+                {
+                    if (!myTalkLine.activeSelf)
+                    {
+                        myTalkLine.SetActive(true);
+                    }
+                    //myTalkLine.GetComponent<PatrolGoalFeedback>().ClearAllArrows();
+                    myTalkLine.GetComponent<PatrolGoalFeedback>().destination =
+                    this.GetComponentInParent<Social>().talkPartner.transform.GetChild(1).position;
+                }
+                else
+                {
+                    myTalkLine.GetComponent<PatrolGoalFeedback>().ClearAllArrows();
+                    myTalkLine.SetActive(false);
+                }
+            }
+            else
+            {
+                if (!myLineGoalFeedback.activeSelf)
+                {
+                    myLineGoalFeedback.SetActive(true);
+                    myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().ClearAllArrows();
+                }
+
+                if (myTalkLine.activeSelf)
+                {
+                    myTalkLine.SetActive(false);
+                    myTalkLine.GetComponent<PatrolGoalFeedback>().ClearAllArrows();
+                }
             }
         }
         else
         {
             myLineGoalFeedback.SetActive(false);
-        }
-
-        if(myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination != null &&
-            Vector3.Distance(myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination, this.transform.position) > 0.5f)
-        {
-            myLineGoalFeedback.transform.position = this.transform.position + ((agent.destination - this.transform.position) / 2.0f);
         }
 
         float dist = agent.remainingDistance;
