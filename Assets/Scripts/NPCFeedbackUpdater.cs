@@ -40,8 +40,12 @@ public class NPCFeedbackUpdater : MonoBehaviour {
         }
         else
         {
-            feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
-            refreshFeedbackCanvas();
+            if (uiManager.isFeedbackEnabled)
+            {
+                feedbackCanvas.SetActive(true);
+                feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
+                refreshFeedbackCanvas();
+            }
         }
     }
 

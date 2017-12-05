@@ -13,6 +13,9 @@ public class Social : MonoBehaviour {
     public Message choosedMessage;
     public bool isReceivingMessage;
     public float remainingMessageTransmissionTime;
+
+    public GameObject talkCanvas;
+
     /*
     * listenerLevel value goes from 0 to 1. 
     * 0 -> NPC choses a message NPC_Other doesn't know (sends message)
@@ -31,6 +34,7 @@ public class Social : MonoBehaviour {
 	void Update () {
         if (em.npcHolder != null && !isTalking)
         {
+            talkCanvas.SetActive(false);
             foreach (Transform npc in em.npcHolder.transform)
             {
                 //Debug.Log("npcName: " + npc.name + " this.name " + this.name);
@@ -98,6 +102,16 @@ public class Social : MonoBehaviour {
         }
         else if (isTalking)
         {
+            if (!isReceivingMessage && !talkCanvas.activeSelf)
+            {
+                talkCanvas.SetActive(true);
+                talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
+                talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
+            }
+            if (talkCanvas.activeSelf)
+            {
+                talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTimeOfLife);
+            }
             if (Mathf.Abs(Vector3.Angle(this.transform.GetChild(1).transform.forward, 
                 this.transform.GetChild(1).transform.position - talkPartner.transform.GetChild(1).transform.position) - 180.0f) > 1.0f)
             {

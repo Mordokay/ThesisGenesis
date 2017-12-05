@@ -103,11 +103,8 @@ public class PatrolGoalFeedback : MonoBehaviour {
         {
             if (isTalkArrow)
             {
-                //Debug.Log("arrowPos: " + Arrows[i].transform.position + " destination  " + destination);
                 if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.1f)
                 {
-                    //Debug.Log("arrowPos: " + Arrows[i].transform.position + " destination  " + destination);
-                    //Debug.Log("Destroy arrow!!!");
                     Destroy(Arrows[i]);
                     Arrows.RemoveAt(i);
                 }
@@ -116,7 +113,6 @@ public class PatrolGoalFeedback : MonoBehaviour {
             {
                 if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.5f)
                 {
-                    Debug.Log("Fuck me!!!!!!");
                     Destroy(Arrows[i]);
                     Arrows.RemoveAt(i);
                 }
