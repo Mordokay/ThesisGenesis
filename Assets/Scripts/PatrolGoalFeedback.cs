@@ -18,11 +18,13 @@ public class PatrolGoalFeedback : MonoBehaviour {
 
     public bool isTalkArrow;
     Color talkColor;
+    EditorModeController em;
 
     void Start () {
         talkColor = Color.blue;
         arrow = Resources.Load("Arrow") as GameObject;
 
+        em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         Arrows = new List<GameObject>();
         timeSinceLastArrow = Time.timeSinceLevelLoad;
         arrowForceSpeed = 200.0f;
@@ -74,6 +76,7 @@ public class PatrolGoalFeedback : MonoBehaviour {
             if (!destination.Equals(Vector3.one) && timeSinceLastGoalArrow > 0.4f)
             {
                 GameObject myArrow = Instantiate(arrow, this.transform);
+                Destroy(myArrow, 3.0f);
                 myArrow.transform.position = origin.transform.position;
                 myArrow.GetComponent<Rigidbody>().AddForce((destination - myArrow.transform.position).normalized * (arrowForceSpeed));
                 myArrow.GetComponentInChildren<SpriteRenderer>().color = talkColor;
@@ -89,6 +92,7 @@ public class PatrolGoalFeedback : MonoBehaviour {
             if (!destination.Equals(Vector3.one) && timeSinceLastArrow > 0.1f)
             {
                 GameObject myArrow = Instantiate(arrow, this.transform);
+                Destroy(myArrow, 3.0f);
                 myArrow.transform.position = origin.transform.position;
                 myArrow.GetComponent<Rigidbody>().AddForce((destination - myArrow.transform.position).normalized * arrowForceSpeed);
                 myArrow.GetComponentInChildren<SpriteRenderer>().color =  origin.transform.GetComponentInChildren<SpriteRenderer>().color;//currentColor;
@@ -98,23 +102,30 @@ public class PatrolGoalFeedback : MonoBehaviour {
                 timeSinceLastArrow = 0;
             }
         }
-
         for (int i = Arrows.Count - 1; i >= 0; i--)
         {
-            if (isTalkArrow)
+            if (Arrows[i] != null)
             {
-                if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.1f)
+                if (isTalkArrow)
                 {
-                    Destroy(Arrows[i]);
-                    Arrows.RemoveAt(i);
+                    if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.1f ||
+                        Arrows[i].transform.position.x >= (em.mapWidth / 2) || Arrows[i].transform.position.x < -(em.mapWidth / 2)
+                        || Arrows[i].transform.position.y >= (em.mapHeight / 2) || Arrows[i].transform.position.y < -(em.mapHeight / 2))
+                    {
+                        Destroy(Arrows[i]);
+                        Arrows.RemoveAt(i);
+                    }
+
                 }
-            }
-            else
-            {
-                if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.5f)
+                else
                 {
-                    Destroy(Arrows[i]);
-                    Arrows.RemoveAt(i);
+                    if (Vector3.Distance(Arrows[i].transform.position, destination) < 0.5f ||
+                        Arrows[i].transform.position.x >= (em.mapWidth / 2) || Arrows[i].transform.position.x < -(em.mapWidth / 2)
+                        || Arrows[i].transform.position.y >= (em.mapHeight / 2) || Arrows[i].transform.position.y < -(em.mapHeight / 2))
+                    {
+                        Destroy(Arrows[i]);
+                        Arrows.RemoveAt(i);
+                    }
                 }
             }
         }

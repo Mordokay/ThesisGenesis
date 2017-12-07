@@ -407,6 +407,9 @@ public class UIManager : MonoBehaviour {
         canvasBackroundBox.SetActive(false);
         gm.GetComponent<EditorModeController>().isEditorMode = false;
         gm.GetComponent<Zoom>().zoomToPlayMode = true;
+
+        Time.timeScale = this.GetComponent<TimeSpeedController>().currentTime;
+
     }
 
     public void Pause()
