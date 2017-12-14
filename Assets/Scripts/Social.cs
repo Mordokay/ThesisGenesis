@@ -132,6 +132,9 @@ public class Social : MonoBehaviour {
                 {
                     this.GetComponent<NPCData>().messages.Add(choosedMessage);
                     isReceivingMessage = false;
+
+                    //Checks if the message recieved is the message being tracked
+                    this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                 }
             }
             //Debug.Log("I am talking with " + talkPartner.name);

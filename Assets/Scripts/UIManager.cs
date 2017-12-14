@@ -37,6 +37,10 @@ public class UIManager : MonoBehaviour {
     GameObject gm;
 
     public bool isFeedbackEnabled;
+    public bool isMessageLayerEnabled;
+    public InputField messageTrackingID;
+
+    public GameObject MessageFeedbackLayer;
 
     public GameObject npcUpdaterPanel;
     public GameObject npcUpdaterName;
@@ -91,6 +95,38 @@ public class UIManager : MonoBehaviour {
                 npc.gameObject.GetComponent<NPCFeedbackUpdater>().refreshFeedbackCanvas();
             }
             isFeedbackEnabled = true;
+        }
+    }
+
+    public void ToggleMessageLayer()
+    {
+        if (isMessageLayerEnabled)
+        {
+            MessageFeedbackLayer.SetActive(false);
+            isMessageLayerEnabled = false;
+
+            foreach (Transform npc in npcHolder.transform)
+            {
+                npc.gameObject.GetComponent<NPCFeedbackUpdater>().feedbackMessageCanvas.SetActive(false); ;
+            }
+        }
+        else
+        {
+            MessageFeedbackLayer.SetActive(true);
+            isMessageLayerEnabled = true;
+
+            foreach (Transform npc in npcHolder.transform)
+            {
+                npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
+            }
+        }
+    }
+
+    public void refreshMessageTrackID()
+    {
+        foreach (Transform npc in npcHolder.transform)
+        {
+            npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
         }
     }
 

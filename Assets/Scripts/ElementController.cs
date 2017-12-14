@@ -16,9 +16,11 @@ public class ElementController : MonoBehaviour {
 
     public GameObject slider;
     float maxHealth;
+    UIManager uiManager;
 
     private void Start()
     {
+        uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         maxHealth = health;
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
@@ -43,6 +45,9 @@ public class ElementController : MonoBehaviour {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
                     npc.gameObject.GetComponent<NPCData>().RecieveMessage(new Message(eventId, messageTime, description, tagString));
+
+                    uiManager.messageTrackingID.text = eventId.ToString();
+                    npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                 }
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
