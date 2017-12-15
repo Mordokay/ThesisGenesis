@@ -125,7 +125,6 @@ public class MouseInputController : MonoBehaviour {
                         }
                     }
                 }
-
                 else if (gm.GetComponent<EditorModeController>().removeElement)
                 {
                     RaycastHit hit;
@@ -165,6 +164,17 @@ public class MouseInputController : MonoBehaviour {
                     {
                         //Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
                         uiManager.RefreshNPCUpdater(hit.collider.gameObject.GetComponentInParent<NPCData>());
+                    }
+                }
+                else if (gm.GetComponent<EditorModeController>().isSpawningEvent)
+                {
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+
+                    if (hit.collider != null && hit.collider.tag.Equals("Terrain"))
+                    {
+                        Vector3 pos = hit.collider.gameObject.transform.position;
+                        gm.GetComponent<EditorModeController>().AddEvent(pos);
                     }
                 }
             }

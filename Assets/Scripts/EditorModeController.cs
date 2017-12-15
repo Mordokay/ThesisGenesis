@@ -28,8 +28,16 @@ public class EditorModeController : MonoBehaviour {
 
     public GameObject npcNameInput;
     public GameObject npcInterestHolder;
+
+    public GameObject eventTags;
+    public GameObject eventDescription;
+    public GameObject eventDistance;
+    public GameObject eventDuration;
+
     public GameObject npcFriendsHolder;
     public GameObject listPatrolPointNPCIndex;
+
+    public GameObject eventSpawner;
 
     public Image bodyColorImage;
     public Image headColorImage;
@@ -94,6 +102,7 @@ public class EditorModeController : MonoBehaviour {
     public bool isPlacingPlayer = false;
     public bool isPlacingNPC = false;
     public bool isEditorMode = true;
+    public bool isSpawningEvent = false;
     public bool isInspectingElement = false;
     public bool removeTerrain = false;   
     public bool removePatrolPoint = false;
@@ -357,6 +366,64 @@ public class EditorModeController : MonoBehaviour {
                 myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
             }
         }
+    }
+
+    public void AddEvent(Vector3 pos)
+    {
+        List<GameObject> TagsForEvent = new List<GameObject>();
+        foreach (Transform npc in eventTags.transform)
+        {
+            TagsForEvent.Add(npc.gameObject);
+        }
+
+        if (eventDescription.GetComponent<InputField>().text.Equals("") || 
+            eventDuration.GetComponent<InputField>().text.Equals("") || 
+            eventDistance.GetComponent<InputField>().text.Equals("") || 
+            TagsForEvent.Count == 0)
+        {
+            return;
+        }
+
+        string description = eventDescription.GetComponent<InputField>().text;
+        float transmissionTime = float.Parse(eventDuration.GetComponent<InputField>().text);
+        float transmissionDistance = float.Parse(eventDistance.GetComponent<InputField>().text);
+
+
+        List<Message.Tag> myTags = new List<Message.Tag>();
+        for (int i = 0; i < TagsForEvent.Count; i = i + 4)
+        {
+            if (!TagsForEvent[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+            {
+                myTags.Add(new Message.Tag(TagsForEvent[i].GetComponentInChildren<Text>().text, 
+                    System.Int32.Parse(TagsForEvent[i + 2].GetComponent<InputField>().text)));
+            }
+        }
+        if (myTags.Count > 0)
+        {
+            GameObject mySpawnEvent = Instantiate(eventSpawner);
+            mySpawnEvent.transform.position = pos;
+            eventSpawner.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
+        }
+        /*
+        string tagsString = "";
+        if (Interests.Count > 0)
+        {
+            for (int i = 0; i < Interests.Count; i = i + 4)
+            {
+                if (!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+                {
+                    interestString += Interests[i].GetComponentInChildren<Text>().text +
+                    " " + Interests[i + 2].GetComponent<InputField>().text + ",";
+                }
+            }
+            if (interestString != null)
+            {
+                interestString = interestString.Substring(0, interestString.Length - 1);
+            }
+        }
+        Debug.Log(interestString);
+        */
+        Debug.Log("Add event at position: " + pos);
     }
 
     public void InsertElement(Vector3 pos)

@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
     public GameObject drawTerrainPanel;
     public GameObject addElementPanel;
     public GameObject addNPC_Panel;
+    public GameObject SpawnEvent_Panel;
     public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
@@ -18,6 +19,7 @@ public class UIManager : MonoBehaviour {
     public GameObject listConstruct;
 
     public GameObject interestNPCList;
+    public GameObject tagEventSpawnerList;
     public GameObject friendsNPCList;
     public GameObject interestChangeTagButton;
     public GameObject interestChangeTagList;
@@ -252,13 +254,6 @@ public class UIManager : MonoBehaviour {
     public void removeMessageWithId(int id)
     {
         messageIdsToRemoveNPCUpdater.Add(id);
-        /*
-        Message m = NPCBeingUpdated.GetComponent<NPCData>().messages.Find(x => x.id == id);
-        if(m != null)
-        {
-            NPCBeingUpdated.GetComponent<NPCData>().messages.Remove(m);
-        }
-        */
     }
 
     public void addInterestToNPC()
@@ -274,6 +269,25 @@ public class UIManager : MonoBehaviour {
 
         Instantiate(interestWeightInputField, interestNPCList.transform);
         Instantiate(separator, interestNPCList.transform);
+    }
+
+    public void addTagToEvent()
+    {
+        GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, tagEventSpawnerList.transform);
+        GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, tagEventSpawnerList.transform);
+        myInterestChangeTagButton.GetComponent<TagListSelectorController>().listOfTags = myInterestChangeTagList;
+        myInterestChangeTagButton.GetComponentInChildren<Text>().text = "Tag name";
+
+        foreach (SingleTagController stc in myInterestChangeTagList.GetComponentsInChildren<SingleTagController>())
+        {
+            stc.tagButton = myInterestChangeTagButton;
+        }
+
+        GameObject tagWeight = Instantiate(interestWeightInputField, tagEventSpawnerList.transform);
+        tagWeight.GetComponent<InputField>().text = "0";
+        tagWeight.GetComponent<InputField>().contentType = InputField.ContentType.IntegerNumber;
+
+        Instantiate(separator, tagEventSpawnerList.transform);
     }
 
     public void addFriendToNPC()
@@ -351,6 +365,22 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
+        //Removes last tag from Event Spawner
+        else if (type == 4)
+        {
+            List<GameObject> TagsEventSpawner = new List<GameObject>();
+            foreach (Transform npc in tagEventSpawnerList.transform)
+            {
+                TagsEventSpawner.Add(npc.gameObject);
+            }
+            if (TagsEventSpawner.Count > 0)
+            {
+                for (int i = TagsEventSpawner.Count - 1; i >= TagsEventSpawner.Count - 4; i--)
+                {
+                    Destroy(TagsEventSpawner[i]);
+                }
+            }
+        }
     }
 
     public void ShowTerrainPanel()
@@ -372,6 +402,13 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().removePatrolPoint = false;
         gm.GetComponent<EditorModeController>().removeElementButtonImage.color = Color.white;
         gm.GetComponent<EditorModeController>().removePatrolButtonImage.color = Color.white;
+    }
+
+    public void ShowSpawnEventPanel()
+    {
+        gm.GetComponent<EditorModeController>().isSpawningEvent = true;
+        mainPanel.SetActive(false);
+        SpawnEvent_Panel.SetActive(true);
     }
 
     public void ShowAddNPCPanel()
@@ -463,12 +500,14 @@ public class UIManager : MonoBehaviour {
         drawTerrainPanel.SetActive(false);
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);
+        SpawnEvent_Panel.SetActive(false);
         inspectorPanel.SetActive(false);
         npcUpdaterPanel.SetActive(false);
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;
         gm.GetComponent<EditorModeController>().isPlacingPlayer = false;
+        gm.GetComponent<EditorModeController>().isSpawningEvent = false;
         gm.GetComponent<EditorModeController>().removeElement = false;
         gm.GetComponent<EditorModeController>().removeTerrain = false;
 
