@@ -12,39 +12,39 @@ public class EventSpawnManager : MonoBehaviour {
     public float messageSendDistance;
     public float messageTime;
     public string description;
+    public bool initialized;
+
+    public int eventId;
 
     private void Start()
     {
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
+        eventId = pm.getMessageId();
     }
 
     public void InitializeSpawnEvent(List<Message.Tag> myTags, float distance, float time, string desc)
     {
-        tags = myTags;
-        messageSendDistance = distance;
-        messageTime = time;
-        description = desc;
-        Debug.Log("Initializing event: " + desc + " with time: " + time + " and distance: " + distance);
+        this.tags = myTags;
+        this.messageSendDistance = distance;
+        this.messageTime = time;
+        this.description = desc;
     }
 
     private void Update()
     {
-        StartEvent();
-    }
+        bool foundNPCClose = false;
 
-    public void StartEvent()
-    {
         if (!description.Equals(""))
         {
-            int eventId = pm.getMessageId();
             foreach (Transform npc in emc.npcHolder.transform)
             {
                 //Debug.Log(npc.name + " messageSendDistance: " + messageSendDistance + " Distance: " + Vector3.Distance(npc.GetChild(1).position, this.transform.position) + " description: " + description);
                 //check if NPC is at a close distance;
                 if (Vector3.Distance(npc.GetChild(1).position, this.transform.position) < messageSendDistance)
                 {
+                    foundNPCClose = true;
                     string tagString = "";
                     foreach (Message.Tag t in tags)
                     {
@@ -62,6 +62,9 @@ public class EventSpawnManager : MonoBehaviour {
                 }
                 //npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
+        }
+        if (foundNPCClose)
+        {
             Destroy(this.gameObject);
         }
     }

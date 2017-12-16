@@ -15,11 +15,14 @@ public class UIManager : MonoBehaviour {
     public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
+    public GameObject spawnEventPlayModePanel;
+
     public GameObject listNatural;
     public GameObject listConstruct;
 
     public GameObject interestNPCList;
     public GameObject tagEventSpawnerList;
+    public GameObject tagEventSpawnerListPlayMode;
     public GameObject friendsNPCList;
     public GameObject interestChangeTagButton;
     public GameObject interestChangeTagList;
@@ -271,10 +274,17 @@ public class UIManager : MonoBehaviour {
         Instantiate(separator, interestNPCList.transform);
     }
 
-    public void addTagToEvent()
+    public void addTagToEvent(int mode)
     {
-        GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, tagEventSpawnerList.transform);
-        GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, tagEventSpawnerList.transform);
+        Transform myTransform = tagEventSpawnerList.transform;
+
+        if(mode == 1)
+        {
+            myTransform = tagEventSpawnerListPlayMode.transform;
+        }
+
+        GameObject myInterestChangeTagButton = Instantiate(interestChangeTagButton, myTransform);
+        GameObject myInterestChangeTagList = Instantiate(interestChangeTagList, myTransform);
         myInterestChangeTagButton.GetComponent<TagListSelectorController>().listOfTags = myInterestChangeTagList;
         myInterestChangeTagButton.GetComponentInChildren<Text>().text = "Tag name";
 
@@ -283,11 +293,11 @@ public class UIManager : MonoBehaviour {
             stc.tagButton = myInterestChangeTagButton;
         }
 
-        GameObject tagWeight = Instantiate(interestWeightInputField, tagEventSpawnerList.transform);
+        GameObject tagWeight = Instantiate(interestWeightInputField, myTransform);
         tagWeight.GetComponent<InputField>().text = "0";
         tagWeight.GetComponent<InputField>().contentType = InputField.ContentType.IntegerNumber;
 
-        Instantiate(separator, tagEventSpawnerList.transform);
+        Instantiate(separator, myTransform);
     }
 
     public void addFriendToNPC()
@@ -295,6 +305,25 @@ public class UIManager : MonoBehaviour {
         Instantiate(friendNameInputField, friendsNPCList.transform);
         Instantiate(friendLevelInputField, friendsNPCList.transform);
         Instantiate(separator, friendsNPCList.transform);
+    }
+
+    public void ToggleSpawnEventPlayModePanel()
+    {
+        if (!gm.GetComponent<EditorModeController>().isEditorMode)
+        {
+            if (spawnEventPlayModePanel.activeSelf)
+            {
+                spawnEventPlayModePanel.SetActive(false);
+                canvasBackroundBox.SetActive(false);
+                gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
+            }
+            else
+            {
+                spawnEventPlayModePanel.SetActive(true);
+                canvasBackroundBox.SetActive(true);
+                gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(true);
+            }
+        }
     }
 
     public void addNumberToPatrolNPC()
@@ -381,6 +410,21 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
+        else if (type == 5)
+        {
+            List<GameObject> TagsEventSpawner = new List<GameObject>();
+            foreach (Transform npc in tagEventSpawnerListPlayMode.transform)
+            {
+                TagsEventSpawner.Add(npc.gameObject);
+            }
+            if (TagsEventSpawner.Count > 0)
+            {
+                for (int i = TagsEventSpawner.Count - 1; i >= TagsEventSpawner.Count - 4; i--)
+                {
+                    Destroy(TagsEventSpawner[i]);
+                }
+            }
+        }
     }
 
     public void ShowTerrainPanel()
@@ -409,6 +453,7 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isSpawningEvent = true;
         mainPanel.SetActive(false);
         SpawnEvent_Panel.SetActive(true);
+        gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(true);
     }
 
     public void ShowAddNPCPanel()
@@ -481,6 +526,8 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().isEditorMode = false;
         gm.GetComponent<Zoom>().zoomToPlayMode = true;
 
+        gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
+
         Time.timeScale = this.GetComponent<TimeSpeedController>().currentTime;
 
     }
@@ -491,6 +538,9 @@ public class UIManager : MonoBehaviour {
         canvasBackroundBox.SetActive(true);
         Time.timeScale = 0.0f;
         gm.GetComponent<EditorModeController>().isEditorMode = true;
+        spawnEventPlayModePanel.SetActive(false);
+
+        gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
     }
 
     public void ReturnToMainPanel()
@@ -500,7 +550,10 @@ public class UIManager : MonoBehaviour {
         drawTerrainPanel.SetActive(false);
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);
+
         SpawnEvent_Panel.SetActive(false);
+        gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
+
         inspectorPanel.SetActive(false);
         npcUpdaterPanel.SetActive(false);
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;

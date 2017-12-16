@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MouseInputController : MonoBehaviour {
 
@@ -18,6 +19,7 @@ public class MouseInputController : MonoBehaviour {
     string lastUndergroundTileClicked;
 
     GameObject player;
+    public GameObject eventSpawnerArea;
 
     UIManager uiManager;
 
@@ -32,6 +34,14 @@ public class MouseInputController : MonoBehaviour {
 
     void Update()
     {
+        //Show Circle around the cursor
+        if (eventSpawnerArea.activeSelf)
+        {
+            Vector3 newMousePos = new Vector3(Mathf.Clamp(Input.mousePosition.x, 0.0f, 0.76f * Screen.width), Input.mousePosition.y, 0.0f);
+            eventSpawnerArea.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(newMousePos).x, 0.0f,
+                Camera.main.ScreenToWorldPoint(newMousePos).z) ;
+        }
+        
         if (Input.GetMouseButton(0))
         {
             if (!lastMousePos.Equals(Input.mousePosition) && gm.GetComponent<EditorModeController>().isDrawingTerrain)
@@ -92,8 +102,25 @@ public class MouseInputController : MonoBehaviour {
             //player attacks
             if (!gm.GetComponent<EditorModeController>().isEditorMode)
             {
-                player.GetComponent<PlayerMovement>().isAtacking = true;
-                player.GetComponent<Animator>().SetBool("Attack", true);
+                if (eventSpawnerArea.activeSelf)
+                {
+                    RaycastHit hit;
+                    Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, TerrainLayerMask);
+                    //Debug.Log(hit.collider.name);
+                    if (hit.collider != null && hit.collider.tag.Equals("Terrain"))
+                    {
+                        //Events are spawned on the exact position
+
+                        //Vector3 pos = hit.collider.gameObject.transform.position;
+                        Vector3 pos = hit.point;
+                        gm.GetComponent<EditorModeController>().AddEvent(pos, 1);
+                    }
+                }
+                else
+                {
+                    player.GetComponent<PlayerMovement>().isAtacking = true;
+                    player.GetComponent<Animator>().SetBool("Attack", true);
+                }
             }
             else
             {
@@ -173,8 +200,11 @@ public class MouseInputController : MonoBehaviour {
 
                     if (hit.collider != null && hit.collider.tag.Equals("Terrain"))
                     {
-                        Vector3 pos = hit.collider.gameObject.transform.position;
-                        gm.GetComponent<EditorModeController>().AddEvent(pos);
+                        //Events are spawned on the exact position
+
+                        //Vector3 pos = hit.collider.gameObject.transform.position;
+                        Vector3 pos = hit.point;
+                        gm.GetComponent<EditorModeController>().AddEvent(pos, 0);
                     }
                 }
             }

@@ -9,10 +9,12 @@ public class PlayerMovement : MonoBehaviour
 
     public float moveSpeed;
     EditorModeController em;
+    MouseInputController mic;
 
     void Start()
     {
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
+        mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
     }
 
 
@@ -20,6 +22,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!em.isEditorMode)
         {
+            if(mic.eventSpawnerArea.activeSelf && Input.mousePosition.x > 0.76 * Screen.width)
+            {
+                this.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                return;
+            }
+
             Vector3 lookPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - new Vector3(transform.position.x, 10.0f, transform.position.z);
             float angle = Mathf.Atan2(lookPos.x, lookPos.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.up);

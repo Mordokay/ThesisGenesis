@@ -13,22 +13,18 @@ public class Zoom : MonoBehaviour {
     public bool zoomToPlayMode;
 
     EditorModeController em;
+    MouseInputController mic;
 
-    // Use this for initialization
     void Start()
     {
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
+        mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
         zoomToPlayMode = false;
         myCamera = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // leftUIBox.transform.position = myCamera.ScreenToWorldPoint(new Vector3(0.0449f * Screen.width, 0.97f * Screen.height, 5.0f));
-        // leftUIBox.transform.position = new Vector3(-9.0f + (Camera.main.orthographicSize - 5) * 1.8f, 5.3f + (Camera.main.orthographicSize - 5) * 0.8f, 5.0f);
-        //Debug.Log(myCamera.WorldToScreenPoint(leftUIBox.transform.position));
-        //Debug.Log(myCamera.WorldToScreenPoint(rightUIBox.transform.position));
         if (zoomToPlayMode)
         {
             if (Camera.main.orthographicSize - 3.0f < 0.05f)
@@ -46,7 +42,7 @@ public class Zoom : MonoBehaviour {
             }
         }
 
-        if (em.isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
+        if (em.isEditorMode && !em.isSpawningEvent && Input.mousePosition.x < 0.76 * Screen.width)
         {
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
@@ -57,6 +53,28 @@ public class Zoom : MonoBehaviour {
                 myCamera.orthographicSize -= zoomSpeed;
             }
             myCamera.orthographicSize = Mathf.Clamp(myCamera.orthographicSize, orthographicSizeMin, orthographicSizeMax);
+        }
+        else if(em.isEditorMode && em.isSpawningEvent)
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                em.ChangeSizeSpawnEventArea(-zoomSpeed * 0.2f, 0);
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                em.ChangeSizeSpawnEventArea(zoomSpeed * 0.2f, 0);
+            }
+        }
+        else if(!em.isEditorMode && mic.eventSpawnerArea.activeSelf)
+        {
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            {
+                em.ChangeSizeSpawnEventArea(-zoomSpeed * 0.2f, 1);
+            }
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            {
+                em.ChangeSizeSpawnEventArea(zoomSpeed * 0.2f, 1);
+            }
         }
     }
 }

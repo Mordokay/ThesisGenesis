@@ -34,10 +34,15 @@ public class EditorModeController : MonoBehaviour {
     public GameObject eventDistance;
     public GameObject eventDuration;
 
+    public GameObject eventPlayTags;
+    public GameObject eventPlayDescription;
+    public GameObject eventPlayDistance;
+    public GameObject eventPlayDuration;
+
     public GameObject npcFriendsHolder;
     public GameObject listPatrolPointNPCIndex;
 
-    public GameObject eventSpawner;
+    public GameObject eventSpawnerArea;
 
     public Image bodyColorImage;
     public Image headColorImage;
@@ -368,61 +373,127 @@ public class EditorModeController : MonoBehaviour {
         }
     }
 
-    public void AddEvent(Vector3 pos)
+    public void UpdateSizeSpawnEventArea(int type)
+    {
+        if (type == 0)
+        {
+            if (eventDistance.GetComponent<InputField>().text.Equals(""))
+            {
+                return;
+            }
+
+            eventSpawnerArea.transform.localScale = Vector3.one * float.Parse(eventDistance.GetComponent<InputField>().text);
+        }
+        else if (type == 1)
+        {
+            if (eventPlayDistance.GetComponent<InputField>().text.Equals(""))
+            {
+                return;
+            }
+            eventSpawnerArea.transform.localScale = Vector3.one * float.Parse(eventPlayDistance.GetComponent<InputField>().text);
+        }
+    }
+
+    public void ChangeSizeSpawnEventArea(float change, int type)
+    {
+        if (type == 0)
+        {
+            if (eventDistance.GetComponent<InputField>().text.Equals(""))
+            {
+                eventDistance.GetComponent<InputField>().text = "0.1";
+            }
+
+            eventDistance.GetComponent<InputField>().text =
+            (float.Parse(eventDistance.GetComponent<InputField>().text) + change).ToString();
+
+            if (float.Parse(eventDistance.GetComponent<InputField>().text) < 0.1f)
+            {
+                eventDistance.GetComponent<InputField>().text = "0.1";
+            }
+
+            eventSpawnerArea.transform.localScale = Vector3.one * float.Parse(eventDistance.GetComponent<InputField>().text);
+        }
+        else if(type == 1)
+        {
+            if (eventPlayDistance.GetComponent<InputField>().text.Equals(""))
+            {
+                eventPlayDistance.GetComponent<InputField>().text = "0.1";
+            }
+
+            eventPlayDistance.GetComponent<InputField>().text =
+            (float.Parse(eventPlayDistance.GetComponent<InputField>().text) + change).ToString();
+
+            if(float.Parse(eventPlayDistance.GetComponent<InputField>().text) < 0.1f)
+            {
+                eventPlayDistance.GetComponent<InputField>().text = "0.1";
+            }
+
+            eventSpawnerArea.transform.localScale = Vector3.one * float.Parse(eventPlayDistance.GetComponent<InputField>().text);
+        }
+    }
+
+    public void AddEvent(Vector3 pos, int type)
     {
         List<GameObject> TagsForEvent = new List<GameObject>();
-        foreach (Transform npc in eventTags.transform)
+        string description = "";
+        float transmissionTime = 0.0f;
+        float transmissionDistance = 0.0f;
+
+        if (type == 0)
         {
-            TagsForEvent.Add(npc.gameObject);
-        }
+            foreach (Transform npc in eventTags.transform)
+            {
+                TagsForEvent.Add(npc.gameObject);
+            }
 
-        if (eventDescription.GetComponent<InputField>().text.Equals("") || 
-            eventDuration.GetComponent<InputField>().text.Equals("") || 
-            eventDistance.GetComponent<InputField>().text.Equals("") || 
-            TagsForEvent.Count == 0)
+            if (eventDescription.GetComponent<InputField>().text.Equals("") ||
+                eventDuration.GetComponent<InputField>().text.Equals("") ||
+                eventDistance.GetComponent<InputField>().text.Equals("") ||
+                TagsForEvent.Count == 0)
+            {
+                return;
+            }
+
+            description = eventDescription.GetComponent<InputField>().text;
+            transmissionTime = float.Parse(eventDuration.GetComponent<InputField>().text);
+            transmissionDistance = float.Parse(eventDistance.GetComponent<InputField>().text);
+        }
+        else if (type == 1)
         {
-            return;
+            foreach (Transform npc in eventPlayTags.transform)
+            {
+                TagsForEvent.Add(npc.gameObject);
+            }
+
+            if (eventPlayDescription.GetComponent<InputField>().text.Equals("") ||
+                eventPlayDuration.GetComponent<InputField>().text.Equals("") ||
+                eventPlayDistance.GetComponent<InputField>().text.Equals("") ||
+                TagsForEvent.Count == 0)
+            {
+                return;
+            }
+
+            description = eventPlayDescription.GetComponent<InputField>().text;
+            transmissionTime = float.Parse(eventPlayDuration.GetComponent<InputField>().text);
+            transmissionDistance = float.Parse(eventPlayDistance.GetComponent<InputField>().text);
         }
-
-        string description = eventDescription.GetComponent<InputField>().text;
-        float transmissionTime = float.Parse(eventDuration.GetComponent<InputField>().text);
-        float transmissionDistance = float.Parse(eventDistance.GetComponent<InputField>().text);
-
 
         List<Message.Tag> myTags = new List<Message.Tag>();
         for (int i = 0; i < TagsForEvent.Count; i = i + 4)
         {
-            if (!TagsForEvent[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
+            if (!TagsForEvent[i].GetComponentInChildren<Text>().text.Equals("Tag name"))
             {
-                myTags.Add(new Message.Tag(TagsForEvent[i].GetComponentInChildren<Text>().text, 
+                myTags.Add(new Message.Tag(TagsForEvent[i].GetComponentInChildren<Text>().text,
                     System.Int32.Parse(TagsForEvent[i + 2].GetComponent<InputField>().text)));
             }
         }
         if (myTags.Count > 0)
         {
-            GameObject mySpawnEvent = Instantiate(eventSpawner);
+            GameObject mySpawnEvent = Instantiate(Resources.Load<GameObject>("EventSpawner"));
             mySpawnEvent.transform.position = pos;
-            eventSpawner.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
+            mySpawnEvent.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
+            mySpawnEvent.transform.GetChild(0).transform.localScale = Vector3.one * transmissionDistance;
         }
-        /*
-        string tagsString = "";
-        if (Interests.Count > 0)
-        {
-            for (int i = 0; i < Interests.Count; i = i + 4)
-            {
-                if (!Interests[i].GetComponentInChildren<Text>().text.Equals("Interest Name"))
-                {
-                    interestString += Interests[i].GetComponentInChildren<Text>().text +
-                    " " + Interests[i + 2].GetComponent<InputField>().text + ",";
-                }
-            }
-            if (interestString != null)
-            {
-                interestString = interestString.Substring(0, interestString.Length - 1);
-            }
-        }
-        Debug.Log(interestString);
-        */
         Debug.Log("Add event at position: " + pos);
     }
 

@@ -19,10 +19,10 @@ public class KeyboardController : MonoBehaviour {
 
     void Update()
     {
-
+        /*
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
+            if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.76 * Screen.width)
             {
                 uiManager.Play();
             }
@@ -31,8 +31,8 @@ public class KeyboardController : MonoBehaviour {
                 uiManager.Pause();
             }
         }
-
-        if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.78 * Screen.width)
+        */
+        if (gm.GetComponent<EditorModeController>().isEditorMode && Input.mousePosition.x < 0.76 * Screen.width)
         {
             if (Input.GetKey(KeyCode.W))
             {
