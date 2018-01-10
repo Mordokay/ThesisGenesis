@@ -34,7 +34,7 @@ public class EventSpawnManager : MonoBehaviour {
 
     private void Update()
     {
-        bool foundNPCClose = false;
+        bool found_NPC_or_Patrol_Point_Close = false;
 
         if (!description.Equals(""))
         {
@@ -44,7 +44,7 @@ public class EventSpawnManager : MonoBehaviour {
                 //check if NPC is at a close distance;
                 if (Vector3.Distance(npc.GetChild(1).position, this.transform.position) < messageSendDistance)
                 {
-                    foundNPCClose = true;
+                    found_NPC_or_Patrol_Point_Close = true;
                     string tagString = "";
                     foreach (Message.Tag t in tags)
                     {
@@ -55,15 +55,33 @@ public class EventSpawnManager : MonoBehaviour {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
                     Debug.Log("tagString: " + tagString);
-                    npc.gameObject.GetComponent<NPCData>().RecieveMessage(new Message(eventId, messageTime, description, tagString));
+                    npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
 
                     uiManager.messageTrackingID.text = eventId.ToString();
                     npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                 }
                 //npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
+            foreach (Transform patrolPoint in emc.patrolPointsHolder.transform)
+            {
+                //check if Patrol Points are at a close distance;
+                if (Vector3.Distance(patrolPoint.position, this.transform.position) < messageSendDistance)
+                {
+                    found_NPC_or_Patrol_Point_Close = true;
+                    string tagString = "";
+                    foreach (Message.Tag t in tags)
+                    {
+                        tagString += t.name + " " + t.weight + ",";
+                    }
+                    if (tags.Count > 0)
+                    {
+                        tagString = tagString.Substring(0, tagString.Length - 1);
+                    }
+                    patrolPoint.gameObject.GetComponent<PatrolPointData>().ReceiveEvent(new Message(eventId, messageTime, description, tagString));
+                }
+            }
         }
-        if (foundNPCClose)
+        if (found_NPC_or_Patrol_Point_Close)
         {
             Destroy(this.gameObject);
         }

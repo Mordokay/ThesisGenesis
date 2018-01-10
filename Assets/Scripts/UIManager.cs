@@ -51,6 +51,12 @@ public class UIManager : MonoBehaviour {
 
     public GameObject MessageFeedbackLayer;
 
+    public GameObject patrolPointInspectorPanel;
+    public GameObject PatrolPointBeingUpdated;
+    public GameObject patrolPointMessagesHolder;
+    public GameObject patrolPointIdName;
+    public List<int> messageIdPatrolPointToRemove;
+
     public GameObject npcUpdaterPanel;
     public GameObject npcUpdaterName;
     public GameObject npcUpdaterAssertiveness;
@@ -66,6 +72,7 @@ public class UIManager : MonoBehaviour {
     void Start()
     {
         messageIdsToRemoveNPCUpdater = new List<int>();
+        messageIdPatrolPointToRemove = new List<int>();
         isFeedbackEnabled = false;
         isWatchModeEnabled = false;
         gm = GameObject.FindGameObjectWithTag("GameManager");
@@ -209,10 +216,47 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void RefreshPatrolPointInspectorPanel(PatrolPointData data)
+    {
+        messageIdPatrolPointToRemove = new List<int>();
+        patrolPointInspectorPanel.SetActive(true);
+        npcUpdaterPanel.SetActive(false);
+        PatrolPointBeingUpdated = data.gameObject;
+
+        patrolPointIdName.GetComponent<Text>().text = "Patrol Point #" + data.id;
+
+        foreach (Transform child in patrolPointMessagesHolder.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        foreach (Message message in data.messages)
+        {
+            GameObject myMessageElement = Instantiate(messageElement, patrolPointMessagesHolder.transform);
+            string messageText = "";
+            messageText += "ID: " + message.id + "<TAGs> ";
+            foreach (Message.Tag t in message.tags)
+            {
+                messageText += "(" + t.name + "," + t.weight + "),";
+            }
+            if (message.tags.Count > 0)
+            {
+                messageText = messageText.Substring(0, messageText.Length - 1);
+            }
+            myMessageElement.GetComponentInChildren<Text>().text = messageText;
+
+            myMessageElement.GetComponent<SingleMessageController>().messageType = 1;
+            myMessageElement.GetComponent<SingleMessageController>().messageId = message.id;
+        }
+    }
+
+
     public void RefreshNPCUpdater(NPCData data)
     {
         messageIdsToRemoveNPCUpdater = new List<int>();
+        messageIdPatrolPointToRemove = new List<int>();
         npcUpdaterPanel.SetActive(true);
+        patrolPointInspectorPanel.SetActive(false);
         NPCBeingUpdated = data.gameObject;
 
         npcUpdaterName.GetComponent<InputField>().text = data.npcName;
@@ -261,7 +305,20 @@ public class UIManager : MonoBehaviour {
             }
             myMessageElement.GetComponentInChildren<Text>().text = messageText;
 
+            myMessageElement.GetComponent<SingleMessageController>().messageType = 0;
             myMessageElement.GetComponent<SingleMessageController>().messageId = message.id;
+        }
+    }
+
+    public void UpdatePatrolPoint()
+    {
+        foreach (int id in messageIdPatrolPointToRemove)
+        {
+            Message m = PatrolPointBeingUpdated.GetComponent<PatrolPointData>().messages.Find(x => x.id == id);
+            if (m != null)
+            {
+                PatrolPointBeingUpdated.GetComponent<PatrolPointData>().messages.Remove(m);
+            }
         }
     }
 
@@ -331,6 +388,11 @@ public class UIManager : MonoBehaviour {
     public void removeMessageWithId(int id)
     {
         messageIdsToRemoveNPCUpdater.Add(id);
+    }
+
+    public void removePatrolPointMessageWithId(int id)
+    {
+        messageIdPatrolPointToRemove.Add(id);
     }
 
     public void addInterestToNPC()
@@ -614,6 +676,8 @@ public class UIManager : MonoBehaviour {
 
     public void Pause()
     {
+        ReturnToMainPanel();
+
         //If its in Watch mode ... removes it
         if (isWatchModeEnabled)
         {
@@ -642,6 +706,7 @@ public class UIManager : MonoBehaviour {
 
         inspectorPanel.SetActive(false);
         npcUpdaterPanel.SetActive(false);
+        patrolPointInspectorPanel.SetActive(false);
         gm.GetComponent<EditorModeController>().isDrawingTerrain = false;
         gm.GetComponent<EditorModeController>().isPlacingElements = false;
         gm.GetComponent<EditorModeController>().isPlacingNPC = false;

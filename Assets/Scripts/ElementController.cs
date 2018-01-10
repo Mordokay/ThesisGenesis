@@ -44,13 +44,32 @@ public class ElementController : MonoBehaviour {
                     {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
-                    npc.gameObject.GetComponent<NPCData>().RecieveMessage(new Message(eventId, messageTime, description, tagString));
+                    npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
 
                     uiManager.messageTrackingID.text = eventId.ToString();
                     npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                 }
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
+
+            foreach (Transform patrolPoint in emc.patrolPointsHolder.transform)
+            {
+                //check if Patrol Points are at a close distance;
+                if (Vector3.Distance(patrolPoint.position, this.transform.position) < messageSendDistance)
+                {
+                    string tagString = "";
+                    foreach (Message.Tag t in tags)
+                    {
+                        tagString += t.name + " " + t.weight + ",";
+                    }
+                    if (tags.Count > 0)
+                    {
+                        tagString = tagString.Substring(0, tagString.Length - 1);
+                    }
+                    patrolPoint.gameObject.GetComponent<PatrolPointData>().ReceiveEvent(new Message(eventId, messageTime, description, tagString));
+                }
+            }
+
             emc.RemoveElement(this.gameObject);
         }
 	}

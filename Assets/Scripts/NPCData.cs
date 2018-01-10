@@ -106,7 +106,7 @@ public class NPCData : MonoBehaviour {
         return false;
     }
 
-    public void RecieveMessage(Message msg)
+    public void ReceiveMessage(Message msg)
     {
         if (isMessageOfInterest(msg))
         {

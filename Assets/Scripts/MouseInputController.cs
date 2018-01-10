@@ -192,6 +192,18 @@ public class MouseInputController : MonoBehaviour {
                         //Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
                         uiManager.RefreshNPCUpdater(hit.collider.gameObject.GetComponentInParent<NPCData>());
                     }
+                    else
+                    {
+                        RaycastHit hit2;
+                        Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit2, Mathf.Infinity, PatrolLayerMask);
+
+                        if (hit2.collider != null && hit2.collider.tag == "PatrolPoint")
+                        {
+                            //Debug.Log("I am gonna inspect NPC called: " + hit.collider.gameObject.transform.parent.gameObject.name);
+                            uiManager.RefreshPatrolPointInspectorPanel(hit2.collider.gameObject.GetComponentInParent<PatrolPointData>());
+                            //Debug.Log("I just hit a patrol point!!!");
+                        }
+                    }
                 }
                 else if (gm.GetComponent<EditorModeController>().isSpawningEvent)
                 {

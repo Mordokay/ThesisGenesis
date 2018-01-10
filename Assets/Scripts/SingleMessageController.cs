@@ -5,6 +5,7 @@ using UnityEngine;
 public class SingleMessageController : MonoBehaviour {
 
     public int messageId;
+    public int messageType;
     UIManager uiManager;
 
     public void Start()
@@ -14,7 +15,14 @@ public class SingleMessageController : MonoBehaviour {
 
     public void RemoveThisMessage()
     {
-        uiManager.removeMessageWithId(messageId);
+        if(messageType == 0)
+        {
+            uiManager.removeMessageWithId(messageId);
+        }
+        else
+        {
+            uiManager.removePatrolPointMessageWithId(messageId);
+        }
         Destroy(this.gameObject);
     }
 }

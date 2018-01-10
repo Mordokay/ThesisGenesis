@@ -94,7 +94,6 @@ public class EditorModeController : MonoBehaviour {
 
     List<TexturePack> texturePacks;
     public List<Element> elementList;
-    public List<Element> patrolPointsList;
 
     public int currentTerrainType;
     public int currentElementIdSelected;
@@ -260,25 +259,23 @@ public class EditorModeController : MonoBehaviour {
 
     void refreshPatrolPointNumber()
     {
-        for(int i = 0; i < patrolPointsList.Count; i++)
+        List<GameObject> myPatrolPoints = new List<GameObject>();
+        foreach (Transform patrolPoint in patrolPointsHolder.transform)
         {
-            patrolPointsList[i].elementObject.GetComponentInChildren<TextMesh>().text = i.ToString();
+            myPatrolPoints.Add(patrolPoint.gameObject);
+        }
+
+        for (int i = 0; i < myPatrolPoints.Count; i++)
+        {
+            myPatrolPoints[i].GetComponentInChildren<TextMesh>().text = i.ToString();
         }
     }
 
     public void RemovePatrolPoint(GameObject obj)
     {
-        for (int i = patrolPointsList.Count - 1; i >= 0; i--)
-        {
-            if (patrolPointsList[i].elementObject.Equals(obj))
-            {
-                patrolPointsList.RemoveAt(i);
-                Destroy(obj);
-            }
-        }
+        Destroy(obj);
         foreach (Transform npc in npcHolder.transform)
         {
-            Debug.Log("banana");
             npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
         }
         refreshPatrolPointNumber();
@@ -505,8 +502,7 @@ public class EditorModeController : MonoBehaviour {
 
             myPatrolPoint.transform.parent = patrolPointsHolder.transform;
             myPatrolPoint.transform.position = new Vector3(pos.x, 0.0f, pos.z);
-            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
-            patrolPointsList.Add(new Element(myPatrolPoint,  "p", -99));
+            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsHolder.transform.childCount.ToString();
             foreach (Transform npc in npcHolder.transform)
             {
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
@@ -765,6 +761,38 @@ public class EditorModeController : MonoBehaviour {
         }
         mapContent += "|";
 
+        List<GameObject> myPatrolPoints = new List<GameObject>();
+        foreach (Transform patrolPoint in patrolPointsHolder.transform)
+        {
+            myPatrolPoints.Add(patrolPoint.gameObject);
+        }
+        for (int i = 0; i < myPatrolPoints.Count; i++)
+        {
+            mapContent += myPatrolPoints[i].transform.position.x + " " + myPatrolPoints[i].transform.position.z + "#";
+            foreach (Message message in myPatrolPoints[i].GetComponent<PatrolPointData>().messages)
+            {
+                mapContent += message.id + " " + message.messageTimeOfLife + "&" + message.description + "&";
+                foreach (Message.Tag tag in message.tags)
+                {
+                    mapContent += tag.name + " " + tag.weight + ",";
+                }
+                if (message.tags.Count > 0)
+                {
+                    mapContent = mapContent.Substring(0, mapContent.Length - 1);
+                }
+                mapContent += ";";
+            }
+            if (myPatrolPoints[i].GetComponent<PatrolPointData>().messages.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
+            mapContent += "@";
+        }
+        if (myPatrolPoints.Count > 0)
+        {
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        /*
         for (int i = 0; i < patrolPointsList.Count; i++)
         {
             Vector3 posOfElm = patrolPointsList[i].elementObject.transform.position;
@@ -775,6 +803,7 @@ public class EditorModeController : MonoBehaviour {
         {
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
         }
+        */
         mapContent += "|";
 
         List<GameObject> myNPCs = new List<GameObject>();
@@ -887,7 +916,6 @@ public class EditorModeController : MonoBehaviour {
         children.ForEach(child => Destroy(child));
 
         elementList.Clear();
-        patrolPointsList.Clear();
 
         string myFile = "default";
         if (nameForLoad.text != "")
@@ -906,7 +934,7 @@ public class EditorModeController : MonoBehaviour {
         string[] splitArrayTerrain = splitGameData[1].Split(char.Parse(";"));
         string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
         string[] splitArrayElements = splitGameData[3].Split(char.Parse(";"));
-        string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse(";"));
+        string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse("@"));
         string[] splitArrayNPC = splitGameData[5].Split(char.Parse("@"));
 
         this.GetComponent<PlayModeManager>().messageID = messageIdCount;
@@ -995,20 +1023,22 @@ public class EditorModeController : MonoBehaviour {
         for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
         {
             //Debug.Log(splitArrayPatrolPoints[i]);
-            string[] myPatrolData = splitArrayPatrolPoints[i].Split(char.Parse(" "));
+            string[] myPatrolData = splitArrayPatrolPoints[i].Split('#');
+            string[] patrolPos = myPatrolData[0].Split(' ');
 
             if (myPatrolData[0] != "")
             {
                 GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
 
                 myPatrolPoint.transform.parent = patrolPointsHolder.transform;
-                myPatrolPoint.transform.position = new Vector3(float.Parse(myPatrolData[0]), 0.0f, float.Parse(myPatrolData[1]));
-                myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsList.Count.ToString();
-                patrolPointsList.Add(new Element(myPatrolPoint, "p", -99));
+                myPatrolPoint.transform.position = new Vector3(float.Parse(patrolPos[0]), 0.0f, float.Parse(patrolPos[1]));
+                myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsHolder.transform.childCount.ToString();
+
+                myPatrolPoint.GetComponent<PatrolPointData>().InitializePatrolPointData(patrolPointsHolder.transform.childCount.ToString(), myPatrolData[1]);
             }
         }
         
-        foreach(string s in splitArrayNPC)
+        foreach (string s in splitArrayNPC)
         {
             string[] npcData = s.Split('#');
 
@@ -1575,7 +1605,6 @@ public class EditorModeController : MonoBehaviour {
         children.ForEach(child => Destroy(child));
 
         elementList.Clear();
-        patrolPointsList.Clear();
 
         if (widthOfMap.text == "" || heightOfMap.text == "")
         {
