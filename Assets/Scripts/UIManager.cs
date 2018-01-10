@@ -40,8 +40,12 @@ public class UIManager : MonoBehaviour {
     public GameObject npcHolder;
 
     GameObject gm;
+    GameObject player;
 
     public bool isFeedbackEnabled;
+    public bool isWatchModeEnabled;
+    public bool isGoalFeedbackEnabled;
+
     public bool isMessageLayerEnabled;
     public InputField messageTrackingID;
 
@@ -57,11 +61,15 @@ public class UIManager : MonoBehaviour {
     public GameObject NPCBeingUpdated;
     public List<int> messageIdsToRemoveNPCUpdater;
 
+    public GameObject watchModeSelectedFeedback;
+
     void Start()
     {
         messageIdsToRemoveNPCUpdater = new List<int>();
         isFeedbackEnabled = false;
+        isWatchModeEnabled = false;
         gm = GameObject.FindGameObjectWithTag("GameManager");
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void ShowNaturals()
@@ -82,6 +90,51 @@ public class UIManager : MonoBehaviour {
         addPlayerPanel.SetActive(true);
     }
 
+    public void ToggleWatchMode()
+    {
+        if (isWatchModeEnabled)
+        {
+            isWatchModeEnabled = false;
+
+            SidePanel.SetActive(false);
+            canvasBackroundBox.SetActive(false);
+            gm.GetComponent<EditorModeController>().isEditorMode = false;
+            gm.GetComponent<Zoom>().zoomToPlayMode = true;
+
+            gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
+
+            Time.timeScale = this.GetComponent<TimeSpeedController>().currentTime;
+
+            watchModeSelectedFeedback.SetActive(false);
+        }
+        else
+        {
+            //Player must stop atacking
+            player.GetComponent<PlayerMovement>().isAtacking = false;
+            player.GetComponent<Animator>().SetBool("Attack", false);
+            //If player was moving before it stops the player
+            player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            player.GetComponent<Animator>().SetBool("Walk", false);
+
+            //Stop player rotation
+            player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+            isWatchModeEnabled = true;
+
+            Time.timeScale = this.GetComponent<TimeSpeedController>().currentTime;
+
+            SidePanel.SetActive(true);
+            canvasBackroundBox.SetActive(true);
+
+            gm.GetComponent<EditorModeController>().isEditorMode = true;
+            spawnEventPlayModePanel.SetActive(false);
+
+            gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
+
+            watchModeSelectedFeedback.SetActive(true);
+        }
+    }
+
     public void ToggleFeedback()
     {
         if (isFeedbackEnabled)
@@ -100,6 +153,27 @@ public class UIManager : MonoBehaviour {
                 npc.gameObject.GetComponent<NPCFeedbackUpdater>().refreshFeedbackCanvas();
             }
             isFeedbackEnabled = true;
+        }
+    }
+
+    public void ToggleGoalFeedback()
+    {
+        if (isGoalFeedbackEnabled)
+        {
+            //foreach (Transform npc in npcHolder.transform)
+            //{
+            //    npc.gameObject.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(false);
+            //}
+            isGoalFeedbackEnabled = false;
+        }
+        else
+        {
+            //foreach (Transform npc in npcHolder.transform)
+            //{
+            //    npc.gameObject.GetComponent<NPCFeedbackUpdater>().feedbackCanvas.SetActive(true);
+            //    npc.gameObject.GetComponent<NPCFeedbackUpdater>().refreshFeedbackCanvas();
+            //}
+            isGoalFeedbackEnabled = true;
         }
     }
 
@@ -520,6 +594,12 @@ public class UIManager : MonoBehaviour {
 
     public void Play()
     {
+        //If its in Watch mode ... removes it
+        if (isWatchModeEnabled)
+        {
+            ToggleWatchMode();
+        }
+
         Time.timeScale = 1.0f;
         SidePanel.SetActive(false);
         canvasBackroundBox.SetActive(false);
@@ -534,6 +614,12 @@ public class UIManager : MonoBehaviour {
 
     public void Pause()
     {
+        //If its in Watch mode ... removes it
+        if (isWatchModeEnabled)
+        {
+            ToggleWatchMode();
+        }
+
         SidePanel.SetActive(true);
         canvasBackroundBox.SetActive(true);
         Time.timeScale = 0.0f;

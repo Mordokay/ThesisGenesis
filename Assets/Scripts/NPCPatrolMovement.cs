@@ -59,10 +59,14 @@ public class NPCPatrolMovement : MonoBehaviour {
             }
             else if (patrolMovementPoints.Count > 0)
             {
-                agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
+                //Debug.Log(patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])]);
+                if (patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])] != null)
+                {
+                    agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
 
-                myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination =
-                    patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
+                    myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination =
+                        patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
+                }
                 patrolIndex += 1;
             }
         }
@@ -86,7 +90,7 @@ public class NPCPatrolMovement : MonoBehaviour {
     }
 
     void Update () {
-        if (uiManager.isFeedbackEnabled)
+        if (uiManager.isGoalFeedbackEnabled)
         {
             if (this.GetComponentInParent<Social>().isTalking)
             {
@@ -127,6 +131,10 @@ public class NPCPatrolMovement : MonoBehaviour {
             myLineGoalFeedback.SetActive(false);
         }
 
+        if (transform.parent.name.Equals("Villager1"))
+        {
+            Debug.Log(agent.remainingDistance);
+        }
         float dist = agent.remainingDistance;
         if(waitTime != 0)
         {

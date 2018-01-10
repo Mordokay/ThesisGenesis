@@ -12,14 +12,17 @@ public class TimeSpeedController : MonoBehaviour {
     public Text timeSpeedText;
     EditorModeController em;
 
+    UIManager uiManager;
+
     void Start()
     {
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
+        uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
     }
 
     public void decrementTimeSpeed()
     {
-        if (!em.isEditorMode)
+        if (!em.isEditorMode || uiManager.isWatchModeEnabled)
         {
             currentTime /= 2.0f;
             if (currentTime < 1)
@@ -33,7 +36,7 @@ public class TimeSpeedController : MonoBehaviour {
 
     public void incrementTimeSpeed()
     {
-        if (!em.isEditorMode)
+        if (!em.isEditorMode || uiManager.isWatchModeEnabled)
         {
             currentTime *= 2.0f;
             if (currentTime > 16.0f)
