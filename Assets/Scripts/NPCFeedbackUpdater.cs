@@ -13,6 +13,7 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     public Text feedbackMessageNumberText;
     public GameObject feedbackMessageCanvas;
+    public GameObject feedbackThinkingCanvas;
 
     public Text npcNameText;
     public Text timeText;
@@ -54,6 +55,10 @@ public class NPCFeedbackUpdater : MonoBehaviour {
         if (feedbackMessageCanvas.activeSelf)
         {
             feedbackMessageCanvas.transform.localPosition = npcObject.transform.localPosition;
+        }
+        if (feedbackThinkingCanvas.activeSelf)
+        {
+            feedbackThinkingCanvas.transform.localPosition = npcObject.transform.localPosition;
         }
     }
 

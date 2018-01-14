@@ -254,7 +254,6 @@ public class UIManager : MonoBehaviour {
     public void RefreshNPCUpdater(NPCData data)
     {
         messageIdsToRemoveNPCUpdater = new List<int>();
-        messageIdPatrolPointToRemove = new List<int>();
         npcUpdaterPanel.SetActive(true);
         patrolPointInspectorPanel.SetActive(false);
         NPCBeingUpdated = data.gameObject;
@@ -283,11 +282,11 @@ public class UIManager : MonoBehaviour {
                 stc.tagButton = myInterestChangeTagButton;
             }
 
-            Instantiate(interestWeightInputField, npcUpdaterInterestHolder.transform);
+            GameObject myInterestWeight = Instantiate(interestWeightInputField, npcUpdaterInterestHolder.transform);
             Instantiate(separator, npcUpdaterInterestHolder.transform);
 
             myInterestChangeTagButton.GetComponentInChildren<Text>().text = i.name;
-            interestWeightInputField.GetComponent<InputField>().text = i.weight.ToString();
+            myInterestWeight.GetComponent<InputField>().text = i.weight.ToString();
         }
 
         foreach (Message message in data.messages)

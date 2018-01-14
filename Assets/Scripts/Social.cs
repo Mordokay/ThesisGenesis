@@ -146,7 +146,7 @@ public class Social : MonoBehaviour {
         float mostAtractiveMessageScore = 0;
         Message mostAttractiveMessage = null;
 
-        //When considering messages fromn self, if listenerLevel is 1 this messages will not be considered
+        //When considering messages from self, if listenerLevel is 1 this messages will not be considered
         foreach (Message m1 in NPC_A.messages)
         {
             bool doesntHaveMessage = false;
