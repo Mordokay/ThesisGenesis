@@ -15,6 +15,8 @@ public class Zoom : MonoBehaviour {
     EditorModeController em;
     MouseInputController mic;
 
+    public float cameraDefaultSize;
+
     void Start()
     {
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
@@ -27,18 +29,18 @@ public class Zoom : MonoBehaviour {
     {
         if (zoomToPlayMode)
         {
-            if (Camera.main.orthographicSize - 3.0f < 0.05f)
+            if (Camera.main.orthographicSize - cameraDefaultSize < 0.05f)
             {
-                Camera.main.orthographicSize = 3.0f;
+                Camera.main.orthographicSize = cameraDefaultSize;
                 zoomToPlayMode = false;
             }
-            else if (Camera.main.orthographicSize > 3.0)
+            else if (Camera.main.orthographicSize > cameraDefaultSize)
             {
-                Camera.main.orthographicSize -= Time.deltaTime * 3.0f;
+                Camera.main.orthographicSize -= Time.deltaTime * 6.0f;
             }
             else
             {
-                Camera.main.orthographicSize += Time.deltaTime * 3.0f;
+                Camera.main.orthographicSize += Time.deltaTime * 6.0f;
             }
         }
 

@@ -815,13 +815,12 @@ MonoBehaviour:
   patrolMovementPoints: []
   agent: {fileID: 0}
   waitTime: 0
-  minimumWaitTime: 1
-  maximumWaitTime: 2
   patrolIndex: 0
   lineGoalFeedback: {fileID: 1544830809429228, guid: a1d42ccce8a692741ad60995c3150f20,
     type: 2}
   thinkingBalloon: {fileID: 1009009884249372}
   currentGoalObject: {fileID: 0}
+  isWaiting: 0
 --- !u!114 &114149072057258654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1555,19 +1554,19 @@ NavMeshAgent:
   m_GameObject: {fileID: 1992746804159932}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.1
+  m_Radius: 0.05
   m_Speed: 2
   m_Acceleration: 8
-  avoidancePriority: 50
+  avoidancePriority: 99
   m_AngularSpeed: 260
   m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.1
+  m_Height: 0.05
   m_BaseOffset: -0.1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 3
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 2
 --- !u!212 &212254132754791498
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -14,7 +14,6 @@ public class PatrolGoalFeedback : MonoBehaviour {
     public float timeSinceLastGoalArrow;
 
     public float arrowForceSpeed;
-    Color currentColor;
 
     public bool isTalkArrow;
     Color talkColor;
@@ -29,8 +28,6 @@ public class PatrolGoalFeedback : MonoBehaviour {
         timeSinceLastArrow = Time.timeSinceLevelLoad;
         arrowForceSpeed = 200.0f;
         destination = Vector3.one;
-
-        currentColor = Color.green;
     }
 	
     public void ClearAllArrows()
@@ -52,23 +49,6 @@ public class PatrolGoalFeedback : MonoBehaviour {
     }
 
 	void Update () {
-        /*
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            if (Arrows.Count > 0)
-            {
-                if (Arrows[0].GetComponentInChildren<SpriteRenderer>().color.Equals(Color.green))
-                {
-                    currentColor = Color.red;
-                }
-                else
-                {
-                    currentColor = Color.green;
-                }
-            }
-            ChangeLineColor(currentColor);
-        }
-        */
 
         if (isTalkArrow)
         {
@@ -95,7 +75,7 @@ public class PatrolGoalFeedback : MonoBehaviour {
                 Destroy(myArrow, 3.0f);
                 myArrow.transform.position = origin.transform.position;
                 myArrow.GetComponent<Rigidbody>().AddForce((destination - myArrow.transform.position).normalized * arrowForceSpeed);
-                myArrow.GetComponentInChildren<SpriteRenderer>().color =  origin.transform.GetComponentInChildren<SpriteRenderer>().color;//currentColor;
+                myArrow.GetComponentInChildren<SpriteRenderer>().color =  origin.transform.GetComponentInChildren<SpriteRenderer>().color;
 
                 myArrow.transform.LookAt(destination);
                 Arrows.Add(myArrow);

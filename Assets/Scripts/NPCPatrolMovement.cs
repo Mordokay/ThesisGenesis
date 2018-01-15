@@ -8,8 +8,6 @@ public class NPCPatrolMovement : MonoBehaviour {
     public List<Transform> patrolMovementPoints;
     public NavMeshAgent agent;
     public float waitTime;
-    public float minimumWaitTime;
-    public float maximumWaitTime;
     GameObject patrolPointHolder;
 
     public int patrolIndex;
@@ -23,8 +21,12 @@ public class NPCPatrolMovement : MonoBehaviour {
     public GameObject thinkingBalloon;
     public GameObject currentGoalObject;
 
+    public bool isWaiting;
+    public float remainingDistance;
+
     public void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
+        isWaiting = true;
 
         currentGoalObject = null;
 
@@ -38,6 +40,8 @@ public class NPCPatrolMovement : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         agent.ResetPath();
         waitTime = -1;
+
+        GetNewGoal();
     }
 	
     public void setUpPatrolMovementPoints()
@@ -111,13 +115,6 @@ public class NPCPatrolMovement : MonoBehaviour {
                 }
             }
         }
-        //If no tag is found on the patrol point that matches NPC.Interest the NPC contines walking towards his new goal
-        if (waitTime == 0)
-        {
-            GetNewGoal();
-            thinkingBalloon.SetActive(false);
-        }
-
         return waitTime;
     }
 
@@ -129,6 +126,7 @@ public class NPCPatrolMovement : MonoBehaviour {
     }
 
     void Update () {
+        remainingDistance = Vector3.Distance(currentGoalObject.transform.position, this.transform.position);
         if (uiManager.isGoalFeedbackEnabled)
         {
             if (this.GetComponentInParent<Social>().isTalking)
@@ -170,21 +168,9 @@ public class NPCPatrolMovement : MonoBehaviour {
             myLineGoalFeedback.SetActive(false);
         }
 
-        //float dist = agent.remainingDistance;
-        //Debug.Log(dist);
-        if (waitTime != 0)
+        if (isWaiting)
         {
-            waitTime -= Time.deltaTime;
-            if(waitTime <= 0)
-            {
-                waitTime = 0;
-                GetNewGoal();
-                thinkingBalloon.SetActive(false);
-            }
-        }
-        else if (agent.remainingDistance < 0.5f)//dist != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance < 0.5)
-        {
-            if (SetWaitTime() != 0)
+            if (!thinkingBalloon.activeSelf)
             {
                 //Forces the balloon to move to the NPC Object position. The balloon is updated on NPCFeedbackUpdater script
                 thinkingBalloon.transform.localPosition = this.transform.localPosition;
@@ -192,6 +178,35 @@ public class NPCPatrolMovement : MonoBehaviour {
                 //Activates thinking ballon 
                 thinkingBalloon.SetActive(true);
             }
+
+            waitTime -= Time.deltaTime;
+            if(waitTime <= 0)
+            {
+                waitTime = 0;
+                isWaiting = false;
+                GetNewGoal();
+            }
+        }
+        else if (Vector3.Distance(currentGoalObject.transform.position, this.transform.position) < 0.5f)
+        {
+            if (SetWaitTime() != 0)
+            {
+                isWaiting = true;
+                //Forces the balloon to move to the NPC Object position. The balloon is updated on NPCFeedbackUpdater script
+                thinkingBalloon.transform.localPosition = this.transform.localPosition;
+
+                //Activates thinking ballon 
+                thinkingBalloon.SetActive(true);
+            }
+            else
+            {
+                GetNewGoal();
+                thinkingBalloon.SetActive(false);
+            }
+        }
+        else
+        {
+            thinkingBalloon.SetActive(false);
         }
     }
 }

@@ -113,6 +113,8 @@ public class EditorModeController : MonoBehaviour {
     public bool removeElement = false;
     public bool removeNPC = false;
 
+    public bool hasToUpdatePatrolPointsNumbers;
+
     [System.Serializable]
     public class Terrain
     {
@@ -161,6 +163,8 @@ public class EditorModeController : MonoBehaviour {
         Time.timeScale = 0.0f;
         texturePacks = new List<TexturePack>();
         GenerateTerrainReferences();
+
+        hasToUpdatePatrolPointsNumbers = false;
     }
 
     void GenerateTerrainReferences()
@@ -278,8 +282,11 @@ public class EditorModeController : MonoBehaviour {
         {
             npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
         }
-        refreshPatrolPointNumber();
+        hasToUpdatePatrolPointsNumbers = true;
+
+//        refreshPatrolPointNumber();
     }
+
     public void InsertNPC(Vector3 pos)
     {
         if (npcNameInput.GetComponent<InputField>().textComponent.text != "")
@@ -502,7 +509,7 @@ public class EditorModeController : MonoBehaviour {
 
             myPatrolPoint.transform.parent = patrolPointsHolder.transform;
             myPatrolPoint.transform.position = new Vector3(pos.x, 0.0f, pos.z);
-            myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsHolder.transform.childCount.ToString();
+            myPatrolPoint.GetComponentInChildren<TextMesh>().text = (patrolPointsHolder.transform.childCount - 1).ToString();
             foreach (Transform npc in npcHolder.transform)
             {
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
@@ -1032,37 +1039,47 @@ public class EditorModeController : MonoBehaviour {
 
                 myPatrolPoint.transform.parent = patrolPointsHolder.transform;
                 myPatrolPoint.transform.position = new Vector3(float.Parse(patrolPos[0]), 0.0f, float.Parse(patrolPos[1]));
-                myPatrolPoint.GetComponentInChildren<TextMesh>().text = patrolPointsHolder.transform.childCount.ToString();
+                myPatrolPoint.GetComponentInChildren<TextMesh>().text = (patrolPointsHolder.transform.childCount - 1).ToString();
 
-                myPatrolPoint.GetComponent<PatrolPointData>().InitializePatrolPointData(patrolPointsHolder.transform.childCount.ToString(), myPatrolData[1]);
+                myPatrolPoint.GetComponent<PatrolPointData>().InitializePatrolPointData(myPatrolData[1]);
+
+                //check if patrol point layer is active. If patrol point layer is not enabled, this point is hidden
+                if (!UI_Manager.isPatrolPointLayerEnabled)
+                {
+                    myPatrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                    myPatrolPoint.transform.GetChild(0).gameObject.SetActive(false);
+                }
             }
         }
-        
-        foreach (string s in splitArrayNPC)
+
+        if (splitArrayNPC.Length > 0 && splitArrayNPC[0] != "")
         {
-            string[] npcData = s.Split('#');
+            foreach (string s in splitArrayNPC)
+            {
+                //Debug.Log(splitArrayNPC);
+                string[] npcData = s.Split('#');
 
-            string[] npcBasicInfo = npcData[0].Split(';');
-            string[] npcPos = npcBasicInfo[0].Split(' ');
-            string npcName = npcBasicInfo[1];
-            string[] myNpcColors = npcBasicInfo[2].Split(',');
+                string[] npcBasicInfo = npcData[0].Split(';');
+                string[] npcPos = npcBasicInfo[0].Split(' ');
+                string npcName = npcBasicInfo[1];
+                string[] myNpcColors = npcBasicInfo[2].Split(',');
 
-            GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
+                GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
 
-            myNPC.name = npcName;
-            myNPC.transform.parent = npcHolder.transform;
-            myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
+                myNPC.name = npcName;
+                myNPC.transform.parent = npcHolder.transform;
+                myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
 
-            myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1], 
-                npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
-                new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
-                new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
-                new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
-                
-            myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
+                myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+                    npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
+                    new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
+                    new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
+                    new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
+
+                myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
+            }
         }
-        
         for (int i = 1; i < mapWidth - 1; i++)
         {
             for (int j = 1; j < mapHeight - 1; j++)
@@ -1646,6 +1663,15 @@ public class EditorModeController : MonoBehaviour {
                 myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
                 myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
+        }
+    }
+
+    private void Update()
+    {
+        if (hasToUpdatePatrolPointsNumbers)
+        {
+            refreshPatrolPointNumber();
+            hasToUpdatePatrolPointsNumbers = false;
         }
     }
 }

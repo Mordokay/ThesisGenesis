@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour {
     public GameObject npcTypeButton;
 
     public GameObject npcHolder;
+    public GameObject patrolPointHolder;
 
     GameObject gm;
     GameObject player;
@@ -45,6 +46,9 @@ public class UIManager : MonoBehaviour {
     public bool isFeedbackEnabled;
     public bool isWatchModeEnabled;
     public bool isGoalFeedbackEnabled;
+
+    public bool isPatrolPointLayerEnabled;
+    public GameObject patrolPointLayerSelectedFeedback;
 
     public bool isMessageLayerEnabled;
     public InputField messageTrackingID;
@@ -75,6 +79,7 @@ public class UIManager : MonoBehaviour {
         messageIdPatrolPointToRemove = new List<int>();
         isFeedbackEnabled = false;
         isWatchModeEnabled = false;
+        isPatrolPointLayerEnabled = false;
         gm = GameObject.FindGameObjectWithTag("GameManager");
         player = GameObject.FindGameObjectWithTag("Player");
     }
@@ -208,6 +213,32 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void TogglePatrolPointLayer()
+    {
+        if (isPatrolPointLayerEnabled)
+        {
+            patrolPointLayerSelectedFeedback.SetActive(false);
+            isPatrolPointLayerEnabled = false;
+
+            foreach (Transform patrolPoint in patrolPointHolder.transform)
+            {
+                patrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                patrolPoint.GetChild(0).gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            patrolPointLayerSelectedFeedback.SetActive(true);
+            isPatrolPointLayerEnabled = true;
+
+            foreach (Transform patrolPoint in patrolPointHolder.transform)
+            {
+                patrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                patrolPoint.GetChild(0).gameObject.SetActive(true);
+            }
+        }
+    }
+
     public void refreshMessageTrackID()
     {
         foreach (Transform npc in npcHolder.transform)
@@ -223,7 +254,7 @@ public class UIManager : MonoBehaviour {
         npcUpdaterPanel.SetActive(false);
         PatrolPointBeingUpdated = data.gameObject;
 
-        patrolPointIdName.GetComponent<Text>().text = "Patrol Point #" + data.id;
+        patrolPointIdName.GetComponent<Text>().text = "Patrol Point #" + PatrolPointBeingUpdated.transform.GetChild(0).GetComponent<TextMesh>().text;
 
         foreach (Transform child in patrolPointMessagesHolder.transform)
         {

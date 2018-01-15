@@ -5,7 +5,6 @@ using UnityEngine;
 public class PatrolPointData : MonoBehaviour {
 
     public List<Message> messages;
-    public string id;
 
     public void ReceiveEvent(Message m)
     {
@@ -16,10 +15,8 @@ public class PatrolPointData : MonoBehaviour {
         messages.Add(m);
     }
 
-    public void InitializePatrolPointData(string PatrolPointId, string messagesText)
+    public void InitializePatrolPointData(string messagesText)
     {
-        this.id = PatrolPointId;
-
         if (messagesText != "")
         {
             string[] messagesList = messagesText.Split(';');
