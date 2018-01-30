@@ -102,6 +102,11 @@ public class Social : MonoBehaviour {
         }
         else if (isTalking)
         {
+
+            //Decreases cooperativenessLevel and assertivenessLevel by 10 every second NPCs are talking
+            this.GetComponent<NPCData>().currentAssertivenessLevel -= Time.deltaTime / 10.0f;
+            this.GetComponent<NPCData>().currentCooperativenessLevel -= Time.deltaTime / 10.0f;
+
             if (!isReceivingMessage && !talkCanvas.activeSelf)
             {
                 talkCanvas.SetActive(true);

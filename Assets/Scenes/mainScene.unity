@@ -11142,6 +11142,7 @@ MonoBehaviour:
   removePatrolPoint: 0
   removeElement: 0
   removeNPC: 0
+  hasToUpdatePatrolPointsNumbers: 0
   terrainBasicObject: {fileID: 1882208263621868, guid: 19c3c0989d659d94fbb7e57596babc62,
     type: 2}
   undergroundBasicObject: {fileID: 1414716898247530, guid: 2e1628067b4840a4689bf5e24f654f12,

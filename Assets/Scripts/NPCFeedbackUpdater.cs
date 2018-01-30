@@ -15,41 +15,26 @@ public class NPCFeedbackUpdater : MonoBehaviour {
     public GameObject feedbackMessageCanvas;
     public GameObject feedbackThinkingCanvas;
 
-    public Text npcNameText;
-    public Text timeText;
-    public Text assertivenessText;
-    public Text cooperativenessText;
+    public Slider assertivenessSlider;
+    public Slider cooperativenessSlider;
 
     public Transform listAttributes;
 
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
-
-        //A Line to separate Stuff
-        GameObject myLine = Instantiate(npcFeedbackLine, listAttributes);
-        myLine.GetComponentInChildren<Text>().text = "-------------------------------";
-
-        foreach (NPCData.Interest i in GetComponent<NPCData>().interests)
-        {
-            myLine = Instantiate(npcFeedbackLine, listAttributes);
-            myLine.GetComponentInChildren<Text>().text = i.name + " : " + (i.weight * 100).ToString("F2");
-        }
     }
 
     private void Update()
     {
-        if (this.gameObject.GetComponent<Social>().isTalking)
+        if (uiManager.isFeedbackEnabled)
         {
-            feedbackCanvas.SetActive(false);
+            feedbackCanvas.SetActive(true);
+            feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
+            refreshFeedbackCanvas();
         }
         else
         {
-            if (uiManager.isFeedbackEnabled)
-            {
-                feedbackCanvas.SetActive(true);
-                feedbackCanvas.transform.localPosition = npcObject.transform.localPosition;
-                refreshFeedbackCanvas();
-            }
+            feedbackCanvas.SetActive(false);
         }
 
         if (feedbackMessageCanvas.activeSelf)
@@ -84,11 +69,12 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     public void refreshFeedbackCanvas()
     {
-        //Debug.Log("Refreshing feedback canvas of " + this.name);
+        assertivenessSlider.gameObject.GetComponent<RectTransform>().sizeDelta = 
+            new Vector2(this.GetComponent<NPCData>().assertiveness * 100, 20);
+        cooperativenessSlider.gameObject.GetComponent<RectTransform>().sizeDelta = 
+            new Vector2(this.GetComponent<NPCData>().cooperativeness * 100, 20);
 
-        npcNameText.text = "Name: " + this.GetComponent<NPCData>().npcName;
-        timeText.text = "Time: " + Time.deltaTime.ToString();
-        assertivenessText.text = "Assertive: " + this.GetComponent<NPCData>().assertiveness.ToString("F4");
-        cooperativenessText.text = "Cooperative: " + this.GetComponent<NPCData>().cooperativeness.ToString("F4");
+        assertivenessSlider.value = this.GetComponent<NPCData>().currentAssertivenessLevel;
+        cooperativenessSlider.value = this.GetComponent<NPCData>().currentCooperativenessLevel;
     }
 }

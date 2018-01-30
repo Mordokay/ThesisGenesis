@@ -22,6 +22,43 @@ public class NPCData : MonoBehaviour {
 
     float messageLimit = 7;
 
+    public float currentAssertivenessLevel;
+    public float currentCooperativenessLevel;
+
+    private void Start()
+    {
+        currentAssertivenessLevel = 0.0f;
+        currentCooperativenessLevel = 0.0f;
+    }
+
+    private void Update()
+    {
+        //It takes 20 seconds to reach full assertiveness and cooperativeness
+        if (!this.GetComponent<Social>().isTalking)
+        {
+            currentAssertivenessLevel += Time.deltaTime / 20.0f;
+            currentCooperativenessLevel += Time.deltaTime / 20.0f;
+        }
+
+        if (currentAssertivenessLevel > 1.0f)
+        {
+            currentAssertivenessLevel = 1.0f;
+        }
+        else if (currentAssertivenessLevel < 0.0f)
+        {
+            currentAssertivenessLevel = 0.0f;
+        }
+
+        if (currentCooperativenessLevel > 1.0f)
+        {
+            currentCooperativenessLevel = 1.0f;
+        }
+        else if (currentCooperativenessLevel < 0.0f)
+        {
+            currentCooperativenessLevel = 0.0f;
+        }
+    }
+
     [System.Serializable]
     public class Interest
     {
