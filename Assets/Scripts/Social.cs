@@ -148,109 +148,132 @@ public class Social : MonoBehaviour {
 
     Message getBestMessageToTalk(NPCData NPC_A, NPCData NPC_B)
     {
-        float mostAtractiveMessageScore = 0;
-        Message mostAttractiveMessage = null;
-
-        //When considering messages from self, if listenerLevel is 1 this messages will not be considered
-        foreach (Message m1 in NPC_A.messages)
+        //each of this values foes from 0 to 1. Total possible value is AA + CA + AB + CB.
+        //Only if this total value is bigger than 1.5f do they talk.
+        if (NPC_A.currentAssertivenessLevel * NPC_A.assertiveness +
+            NPC_A.currentCooperativenessLevel * NPC_A.cooperativeness +
+            NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
+            NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness > 1.5f)
         {
-            bool doesntHaveMessage = false;
-            if (NPC_B.messages.Count == 0 || NPC_B.messages.Find(x => x.id == m1.id) == null)
-            {
-                doesntHaveMessage = true;
-            }
+            Debug.Log(NPC_A.currentAssertivenessLevel * NPC_A.assertiveness +
+            NPC_A.currentCooperativenessLevel * NPC_A.cooperativeness +
+            NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
+            NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness);
 
-            if (doesntHaveMessage)
-            {
-                /**
-                 * AA = Assertiveness A
-                 * CA = Cooperativeness A
-                 * AB = Assertiveness B
-                 * CB = Cooperativeness B
-                 * M1 = Message1
-                 * 
-                 * TagsM1_IA = Tags that are in M1 that match an Interest of A
-                 * 
-                 * To determine how good M1 M1 is we use this formula:
-                 * MessageScore = TagsM1_IA * AA + TagsM1_IB * CA + TagsM1_IB * AB + TagsM1_IA * CB
-                 * or 
-                 * MessageScore = TagsM1_IA * (AA, CB) + TagsM1_IB * (CA + AB)
-                 */
-                float messageScore = 0;
+            float mostAtractiveMessageScore = 0;
+            Message mostAttractiveMessage = null;
 
-                foreach (Message.Tag tag in m1.tags)
+            //When considering messages from self, if listenerLevel is 1 this messages will not be considered
+            foreach (Message m1 in NPC_A.messages)
+            {
+                bool doesntHaveMessage = false;
+                if (NPC_B.messages.Count == 0 || NPC_B.messages.Find(x => x.id == m1.id) == null)
                 {
-                    //TagsM1_IA * (AA, CB)
-                    foreach (NPCData.Interest interest in NPC_A.interests)
+                    doesntHaveMessage = true;
+                }
+
+                if (doesntHaveMessage)
+                {
+                    /**
+                     * AA = Assertiveness A
+                     * CA = Cooperativeness A
+                     * AB = Assertiveness B
+                     * CB = Cooperativeness B
+                     * M1 = Message1
+                     * 
+                     * TagsM1_IA = Tags that are in M1 that match an Interest of A
+                     * 
+                     * To determine how good M1 M1 is we use this formula:
+                     * MessageScore = TagsM1_IA * AA + TagsM1_IB * CA + TagsM1_IB * AB + TagsM1_IA * CB
+                     * or 
+                     * MessageScore = TagsM1_IA * (AA, CB) + TagsM1_IB * (CA + AB)
+                     */
+                    float messageScore = 0;
+
+                    foreach (Message.Tag tag in m1.tags)
                     {
-                        if (interest.name.Equals(tag.name))
+                        //TagsM1_IA * (AA, CB)
+                        foreach (NPCData.Interest interest in NPC_A.interests)
                         {
-                            messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
+                            if (interest.name.Equals(tag.name))
+                            {
+                                messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
+                            }
+                        }
+                        //TagsM1_IB * (CA + AB)
+                        foreach (NPCData.Interest interest in NPC_B.interests)
+                        {
+                            if (interest.name.Equals(tag.name))
+                            {
+                                messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
+                            }
                         }
                     }
-                    //TagsM1_IB * (CA + AB)
-                    foreach (NPCData.Interest interest in NPC_B.interests)
+
+                    if (messageScore > mostAtractiveMessageScore)
                     {
-                        if (interest.name.Equals(tag.name))
-                        {
-                            messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
-                        }
+                        mostAtractiveMessageScore = messageScore;
+                        mostAttractiveMessage = m1;
+                        //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                        //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                     }
                 }
-                
-                if (messageScore > mostAtractiveMessageScore)
+            }
+
+            //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
+            foreach (Message m2 in NPC_B.messages)
+            {
+                bool doesntHaveMessage = false;
+                if (NPC_A.messages.Count == 0 || NPC_A.messages.Find(x => x.id == m2.id) == null)
                 {
-                    mostAtractiveMessageScore = messageScore;
-                    mostAttractiveMessage = m1;
-                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
+                    doesntHaveMessage = true;
+                }
+
+                if (doesntHaveMessage)
+                {
+                    float messageScore = 0;
+                    foreach (Message.Tag tag in m2.tags)
+                    {
+                        //TagsM2_IA * (AA, CB)
+                        foreach (NPCData.Interest interest in NPC_A.interests)
+                        {
+                            if (interest.name.Equals(tag.name))
+                            {
+                                messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
+                            }
+                        }
+                        //TagsM2_IB * (CA + AB)
+                        foreach (NPCData.Interest interest in NPC_B.interests)
+                        {
+                            if (interest.name.Equals(tag.name))
+                            {
+                                messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
+                            }
+                        }
+                    }
+                    if (messageScore > mostAtractiveMessageScore)
+                    {
+                        mostAtractiveMessageScore = messageScore;
+                        mostAttractiveMessage = m2;
+                        //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                        //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
+                    }
                 }
             }
+
+            return mostAttractiveMessage;
         }
-
-        //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
-        foreach (Message m2 in NPC_B.messages)
+        else
         {
-            bool doesntHaveMessage = false;
-            if (NPC_A.messages.Count == 0 || NPC_A.messages.Find(x => x.id == m2.id) == null)
-            {
-                doesntHaveMessage = true;
-            }
-
-            if (doesntHaveMessage)
-            {
-                float messageScore = 0;
-                foreach (Message.Tag tag in m2.tags)
-                {
-                    //TagsM2_IA * (AA, CB)
-                    foreach (NPCData.Interest interest in NPC_A.interests)
-                    {
-                        if (interest.name.Equals(tag.name))
-                        {
-                            messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
-                        }
-                    }
-                    //TagsM2_IB * (CA + AB)
-                    foreach (NPCData.Interest interest in NPC_B.interests)
-                    {
-                        if (interest.name.Equals(tag.name))
-                        {
-                            messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
-                        }
-                    }
-                }
-                if (messageScore > mostAtractiveMessageScore)
-                {
-                    mostAtractiveMessageScore = messageScore;
-                    mostAttractiveMessage = m2;
-                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
-                }
-            }
+            Debug.Log(NPC_A.currentAssertivenessLevel * NPC_A.assertiveness +
+            NPC_A.currentCooperativenessLevel * NPC_A.cooperativeness +
+            NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
+            NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness);
+            return null;
         }
-
-        if (/*mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*/
-        mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
+        /*
+        if (//mostAtractiveMessageScore * GetFriendshipLevel(NPC_A, NPC_B) +*
+            mostAtractiveMessageScore > Constants.MINIMUM_SCORE_FOR_MESSAGE)
         {
             //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
             //Debug.Log("Friendship Level: " + GetFriendshipLevel(NPC_A, NPC_B));
@@ -263,6 +286,7 @@ public class Social : MonoBehaviour {
         {
             return null;
         }
+        */
     }
 
     int GetFriendshipLevel(NPCData NPC_A, NPCData NPC_B)

@@ -106,8 +106,8 @@ public class NPCData : MonoBehaviour {
                     recievedMessageScore += foundInterest.weight * tag.weight;
                 }
             }
-            Debug.Log("recievedMessageScore " + recievedMessageScore);
-            Debug.Log("recievedMessage " + msg.ToString());
+            //Debug.Log("recievedMessageScore " + recievedMessageScore);
+            //Debug.Log("recievedMessage " + msg.ToString());
             foreach (Message m in messages)
             {
                 float totalScore = 0.0f;
@@ -126,15 +126,15 @@ public class NPCData : MonoBehaviour {
                 }
             }
 
-            Debug.Log("lessInterestingMessageScore " + lessInterestingMessageScore);
-            Debug.Log("lessInterestingMessage " + lessInterestingMessage.ToString());
+            //Debug.Log("lessInterestingMessageScore " + lessInterestingMessageScore);
+            //Debug.Log("lessInterestingMessage " + lessInterestingMessage.ToString());
             //If the message we recieved is more interesting than one of our messages ...
             //We replace the least interesting message with our new recieved message
             if (recievedMessageScore > lessInterestingMessageScore)
             {
-                Debug.Log("Score comparison: " + recievedMessageScore + " <> " + lessInterestingMessageScore);
-                Debug.Log("Replaced message: " + lessInterestingMessage.ToString());
-                Debug.Log("With new message: " + msg.ToString());
+                //Debug.Log("Score comparison: " + recievedMessageScore + " <> " + lessInterestingMessageScore);
+                //Debug.Log("Replaced message: " + lessInterestingMessage.ToString());
+                //Debug.Log("With new message: " + msg.ToString());
                 messages.Remove(lessInterestingMessage);
                 //messages.RemoveAll(p => p.id == lessInterestingMessage.id);
                 return true;
