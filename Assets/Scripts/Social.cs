@@ -80,8 +80,8 @@ public class Social : MonoBehaviour {
                         {
                             isReceivingMessage = true;
                         }
-                        remainingMessageTransmissionTime = choosedMessage.messageTimeOfLife;
-                        npc.gameObject.GetComponent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTimeOfLife;
+                        remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
+                        npc.gameObject.GetComponent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
                         this.isTalking = true;
                         npc.gameObject.GetComponent<Social>().isTalking = true;
                         npc.gameObject.GetComponent<Social>().talkPartner = this.gameObject;
@@ -115,7 +115,7 @@ public class Social : MonoBehaviour {
             }
             if (talkCanvas.activeSelf)
             {
-                talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTimeOfLife);
+                talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTransmissionTime);
             }
             if (Mathf.Abs(Vector3.Angle(this.transform.GetChild(1).transform.forward, 
                 this.transform.GetChild(1).transform.position - talkPartner.transform.GetChild(1).transform.position) - 180.0f) > 1.0f)
@@ -135,11 +135,17 @@ public class Social : MonoBehaviour {
                 isTalking = false;
                 if (isReceivingMessage && choosedMessage != null)
                 {
-                    this.GetComponent<NPCData>().messages.Add(choosedMessage);
+                    this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id, 
+                        choosedMessage.messageTransmissionTime, choosedMessage.description, 
+                        choosedMessage.tags));
                     isReceivingMessage = false;
 
                     //Checks if the message recieved is the message being tracked
                     this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
+                }
+                else if (choosedMessage != null)
+                {
+                    choosedMessage.messageDecayment = 1.0f;
                 }
             }
             //Debug.Log("I am talking with " + talkPartner.name);
@@ -210,6 +216,8 @@ public class Social : MonoBehaviour {
                         }
                     }
 
+                    messageScore *= m1.messageDecayment;
+
                     if (messageScore > mostAtractiveMessageScore)
                     {
                         mostAtractiveMessageScore = messageScore;
@@ -251,6 +259,9 @@ public class Social : MonoBehaviour {
                             }
                         }
                     }
+
+                    messageScore *= m2.messageDecayment;
+
                     if (messageScore > mostAtractiveMessageScore)
                     {
                         mostAtractiveMessageScore = messageScore;
@@ -260,15 +271,16 @@ public class Social : MonoBehaviour {
                     }
                 }
             }
-
             return mostAttractiveMessage;
         }
         else
         {
+            /*
             Debug.Log(NPC_A.currentAssertivenessLevel * NPC_A.assertiveness +
             NPC_A.currentCooperativenessLevel * NPC_A.cooperativeness +
             NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
             NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness);
+            */
             return null;
         }
         /*

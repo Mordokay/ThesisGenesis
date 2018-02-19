@@ -778,7 +778,7 @@ public class EditorModeController : MonoBehaviour {
             mapContent += myPatrolPoints[i].transform.position.x + " " + myPatrolPoints[i].transform.position.z + "#";
             foreach (Message message in myPatrolPoints[i].GetComponent<PatrolPointData>().messages)
             {
-                mapContent += message.id + " " + message.messageTimeOfLife + "&" + message.description + "&";
+                mapContent += message.id + " " + message.messageTransmissionTime + "&" + message.description + "&";
                 foreach (Message.Tag tag in message.tags)
                 {
                     mapContent += tag.name + " " + tag.weight + ",";
@@ -872,7 +872,7 @@ public class EditorModeController : MonoBehaviour {
 
             foreach (Message message in myNPCs[i].GetComponent<NPCData>().messages)
             {
-                mapContent += message.id + " " + message.messageTimeOfLife + "&" + message.description + "&";
+                mapContent += message.id + " " + message.messageTransmissionTime + "&" + message.description + "&";
                 foreach(Message.Tag tag in message.tags)
                 {
                     mapContent += tag.name + " " + tag.weight + ",";

@@ -736,13 +736,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 46
-    m_Alignment: 4
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 135
+  m_Text: '135
+
+    0.974'
 --- !u!114 &114169268502795626
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -820,6 +822,8 @@ MonoBehaviour:
   Head: {fileID: 212838239542229030}
   LeftHand: {fileID: 212817133255520446}
   RightHand: {fileID: 212547528209958156}
+  currentAssertivenessLevel: 0
+  currentCooperativenessLevel: 0
 --- !u!114 &114377551781390964
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -890,7 +894,8 @@ MonoBehaviour:
   talkPartner: {fileID: 0}
   choosedMessage:
     id: 0
-    messageTimeOfLife: 0
+    messageTransmissionTime: 0
+    messageDecayment: 0
     tags: []
     description: 
   isReceivingMessage: 0
@@ -1926,8 +1931,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.096}
-  m_SizeDelta: {x: 141.2371, y: 65.8358}
+  m_AnchoredPosition: {x: 0, y: -0.013}
+  m_SizeDelta: {x: 141.2371, y: 97.1165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224636621057120816
 RectTransform:

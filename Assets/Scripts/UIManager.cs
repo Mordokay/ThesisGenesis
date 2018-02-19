@@ -324,7 +324,7 @@ public class UIManager : MonoBehaviour {
         {
             GameObject myMessageElement = Instantiate(messageElement, npcUpdaterMessagesHolder.transform);
             string messageText = "";
-            messageText += "ID: " + message.id + "Transmission Time: " + message.messageTimeOfLife + System.Environment.NewLine;
+            messageText += "ID: " + message.id + " Decayment: " + message.messageDecayment + System.Environment.NewLine;
             foreach(Message.Tag t in message.tags)
             {
                 messageText += "(" + t.name + "," + t.weight + "),";

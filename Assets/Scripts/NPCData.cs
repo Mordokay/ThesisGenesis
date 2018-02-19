@@ -33,6 +33,7 @@ public class NPCData : MonoBehaviour {
 
     private void Update()
     {
+        DecayMessages();
         //It takes 20 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
@@ -84,6 +85,22 @@ public class NPCData : MonoBehaviour {
             friendshipLevel = f;
         }
     };
+
+    public void DecayMessages()
+    {
+        //It takes 50 seconds for a message to reach zero
+        foreach (Message m in messages)
+        {
+            m.messageDecayment -= Time.deltaTime / 50.0f;
+        }
+        for (int i = messages.Count - 1; i >= 0; i--)
+        {
+            if(messages[i].messageDecayment < 0.0f)
+            {
+                messages.RemoveAt(i);
+            }
+        }
+    }
 
     public bool isMessageOfInterest(Message msg)
     {

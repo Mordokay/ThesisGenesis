@@ -6,7 +6,8 @@ using UnityEngine;
 public class Message
 {
     public int id;
-    public float messageTimeOfLife;
+    public float messageTransmissionTime;
+    public float messageDecayment;
     public List<Tag> tags;
     public string description;
 
@@ -26,7 +27,7 @@ public class Message
     public override string ToString() {
 
         string msg = "";
-        msg += "ID: " + id + " msgTime: " + messageTimeOfLife + " { ";
+        msg += "ID: " + id + " msgTime: " + messageTransmissionTime + " { ";
         foreach(Tag t in tags)
         {
             msg += t.name + " " + t.weight + ",";
@@ -39,13 +40,13 @@ public class Message
         return msg;
     }
 
-    public Message(int id, float messageTimeOfLife, string description, string tagsText)
+    public Message(int id, float messageTransmissionTime, string description, string tagsText)
     {
         //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);
         this.id = id;
-        this.messageTimeOfLife = messageTimeOfLife;
-
+        this.messageTransmissionTime = messageTransmissionTime;
         this.description = description;
+        this.messageDecayment = 1.0f;
 
         tags = new List<Tag>();
         string[] tagsList = tagsText.Split(',');
@@ -54,5 +55,16 @@ public class Message
             string[] tagData = t.Split(' ');
             tags.Add(new Tag(tagData[0], System.Int32.Parse(tagData[1])));
         }
+    }
+
+    public Message(int id, float messageTransmissionTime, string description, List<Tag> tags)
+    {
+        //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);
+        this.id = id;
+        this.messageTransmissionTime = messageTransmissionTime;
+        this.description = description;
+        this.messageDecayment = 1.0f;
+
+        this.tags = tags;
     }
 }

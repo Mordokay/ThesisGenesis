@@ -667,13 +667,15 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 46
-    m_Alignment: 4
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 135
+  m_Text: '135
+
+    0.974'
 --- !u!114 &114258808342191672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1071,7 +1073,8 @@ MonoBehaviour:
   talkPartner: {fileID: 0}
   choosedMessage:
     id: 0
-    messageTimeOfLife: 0
+    messageTransmissionTime: 0
+    messageDecayment: 0
     tags: []
     description: 
   isReceivingMessage: 0
@@ -1303,6 +1306,8 @@ MonoBehaviour:
   Head: {fileID: 212549188532689162}
   LeftHand: {fileID: 212987356582164654}
   RightHand: {fileID: 212013476709243346}
+  currentAssertivenessLevel: 0
+  currentCooperativenessLevel: 0
 --- !u!114 &114956926709969678
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2148,6 +2153,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.096}
-  m_SizeDelta: {x: 141.2371, y: 65.8358}
+  m_AnchoredPosition: {x: 0, y: -0.013}
+  m_SizeDelta: {x: 141.2371, y: 97.1165}
   m_Pivot: {x: 0.5, y: 0.5}

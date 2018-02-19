@@ -20,6 +20,8 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     public Transform listAttributes;
 
+    Message messageBeingTracked;
+
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
     }
@@ -39,7 +41,15 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
         if (feedbackMessageCanvas.activeSelf)
         {
-            feedbackMessageCanvas.transform.localPosition = npcObject.transform.localPosition;
+            if (messageBeingTracked.messageDecayment <= 0.0f)
+            {
+                feedbackMessageCanvas.SetActive(false);
+            }
+            else
+            {
+                feedbackMessageCanvas.transform.localPosition = npcObject.transform.localPosition;
+                feedbackMessageNumberText.text = messageBeingTracked.id + System.Environment.NewLine + messageBeingTracked.messageDecayment;
+            }
         }
         if (feedbackThinkingCanvas.activeSelf)
         {
@@ -53,10 +63,11 @@ public class NPCFeedbackUpdater : MonoBehaviour {
         {
             if (uiManager.messageTrackingID.text != "")
             {
+                messageBeingTracked = GetComponent<NPCData>().messages.Find(x => x.id == System.Int32.Parse(uiManager.messageTrackingID.text));
                 //Check if NPC has the message being tracked
-                if (GetComponent<NPCData>().messages.Find(x => x.id == System.Int32.Parse(uiManager.messageTrackingID.text)) != null)
+                if (messageBeingTracked != null)
                 {
-                    feedbackMessageNumberText.text = uiManager.messageTrackingID.text;
+                    feedbackMessageNumberText.text = messageBeingTracked.id + System.Environment.NewLine + messageBeingTracked.messageDecayment;
                     feedbackMessageCanvas.SetActive(true);
                 }
                 else
