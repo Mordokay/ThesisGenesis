@@ -161,11 +161,12 @@ public class Social : MonoBehaviour {
             NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
             NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness > 1.5f)
         {
+            /*
             Debug.Log(NPC_A.currentAssertivenessLevel * NPC_A.assertiveness +
             NPC_A.currentCooperativenessLevel * NPC_A.cooperativeness +
             NPC_B.currentAssertivenessLevel * NPC_B.assertiveness +
             NPC_B.currentCooperativenessLevel * NPC_B.cooperativeness);
-
+            */
             float mostAtractiveMessageScore = 0;
             Message mostAttractiveMessage = null;
 
