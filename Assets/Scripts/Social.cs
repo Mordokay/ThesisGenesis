@@ -217,7 +217,7 @@ public class Social : MonoBehaviour {
                         }
                     }
 
-                    messageScore *= m1.messageDecayment;
+                    messageScore *= (1+m1.messageDecayment);
 
                     if (messageScore > mostAtractiveMessageScore)
                     {
@@ -261,7 +261,7 @@ public class Social : MonoBehaviour {
                         }
                     }
 
-                    messageScore *= m2.messageDecayment;
+                    messageScore *= (1+m2.messageDecayment);
 
                     if (messageScore > mostAtractiveMessageScore)
                     {

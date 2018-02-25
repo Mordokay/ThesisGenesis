@@ -8,7 +8,7 @@ public class PatrolPointData : MonoBehaviour {
 
     public void ReceiveEvent(Message m)
     {
-        if(messages.Count == 7)
+        if(messages.Count == 3)
         {
             messages.RemoveAt(0);
         }

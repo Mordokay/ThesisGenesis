@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -20,6 +21,7 @@ public class EditorModeController : MonoBehaviour {
     public GameObject elementHolder;
     public GameObject patrolPointsHolder;
     public GameObject npcHolder;
+    public GameObject eventHolder;
 
     public bool patrolPointEnabled;
     public GameObject patrolPointPrefab;
@@ -165,6 +167,11 @@ public class EditorModeController : MonoBehaviour {
         GenerateTerrainReferences();
 
         hasToUpdatePatrolPointsNumbers = false;
+
+        if(PlayerPrefs.GetInt("loadingMap") == 1)
+        {
+            MapLoader();
+        }
     }
 
     void GenerateTerrainReferences()
@@ -493,7 +500,7 @@ public class EditorModeController : MonoBehaviour {
         }
         if (myTags.Count > 0)
         {
-            GameObject mySpawnEvent = Instantiate(Resources.Load<GameObject>("EventSpawner"));
+            GameObject mySpawnEvent = Instantiate(Resources.Load<GameObject>("EventSpawner"), eventHolder.transform);
             mySpawnEvent.transform.position = pos;
             mySpawnEvent.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
             mySpawnEvent.transform.GetChild(0).transform.localScale = Vector3.one * transmissionDistance;
@@ -910,6 +917,21 @@ public class EditorModeController : MonoBehaviour {
 
     public void LoadMap()
     {
+        PlayerPrefs.SetInt("loadingMap", 1);
+
+        string myFile = "default";
+        if (nameForLoad.text != "")
+        {
+            myFile = nameForLoad.text;
+        }
+        PlayerPrefs.SetString("mapToLoad", myFile);
+
+        SceneManager.LoadScene(0);
+    }
+
+    public void MapLoader()
+    {
+        /*
         var children = new List<GameObject>();
         foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
         children.ForEach(child => Destroy(child));
@@ -923,12 +945,17 @@ public class EditorModeController : MonoBehaviour {
         children.ForEach(child => Destroy(child));
 
         elementList.Clear();
+        */
 
+        /*
         string myFile = "default";
         if (nameForLoad.text != "")
         {
             myFile = nameForLoad.text;
         }
+        */
+
+        string myFile = PlayerPrefs.GetString("mapToLoad");
 
         //Application.persistentDataPath
 
@@ -1092,7 +1119,11 @@ public class EditorModeController : MonoBehaviour {
         {
             npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
         }
+
+        PlayerPrefs.SetInt("loadingMap", 0);
     }
+
+
     public void UpdateSprite(int x, int y)
     {
         //Debug.Log("Updating sprite ( " + x + " , " + y + " )");

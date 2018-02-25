@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EventSpawnManager : MonoBehaviour {
 
@@ -30,13 +31,27 @@ public class EventSpawnManager : MonoBehaviour {
         this.messageSendDistance = distance;
         this.messageTime = time;
         this.description = desc;
+
+        string tagString = "";
+        foreach (Message.Tag t in myTags)
+        {
+            tagString += t.name + "-" + t.weight + ",";
+        }
+        if (tags.Count > 0)
+        {
+            tagString = tagString.Substring(0, tagString.Length - 1);
+        }
+
+        this.transform.GetChild(1).GetComponentInChildren<Text>().text = desc + System.Environment.NewLine;
+        this.transform.GetChild(1).GetComponentInChildren<Text>().text += "Transmission time: " + time + System.Environment.NewLine;
+        this.transform.GetChild(1).GetComponentInChildren<Text>().text += tagString;
     }
 
     private void Update()
     {
         bool found_NPC_or_Patrol_Point_Close = false;
 
-        if (!description.Equals(""))
+        if (!description.Equals("") && Time.timeScale != 0.0f)
         {
             foreach (Transform npc in emc.npcHolder.transform)
             {

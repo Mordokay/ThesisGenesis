@@ -20,7 +20,7 @@ public class NPCData : MonoBehaviour {
     public SpriteRenderer LeftHand;
     public SpriteRenderer RightHand;
 
-    float messageLimit = 7;
+    float messageLimit = 3;
 
     public float currentAssertivenessLevel;
     public float currentCooperativenessLevel;
@@ -88,11 +88,16 @@ public class NPCData : MonoBehaviour {
 
     public void DecayMessages()
     {
-        //It takes 50 seconds for a message to reach zero
+        //It takes 3 minutes for a message to reach zero
         foreach (Message m in messages)
         {
-            m.messageDecayment -= Time.deltaTime / 50.0f;
+            m.messageDecayment -= Time.deltaTime / 180.0f;
+            if (m.messageDecayment < 0.0f)
+            {
+                m.messageDecayment = 0.0f;
+            }
         }
+        /*
         for (int i = messages.Count - 1; i >= 0; i--)
         {
             if(messages[i].messageDecayment < 0.0f)
@@ -100,6 +105,7 @@ public class NPCData : MonoBehaviour {
                 messages.RemoveAt(i);
             }
         }
+        */
     }
 
     public bool isMessageOfInterest(Message msg)
@@ -123,6 +129,10 @@ public class NPCData : MonoBehaviour {
                     recievedMessageScore += foundInterest.weight * tag.weight;
                 }
             }
+
+            //The message recieved is gonna have a decayment of 1 initially
+            recievedMessageScore *= (1 + msg.messageDecayment);
+
             //Debug.Log("recievedMessageScore " + recievedMessageScore);
             //Debug.Log("recievedMessage " + msg.ToString());
             foreach (Message m in messages)
@@ -136,6 +146,10 @@ public class NPCData : MonoBehaviour {
                         totalScore += foundInterest.weight * tag.weight;
                     }
                 }
+
+                //Total score is multiplied by the decayment of the message
+                totalScore *= (1 + m.messageDecayment);
+
                 if (totalScore < lessInterestingMessageScore)
                 {
                     lessInterestingMessage = m;
