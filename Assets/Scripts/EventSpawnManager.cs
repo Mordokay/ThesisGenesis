@@ -9,13 +9,13 @@ public class EventSpawnManager : MonoBehaviour {
     EditorModeController emc;
     UIManager uiManager;
 
+    public int eventId;
+
     public List<Message.Tag> tags;
     public float messageSendDistance;
     public float messageTime;
     public string description;
     public bool initialized;
-
-    public int eventId;
 
     private void Start()
     {

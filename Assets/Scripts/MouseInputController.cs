@@ -167,7 +167,7 @@ public class MouseInputController : MonoBehaviour {
                     RaycastHit hit;
                     Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, PatrolLayerMask);
 
-                    if (hit.collider != null)
+                    if (hit.collider != null && hit.collider.tag == "PatrolPoint")
                     {
                         gm.GetComponent<EditorModeController>().RemovePatrolPoint(hit.collider.gameObject);
                     }

@@ -806,18 +806,6 @@ public class EditorModeController : MonoBehaviour {
         {
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
         }
-        /*
-        for (int i = 0; i < patrolPointsList.Count; i++)
-        {
-            Vector3 posOfElm = patrolPointsList[i].elementObject.transform.position;
-            mapContent += posOfElm.x + " " + posOfElm.z;
-            mapContent += ";";
-        }
-        if (patrolPointsList.Count > 0)
-        {
-            mapContent = mapContent.Substring(0, mapContent.Length - 1);
-        }
-        */
         mapContent += "|";
 
         List<GameObject> myNPCs = new List<GameObject>();
@@ -902,6 +890,34 @@ public class EditorModeController : MonoBehaviour {
         }
         mapContent += "|";
 
+        List<GameObject> myEventSpawners = new List<GameObject>();
+        foreach (Transform eventSpawner in eventHolder.transform)
+        {
+            myEventSpawners.Add(eventSpawner.gameObject);
+        }
+        for (int i = 0; i < myEventSpawners.Count; i++)
+        {
+            mapContent += myEventSpawners[i].transform.position.x + " " + myEventSpawners[i].transform.position.z + " " +
+                myEventSpawners[i].GetComponent<EventSpawnManager>().messageSendDistance + " " +
+                myEventSpawners[i].GetComponent<EventSpawnManager>().messageTime + "#" +
+                myEventSpawners[i].GetComponent<EventSpawnManager>().description + "#";
+
+            foreach (Message.Tag tag in myEventSpawners[i].GetComponent<EventSpawnManager>().tags)
+            {
+                mapContent += tag.name + " " + tag.weight + ",";
+            }
+            if (myEventSpawners[i].GetComponent<EventSpawnManager>().tags.Count > 0)
+            {
+                mapContent = mapContent.Substring(0, mapContent.Length - 1);
+            }
+            mapContent += "@";
+        }
+        if (myEventSpawners.Count > 0)
+        {
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+        }
+        //mapContent += "|";
+
         //Write some text to the test.txt file
         StreamWriter writer = new StreamWriter(path, false);
         StreamWriter writerLocal = new StreamWriter(localPath, false);
@@ -959,170 +975,203 @@ public class EditorModeController : MonoBehaviour {
 
         //Application.persistentDataPath
 
-        StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + myFile + ".txt");
-        string mySaveString = reader.ReadLine();
-        //TextAsset asset = Resources.Load(myFile) as TextAsset;
-
-        string[] splitGameData = mySaveString.Split(char.Parse("|"));
-        int messageIdCount = System.Int32.Parse(splitGameData[0]);
-        string[] splitArrayTerrain = splitGameData[1].Split(char.Parse(";"));
-        string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
-        string[] splitArrayElements = splitGameData[3].Split(char.Parse(";"));
-        string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse("@"));
-        string[] splitArrayNPC = splitGameData[5].Split(char.Parse("@"));
-
-        this.GetComponent<PlayModeManager>().messageID = messageIdCount;
-
-        //Debug.Log(splitGameData[0]);
-        //Debug.Log(splitGameData[1]);
-        //Debug.Log(splitGameData[2]);
-        //Debug.Log(splitGameData[3]);
-
-        mapWidth = splitArrayTerrain.Length;
-        mapHeight = splitArrayTerrain[0].Split(char.Parse(" ")).Length;
-
-        tMap = new Terrain[mapWidth, mapHeight];
-        uMap = new Terrain[mapWidth, mapHeight];
-        for (int i = 0; i < tMap.GetLength(0); i++)
+        if (File.Exists(Application.persistentDataPath + "/" + myFile + ".txt"))
         {
-            for (int j = 0; j < tMap.GetLength(1); j++)
+
+            StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + myFile + ".txt");
+            string mySaveString = reader.ReadLine();
+
+            //TextAsset asset = Resources.Load(myFile) as TextAsset;
+
+            string[] splitGameData = mySaveString.Split(char.Parse("|"));
+            int messageIdCount = System.Int32.Parse(splitGameData[0]);
+            string[] splitArrayTerrain = splitGameData[1].Split(char.Parse(";"));
+            string[] splitArrayUnderground = splitGameData[2].Split(char.Parse(";"));
+            string[] splitArrayElements = splitGameData[3].Split(char.Parse(";"));
+            string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse("@"));
+            string[] splitArrayNPC = splitGameData[5].Split(char.Parse("@"));
+            string[] splitArrayEventSpawners = splitGameData[6].Split(char.Parse("@"));
+
+            this.GetComponent<PlayModeManager>().messageID = messageIdCount;
+
+            //Debug.Log(splitGameData[0]);
+            //Debug.Log(splitGameData[1]);
+            //Debug.Log(splitGameData[2]);
+            //Debug.Log(splitGameData[3]);
+
+            mapWidth = splitArrayTerrain.Length;
+            mapHeight = splitArrayTerrain[0].Split(char.Parse(" ")).Length;
+
+            tMap = new Terrain[mapWidth, mapHeight];
+            uMap = new Terrain[mapWidth, mapHeight];
+            for (int i = 0; i < tMap.GetLength(0); i++)
             {
-                tMap[i, j] = new Terrain();
-                uMap[i, j] = new Terrain();
-            }
-        }
-
-        for (int i = 0; i < mapWidth; i++)
-        {
-            string[] myLineTerrain = splitArrayTerrain[i].Split(char.Parse(" "));
-            string[] myLineUnderground = splitArrayUnderground[i].Split(char.Parse(" "));
-
-            for (int j = 0; j < mapHeight; j++)
-            {
-                tMap[i, j].terrainType = System.Int32.Parse(myLineTerrain[j]);
-                GameObject myTerrain = Instantiate(terrainBasicObject);
-                tMap[i, j].terrainObject = myTerrain;
-                myTerrain.name = i + " " + j;
-                myTerrain.transform.parent = terrainHolder.transform;
-                myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
-                myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
-
-                uMap[i, j].terrainType = System.Int32.Parse(myLineUnderground[j]);
-                GameObject myUnderground = Instantiate(undergroundBasicObject);
-                uMap[i, j].terrainObject = myUnderground;
-                if (uMap[i, j].terrainType != -1)
+                for (int j = 0; j < tMap.GetLength(1); j++)
                 {
-                    Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[uMap[i, j].terrainType].BasicTerrain);
-                    uMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                    tMap[i, j] = new Terrain();
+                    uMap[i, j] = new Terrain();
+                }
+            }
 
-                    
-                    if (tMap[i, j].terrainType == -1)
+            for (int i = 0; i < mapWidth; i++)
+            {
+                string[] myLineTerrain = splitArrayTerrain[i].Split(char.Parse(" "));
+                string[] myLineUnderground = splitArrayUnderground[i].Split(char.Parse(" "));
+
+                for (int j = 0; j < mapHeight; j++)
+                {
+                    tMap[i, j].terrainType = System.Int32.Parse(myLineTerrain[j]);
+                    GameObject myTerrain = Instantiate(terrainBasicObject);
+                    tMap[i, j].terrainObject = myTerrain;
+                    myTerrain.name = i + " " + j;
+                    myTerrain.transform.parent = terrainHolder.transform;
+                    myTerrain.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                    myTerrain.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+
+                    uMap[i, j].terrainType = System.Int32.Parse(myLineUnderground[j]);
+                    GameObject myUnderground = Instantiate(undergroundBasicObject);
+                    uMap[i, j].terrainObject = myUnderground;
+                    if (uMap[i, j].terrainType != -1)
                     {
-                        tMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                        Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[uMap[i, j].terrainType].BasicTerrain);
+                        uMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+
+
+                        if (tMap[i, j].terrainType == -1)
+                        {
+                            tMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
+                        }
+                    }
+                    myUnderground.name = i + " " + j;
+                    myUnderground.transform.parent = undergroundHolder.transform;
+                    myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                    myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+                }
+            }
+            for (int i = 0; i < splitArrayElements.Length; i++)
+            {
+                string[] myElementData = splitArrayElements[i].Split(char.Parse(" "));
+
+                if (myElementData[0] != "")
+                {
+                    GameObject myElement;
+                    switch (myElementData[0])
+                    {
+                        case "n":
+                            myElement = Instantiate(naturalElementsPrefabs[System.Int32.Parse(myElementData[1])]);
+
+                            myElement.transform.parent = elementHolder.transform;
+                            myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
+                            elementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
+                            break;
+                        case "c":
+                            myElement = Instantiate(constructElementsPrefabs[System.Int32.Parse(myElementData[1])]);
+
+                            myElement.transform.parent = elementHolder.transform;
+                            myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
+                            elementList.Add(new Element(myElement, "c", System.Int32.Parse(myElementData[1])));
+                            break;
                     }
                 }
-                myUnderground.name = i + " " + j;
-                myUnderground.transform.parent = undergroundHolder.transform;
-                myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
-                myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
-        }
-        for(int i = 0; i < splitArrayElements.Length; i++)
-        {
-            string[] myElementData = splitArrayElements[i].Split(char.Parse(" "));
 
-            if (myElementData[0] != "")
+            for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
             {
-                GameObject myElement;
-                switch (myElementData[0])
+                //Debug.Log(splitArrayPatrolPoints[i]);
+                string[] myPatrolData = splitArrayPatrolPoints[i].Split('#');
+                string[] patrolPos = myPatrolData[0].Split(' ');
+
+                if (myPatrolData[0] != "")
                 {
-                    case "n":
-                        myElement = Instantiate(naturalElementsPrefabs[System.Int32.Parse(myElementData[1])]);
+                    GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
 
-                        myElement.transform.parent = elementHolder.transform;
-                        myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
-                        elementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
-                        break;
-                    case "c":
-                        myElement = Instantiate(constructElementsPrefabs[System.Int32.Parse(myElementData[1])]);
+                    myPatrolPoint.transform.parent = patrolPointsHolder.transform;
+                    myPatrolPoint.transform.position = new Vector3(float.Parse(patrolPos[0]), 0.0f, float.Parse(patrolPos[1]));
+                    myPatrolPoint.GetComponentInChildren<TextMesh>().text = (patrolPointsHolder.transform.childCount - 1).ToString();
 
-                        myElement.transform.parent = elementHolder.transform;
-                        myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
-                        elementList.Add(new Element(myElement, "c", System.Int32.Parse(myElementData[1])));
-                        break;
-                }
-            }  
-        }
+                    myPatrolPoint.GetComponent<PatrolPointData>().InitializePatrolPointData(myPatrolData[1]);
 
-        for (int i = 0; i < splitArrayPatrolPoints.Length; i++)
-        {
-            //Debug.Log(splitArrayPatrolPoints[i]);
-            string[] myPatrolData = splitArrayPatrolPoints[i].Split('#');
-            string[] patrolPos = myPatrolData[0].Split(' ');
-
-            if (myPatrolData[0] != "")
-            {
-                GameObject myPatrolPoint = Instantiate(patrolPointPrefab);
-
-                myPatrolPoint.transform.parent = patrolPointsHolder.transform;
-                myPatrolPoint.transform.position = new Vector3(float.Parse(patrolPos[0]), 0.0f, float.Parse(patrolPos[1]));
-                myPatrolPoint.GetComponentInChildren<TextMesh>().text = (patrolPointsHolder.transform.childCount - 1).ToString();
-
-                myPatrolPoint.GetComponent<PatrolPointData>().InitializePatrolPointData(myPatrolData[1]);
-
-                //check if patrol point layer is active. If patrol point layer is not enabled, this point is hidden
-                if (!UI_Manager.isPatrolPointLayerEnabled)
-                {
-                    myPatrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                    myPatrolPoint.transform.GetChild(0).gameObject.SetActive(false);
+                    //check if patrol point layer is active. If patrol point layer is not enabled, this point is hidden
+                    if (!UI_Manager.isPatrolPointLayerEnabled)
+                    {
+                        myPatrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                        myPatrolPoint.transform.GetChild(0).gameObject.SetActive(false);
+                    }
                 }
             }
-        }
 
-        if (splitArrayNPC.Length > 0 && splitArrayNPC[0] != "")
-        {
-            foreach (string s in splitArrayNPC)
+            if (splitArrayNPC.Length > 0 && splitArrayNPC[0] != "")
             {
-                //Debug.Log(splitArrayNPC);
-                string[] npcData = s.Split('#');
+                foreach (string s in splitArrayNPC)
+                {
+                    //Debug.Log(splitArrayNPC);
+                    string[] npcData = s.Split('#');
 
-                string[] npcBasicInfo = npcData[0].Split(';');
-                string[] npcPos = npcBasicInfo[0].Split(' ');
-                string npcName = npcBasicInfo[1];
-                string[] myNpcColors = npcBasicInfo[2].Split(',');
+                    string[] npcBasicInfo = npcData[0].Split(';');
+                    string[] npcPos = npcBasicInfo[0].Split(' ');
+                    string npcName = npcBasicInfo[1];
+                    string[] myNpcColors = npcBasicInfo[2].Split(',');
 
-                GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
+                    GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
 
-                myNPC.name = npcName;
-                myNPC.transform.parent = npcHolder.transform;
-                myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
+                    myNPC.name = npcName;
+                    myNPC.transform.parent = npcHolder.transform;
+                    myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
 
-                myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
-                    npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
-                    new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
-                    new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
-                    new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
+                    myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+                        npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
+                        new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
+                        new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
+                        new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
 
-                myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
+                    myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
+                }
+            }
+            for (int i = 1; i < mapWidth - 1; i++)
+            {
+                for (int j = 1; j < mapHeight - 1; j++)
+                {
+                    UpdateSprite(i, j);
+                    //Debug.Log("mapWidth: " + mapWidth + "mapHeight: " + mapHeight);
+                }
+            }
+            foreach (Transform npc in npcHolder.transform)
+            {
+                npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
+            }
+
+            for (int i = 0; i < splitArrayEventSpawners.Length; i++)
+            {
+                //Debug.Log(splitArrayPatrolPoints[i]);
+                string[] myEventSpawnerData = splitArrayEventSpawners[i].Split('#');
+
+                if (myEventSpawnerData[0] != "")
+                {
+                    string[] spawnerSimpleData = myEventSpawnerData[0].Split(' ');
+                    string[] eventSpawnerTags = myEventSpawnerData[2].Split(',');
+                    Vector3 pos = new Vector3(float.Parse(spawnerSimpleData[0]), 0.0f, float.Parse(spawnerSimpleData[1]));
+                    float transmissionDistance = float.Parse(spawnerSimpleData[2]);
+                    float transmissionTime = float.Parse(spawnerSimpleData[3]);
+
+                    string description = myEventSpawnerData[1];
+
+                    List<Message.Tag> myTags = new List<Message.Tag>();
+                    foreach (string tag in eventSpawnerTags)
+                    {
+                        string[] tagData = tag.Split(' ');
+                        myTags.Add(new Message.Tag(tagData[0], System.Int32.Parse(tagData[1])));
+                    }
+
+                    GameObject mySpawnEvent = Instantiate(Resources.Load<GameObject>("EventSpawner"), eventHolder.transform);
+                    mySpawnEvent.transform.position = pos;
+                    mySpawnEvent.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
+                    mySpawnEvent.transform.GetChild(0).transform.localScale = Vector3.one * transmissionDistance;
+                }
             }
         }
-        for (int i = 1; i < mapWidth - 1; i++)
-        {
-            for (int j = 1; j < mapHeight - 1; j++)
-            {
-                UpdateSprite(i, j);
-                //Debug.Log("mapWidth: " + mapWidth + "mapHeight: " + mapHeight);
-            }
-        }
-        foreach (Transform npc in npcHolder.transform)
-        {
-            npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
-        }
-
         PlayerPrefs.SetInt("loadingMap", 0);
     }
-
 
     public void UpdateSprite(int x, int y)
     {
