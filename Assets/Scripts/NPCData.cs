@@ -131,7 +131,7 @@ public class NPCData : MonoBehaviour {
             }
 
             //The message recieved is gonna have a decayment of 1 initially
-            recievedMessageScore *= (1 + msg.messageDecayment);
+            recievedMessageScore *= (0.5f + msg.messageDecayment);
 
             //Debug.Log("recievedMessageScore " + recievedMessageScore);
             //Debug.Log("recievedMessage " + msg.ToString());
@@ -148,7 +148,7 @@ public class NPCData : MonoBehaviour {
                 }
 
                 //Total score is multiplied by the decayment of the message
-                totalScore *= (1 + m.messageDecayment);
+                totalScore *= (0.5f + m.messageDecayment);
 
                 if (totalScore < lessInterestingMessageScore)
                 {
@@ -166,7 +166,10 @@ public class NPCData : MonoBehaviour {
                 //Debug.Log("Score comparison: " + recievedMessageScore + " <> " + lessInterestingMessageScore);
                 //Debug.Log("Replaced message: " + lessInterestingMessage.ToString());
                 //Debug.Log("With new message: " + msg.ToString());
-                messages.Remove(lessInterestingMessage);
+                if (messages.Find(x => x.id == msg.id) == null)
+                {
+                    messages.Remove(lessInterestingMessage);
+                }
                 //messages.RemoveAll(p => p.id == lessInterestingMessage.id);
                 return true;
             }

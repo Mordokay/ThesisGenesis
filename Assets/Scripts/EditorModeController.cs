@@ -347,7 +347,7 @@ public class EditorModeController : MonoBehaviour {
                         interestString = interestString.Substring(0, interestString.Length - 1);
                     }
                 }
-                Debug.Log(interestString);
+                //Debug.Log(interestString);
 
                 string friendsString = "";
                 if (Friends.Count > 0)
@@ -359,7 +359,7 @@ public class EditorModeController : MonoBehaviour {
                     }
                     friendsString = friendsString.Substring(0, friendsString.Length - 1);
                 }
-                Debug.Log(friendsString);
+                //Debug.Log(friendsString);
 
                 string patrolPointsString = "";
                 if (PatrolPointNumber.Count > 0)
@@ -370,7 +370,7 @@ public class EditorModeController : MonoBehaviour {
                     }
                     patrolPointsString = patrolPointsString.Substring(0, patrolPointsString.Length - 1);
                 }
-                Debug.Log(patrolPointsString);
+                //Debug.Log(patrolPointsString);
 
                 myNPC.GetComponent<NPCData>().InitializeNPCData(myNPC.name, interestString, friendsString, "",
                     patrolPointsString, assertivenessSlider.value, cooperativenessSlider.value, selectedNPCType,

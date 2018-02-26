@@ -14,6 +14,8 @@ public class Social : MonoBehaviour {
     public bool isReceivingMessage;
     public float remainingMessageTransmissionTime;
 
+    bool choosedMessageRepeated;
+
     public GameObject talkCanvas;
 
     /*
@@ -22,7 +24,7 @@ public class Social : MonoBehaviour {
     * 1 -> NPC choses a message he doesn't know from NPC_Other (receives message)
     * 0.5 -> Equal weight between messages from NPC ot NPC_Other
     */
-
+     
     void Start () {
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
@@ -135,9 +137,16 @@ public class Social : MonoBehaviour {
                 isTalking = false;
                 if (isReceivingMessage && choosedMessage != null)
                 {
-                    this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id, 
-                        choosedMessage.messageTransmissionTime, choosedMessage.description, 
-                        choosedMessage.tags));
+                    if (this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id) == null)
+                    {
+                        this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id,
+                            choosedMessage.messageTransmissionTime, choosedMessage.description,
+                            choosedMessage.tags));
+                    }
+                    else
+                    {
+                        this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).messageDecayment = 1.0f;
+                    }
                     isReceivingMessage = false;
 
                     //Checks if the message recieved is the message being tracked
@@ -148,7 +157,6 @@ public class Social : MonoBehaviour {
                     choosedMessage.messageDecayment = 1.0f;
                 }
             }
-            //Debug.Log("I am talking with " + talkPartner.name);
         }
 	}
 
@@ -170,9 +178,9 @@ public class Social : MonoBehaviour {
             float mostAtractiveMessageScore = 0;
             Message mostAttractiveMessage = null;
 
-            //When considering messages from self, if listenerLevel is 1 this messages will not be considered
             foreach (Message m1 in NPC_A.messages)
             {
+                /*
                 bool doesntHaveMessage = false;
                 if (NPC_B.messages.Count == 0 || NPC_B.messages.Find(x => x.id == m1.id) == null)
                 {
@@ -181,21 +189,29 @@ public class Social : MonoBehaviour {
 
                 if (doesntHaveMessage)
                 {
-                    /**
-                     * AA = Assertiveness A
-                     * CA = Cooperativeness A
-                     * AB = Assertiveness B
-                     * CB = Cooperativeness B
-                     * M1 = Message1
-                     * 
-                     * TagsM1_IA = Tags that are in M1 that match an Interest of A
-                     * 
-                     * To determine how good M1 M1 is we use this formula:
-                     * MessageScore = TagsM1_IA * AA + TagsM1_IB * CA + TagsM1_IB * AB + TagsM1_IA * CB
-                     * or 
-                     * MessageScore = TagsM1_IA * (AA, CB) + TagsM1_IB * (CA + AB)
-                     */
-                    float messageScore = 0;
+                */
+
+                bool repeatedMessage = false;
+                if (NPC_B.messages.Find(x => x.id == m1.id) != null)
+                {
+                    repeatedMessage = true;
+                }
+
+                /**
+                 * AA = Assertiveness A
+                 * CA = Cooperativeness A
+                 * AB = Assertiveness B
+                 * CB = Cooperativeness B
+                 * M1 = Message1
+                 * 
+                 * TagsM1_IA = Tags that are in M1 that match an Interest of A
+                 * 
+                 * To determine how good M1 M1 is we use this formula:
+                 * MessageScore = TagsM1_IA * AA + TagsM1_IB * CA + TagsM1_IB * AB + TagsM1_IA * CB
+                 * or 
+                 * MessageScore = TagsM1_IA * (AA, CB) + TagsM1_IB * (CA + AB)
+                 */
+                float messageScore = 0;
 
                     foreach (Message.Tag tag in m1.tags)
                     {
@@ -204,73 +220,87 @@ public class Social : MonoBehaviour {
                         {
                             if (interest.name.Equals(tag.name))
                             {
-                                messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
+                                messageScore += interest.weight * tag.weight * (NPC_A.assertiveness * NPC_B.cooperativeness);
                             }
                         }
                         //TagsM1_IB * (CA + AB)
-                        foreach (NPCData.Interest interest in NPC_B.interests)
-                        {
-                            if (interest.name.Equals(tag.name))
-                            {
-                                messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
-                            }
-                        }
+                        //foreach (NPCData.Interest interest in NPC_B.interests)
+                        //{
+                        //    if (interest.name.Equals(tag.name))
+                        //    {
+                        //        messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness * NPC_B.assertiveness);
+                        //    }
+                        //}
                     }
 
-                    messageScore *= (1+m1.messageDecayment);
-
-                    if (messageScore > mostAtractiveMessageScore)
+                    messageScore *= (0.5f + m1.messageDecayment);
+                if (repeatedMessage)
+                {
+                    messageScore *= 0.1f;
+                }
+                if (messageScore > mostAtractiveMessageScore)
                     {
                         mostAtractiveMessageScore = messageScore;
                         mostAttractiveMessage = m1;
-                        //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                        //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
-                    }
+                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
-            }
+                }
+            //}
 
             //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
             foreach (Message m2 in NPC_B.messages)
             {
+                /*
                 bool doesntHaveMessage = false;
-                if (NPC_A.messages.Count == 0 || NPC_A.messages.Find(x => x.id == m2.id) == null)
+                if (NPC_A.messages.Count == 0 || NPC_A.messages.Find(x w=> x.id == m2.id) == null)
                 {
                     doesntHaveMessage = true;
                 }
 
                 if (doesntHaveMessage)
                 {
-                    float messageScore = 0;
+                */
+                bool repeatedMessage = false;
+                if (NPC_A.messages.Find(x => x.id == m2.id) != null)
+                {
+                    repeatedMessage = true;
+                }
+                float messageScore = 0;
                     foreach (Message.Tag tag in m2.tags)
                     {
                         //TagsM2_IA * (AA, CB)
-                        foreach (NPCData.Interest interest in NPC_A.interests)
-                        {
-                            if (interest.name.Equals(tag.name))
-                            {
-                                messageScore += interest.weight * tag.weight * (NPC_A.assertiveness + NPC_B.cooperativeness);
-                            }
-                        }
+                        //foreach (NPCData.Interest interest in NPC_A.interests)
+                        //{
+                        //    if (interest.name.Equals(tag.name))
+                        //    {
+                        //        messageScore += interest.weight * tag.weight * (NPC_A.assertiveness * NPC_B.cooperativeness);
+                        //    }
+                        //}
+
                         //TagsM2_IB * (CA + AB)
                         foreach (NPCData.Interest interest in NPC_B.interests)
                         {
                             if (interest.name.Equals(tag.name))
                             {
-                                messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness + NPC_B.assertiveness);
+                                messageScore += interest.weight * tag.weight * (NPC_A.cooperativeness * NPC_B.assertiveness);
                             }
                         }
                     }
 
-                    messageScore *= (1+m2.messageDecayment);
-
+                    messageScore *= (0.5f + m2.messageDecayment);
+                if (repeatedMessage)
+                {
+                    messageScore *= 0.1f;
+                }
                     if (messageScore > mostAtractiveMessageScore)
                     {
                         mostAtractiveMessageScore = messageScore;
                         mostAttractiveMessage = m2;
-                        //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
-                        //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
-                    }
+                    //Debug.Log("mostAtractiveMessageScore: " + mostAtractiveMessageScore);
+                    //Debug.Log("mostAttractiveMessage: " + mostAttractiveMessage.ToString());
                 }
+                //}
             }
             return mostAttractiveMessage;
         }

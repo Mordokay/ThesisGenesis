@@ -69,7 +69,7 @@ public class EventSpawnManager : MonoBehaviour {
                     {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
-                    Debug.Log("tagString: " + tagString);
+                    //Debug.Log("tagString: " + tagString);
                     npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
 
                     uiManager.messageTrackingID.text = eventId.ToString();
