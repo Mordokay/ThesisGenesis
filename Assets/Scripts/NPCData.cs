@@ -34,11 +34,22 @@ public class NPCData : MonoBehaviour {
     private void Update()
     {
         DecayMessages();
-        //It takes 20 seconds to reach full assertiveness and cooperativeness
+        //It takes 50 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
-            currentAssertivenessLevel += Time.deltaTime / 20.0f;
-            currentCooperativenessLevel += Time.deltaTime / 20.0f;
+            currentAssertivenessLevel += Time.deltaTime / 50.0f;
+            currentCooperativenessLevel += Time.deltaTime / 50.0f;
+        }
+        else
+        {
+            if (this.GetComponent<Social>().isReceivingMessage)
+            {
+                currentAssertivenessLevel += Time.deltaTime / 50.0f;
+            }
+            else
+            {
+                currentCooperativenessLevel += Time.deltaTime / 50.0f;
+            }
         }
 
         if (currentAssertivenessLevel > 1.0f)

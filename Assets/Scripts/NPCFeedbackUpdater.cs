@@ -18,6 +18,9 @@ public class NPCFeedbackUpdater : MonoBehaviour {
     public Slider assertivenessSlider;
     public Slider cooperativenessSlider;
 
+    public Slider assertivenessSliderMeter;
+    public Slider cooperativenessSliderMeter;
+
     public Transform listAttributes;
 
     Message messageBeingTracked;
@@ -80,9 +83,9 @@ public class NPCFeedbackUpdater : MonoBehaviour {
 
     public void refreshFeedbackCanvas()
     {
-        assertivenessSlider.gameObject.GetComponent<RectTransform>().sizeDelta = 
+        assertivenessSliderMeter.gameObject.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(this.GetComponent<NPCData>().assertiveness * 100, 20);
-        cooperativenessSlider.gameObject.GetComponent<RectTransform>().sizeDelta = 
+        cooperativenessSliderMeter.gameObject.GetComponent<RectTransform>().sizeDelta = 
             new Vector2(this.GetComponent<NPCData>().cooperativeness * 100, 20);
 
         assertivenessSlider.value = this.GetComponent<NPCData>().currentAssertivenessLevel;
