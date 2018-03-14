@@ -142,7 +142,7 @@ public class NPCData : MonoBehaviour {
             }
 
             //The message recieved is gonna have a decayment of 1 initially
-            recievedMessageScore *= (0.5f + msg.messageDecayment);
+            recievedMessageScore *= msg.messageDecayment * msg.messageDecayment;
 
             //Debug.Log("recievedMessageScore " + recievedMessageScore);
             //Debug.Log("recievedMessage " + msg.ToString());
@@ -159,7 +159,7 @@ public class NPCData : MonoBehaviour {
                 }
 
                 //Total score is multiplied by the decayment of the message
-                totalScore *= (0.5f + m.messageDecayment);
+                totalScore *= m.messageDecayment * m.messageDecayment;
 
                 if (totalScore < lessInterestingMessageScore)
                 {
