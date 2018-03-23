@@ -169,8 +169,8 @@ public class Social : MonoBehaviour {
         float mostAtractiveMessageScore = 0;
         Message mostAttractiveMessage = null;
 
-        if (NPC_A.currentAssertivenessLevel > (1 - NPC_A.assertiveness) &&
-            NPC_B.currentCooperativenessLevel > (1 - NPC_B.cooperativeness))
+        if (NPC_A.currentAssertivenessLevel == 1/* (1 - NPC_A.assertiveness)*/ &&
+            NPC_B.currentCooperativenessLevel == 1 /*> (1 - NPC_B.cooperativeness)*/)
         {
             foreach (Message m1 in NPC_A.messages)
             {
@@ -204,8 +204,7 @@ public class Social : MonoBehaviour {
                         }
                     }
                 }
-                //scoreA *= (0.1f + m1.messageDecayment);
-                scoreA *= m1.messageDecayment * m1.messageDecayment;
+                scoreA *= m1.messageDecayment;
 
                 foreach (Message.Tag tag in m1.tags)
                 {
@@ -223,14 +222,9 @@ public class Social : MonoBehaviour {
                 //he hasn't talked about it in a long time
                 if (messageInB != null)
                 {
-                    scoreB *= 1 - (messageInB.messageDecayment * messageInB.messageDecayment);
-                    messageScore = scoreA + scoreB;
-                    messageScore *= 0.1f;
+                    scoreB *= messageInB.messageDecayment;
                 }
-                else
-                {
-                    messageScore = scoreA + scoreB;
-                }
+                messageScore = scoreA + scoreB;
 
                 if (messageScore > mostAtractiveMessageScore)
                 {
@@ -240,8 +234,8 @@ public class Social : MonoBehaviour {
             }
         }
 
-        if (NPC_B.currentAssertivenessLevel > (1 - NPC_B.assertiveness) &&
-           NPC_A.currentCooperativenessLevel > (1 - NPC_A.cooperativeness))
+        if (NPC_B.currentAssertivenessLevel == 1 /*> (1 - NPC_B.assertiveness)*/ &&
+           NPC_A.currentCooperativenessLevel == 1 /*> (1 - NPC_A.cooperativeness)*/)
         {
             //We want to see if NPC_A prefers to talk about his messages or recieve a message from NPC_B
             foreach (Message m2 in NPC_B.messages)
@@ -261,8 +255,7 @@ public class Social : MonoBehaviour {
                         }
                     }
                 }
-                //scoreB *= (0.1f + m2.messageDecayment);
-                scoreB *= m2.messageDecayment * m2.messageDecayment;
+                scoreB *= m2.messageDecayment;
 
                 foreach (Message.Tag tag in m2.tags)
                 {
@@ -276,14 +269,10 @@ public class Social : MonoBehaviour {
                 }
                 if (messageInA != null)
                 {
-                    scoreA *= 1 - (messageInA.messageDecayment * messageInA.messageDecayment);
-                    messageScore = scoreA + scoreB;
-                    messageScore *= 0.1f;
+                    scoreA *= messageInA.messageDecayment;
                 }
-                else
-                {
-                    messageScore = scoreA + scoreB;
-                }
+
+                messageScore = scoreA + scoreB;
 
                 if (messageScore > mostAtractiveMessageScore)
                 {

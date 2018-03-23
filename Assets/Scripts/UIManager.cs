@@ -73,8 +73,14 @@ public class UIManager : MonoBehaviour {
 
     public GameObject watchModeSelectedFeedback;
 
+    public GameObject linearDecaymentButton;
+    public GameObject variableDecaymentButton;
+    public bool isLinearDecayment;
+
     void Start()
     {
+        SetLinearDecayment();
+
         messageIdsToRemoveNPCUpdater = new List<int>();
         messageIdPatrolPointToRemove = new List<int>();
         isFeedbackEnabled = false;
@@ -100,6 +106,19 @@ public class UIManager : MonoBehaviour {
     {
         mainPanel.SetActive(false);
         addPlayerPanel.SetActive(true);
+    }
+
+    public void SetLinearDecayment()
+    {
+        isLinearDecayment = true;
+        linearDecaymentButton.GetComponent<Image>().color = Color.yellow;
+        variableDecaymentButton.GetComponent<Image>().color = Color.white;
+    }
+    public void SetVariableDecayment()
+    {
+        isLinearDecayment = false;
+        linearDecaymentButton.GetComponent<Image>().color = Color.white;
+        variableDecaymentButton.GetComponent<Image>().color = Color.yellow;
     }
 
     public void ToggleWatchMode()

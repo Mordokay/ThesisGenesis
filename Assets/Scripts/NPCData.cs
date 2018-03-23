@@ -25,8 +25,11 @@ public class NPCData : MonoBehaviour {
     public float currentAssertivenessLevel;
     public float currentCooperativenessLevel;
 
+    UIManager uiManager;
+
     private void Start()
     {
+        uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         currentAssertivenessLevel = 0.0f;
         currentCooperativenessLevel = 0.0f;
     }
@@ -37,21 +40,24 @@ public class NPCData : MonoBehaviour {
         //It takes 50 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
-            currentAssertivenessLevel += Time.deltaTime / 50.0f;
-            currentCooperativenessLevel += Time.deltaTime / 50.0f;
+            currentAssertivenessLevel += (Time.deltaTime / 30.0f )* assertiveness;
+            currentCooperativenessLevel += (Time.deltaTime / 30.0f) * cooperativeness;
         }
         else
         {
             if (this.GetComponent<Social>().isReceivingMessage)
             {
-                currentAssertivenessLevel += Time.deltaTime / 50.0f;
+                currentAssertivenessLevel += (Time.deltaTime / 30.0f) * assertiveness;
             }
             else
             {
-                currentCooperativenessLevel += Time.deltaTime / 50.0f;
+                currentCooperativenessLevel += (Time.deltaTime / 30.0f) * cooperativeness;
             }
         }
 
+        currentAssertivenessLevel = Mathf.Clamp(currentAssertivenessLevel, 0.0f, 1.0f);
+        currentCooperativenessLevel = Mathf.Clamp(currentCooperativenessLevel, 0.0f, 1.0f);
+        /*
         if (currentAssertivenessLevel > 1.0f)
         {
             currentAssertivenessLevel = 1.0f;
@@ -69,6 +75,7 @@ public class NPCData : MonoBehaviour {
         {
             currentCooperativenessLevel = 0.0f;
         }
+        */
     }
 
     [System.Serializable]
@@ -102,10 +109,23 @@ public class NPCData : MonoBehaviour {
         //It takes 3 minutes for a message to reach zero
         foreach (Message m in messages)
         {
-            m.messageDecayment -= Time.deltaTime / 180.0f;
-            if (m.messageDecayment < 0.0f)
+            if (uiManager.isLinearDecayment)
             {
-                m.messageDecayment = 0.0f;
+                //Linear decayment
+                m.messageDecayment -= Time.deltaTime / 180.0f;
+                if (m.messageDecayment < 0.0f)
+                {
+                    m.messageDecayment = 0.0f;
+                }
+            }
+            else
+            {
+                //Variable decayment
+                m.messageDecayment = m.messageDecayment / (1 + 0.05f * Time.deltaTime);
+                if (m.messageDecayment < 0.000001f)
+                {
+                    m.messageDecayment = 0.0f;
+                }
             }
         }
         /*
