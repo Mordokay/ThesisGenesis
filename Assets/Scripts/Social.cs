@@ -7,6 +7,7 @@ public class Social : MonoBehaviour {
     
     public bool isTalking;
     EditorModeController em;
+    SimulationDataLogger sdl;
     public float talkDistance;
     public float lookSpeed;
     public GameObject talkPartner;
@@ -26,6 +27,7 @@ public class Social : MonoBehaviour {
     void Start () {
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
+        sdl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>();
         talkDistance = 2.0f;
         lookSpeed = 5.0f;
         isReceivingMessage = false;
@@ -152,6 +154,9 @@ public class Social : MonoBehaviour {
                         this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).messageDecayment = 1.0f;
                     }
                     isReceivingMessage = false;
+
+                    sdl.WriteLine(talkPartner.GetComponent<NPCData>().name + " >> "  + this.GetComponent<NPCData>().name + " || "
+                        + "{ " + this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).ToString() + " }");
 
                     //Checks if the message recieved is the message being tracked
                     this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();

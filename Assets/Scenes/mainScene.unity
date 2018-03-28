@@ -11184,6 +11184,7 @@ GameObject:
   - component: {fileID: 524205398}
   - component: {fileID: 524205399}
   - component: {fileID: 524205400}
+  - component: {fileID: 524205401}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -11412,6 +11413,17 @@ MonoBehaviour:
   rightUIBox: {fileID: 1777788924}
   zoomToPlayMode: 0
   cameraDefaultSize: 5
+--- !u!114 &524205401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 524205393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bec69f2a171efa42869e6c73d8face0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &527062142
 GameObject:
   m_ObjectHideFlags: 0
