@@ -155,8 +155,13 @@ public class EditorModeController : MonoBehaviour {
     public List<GameObject> npcTypes;
     public int selectedNPCType;
 
+    public Text minutesText;
+    public Text secondsText;
+
     private void Start()
     {
+        InvokeRepeating("UpdateClock", 0.0f, 1.0f);
+
         selectedNPCType = 0;
         currentTerrainType = -1;
         currentElementIdSelected = -1;
@@ -1743,6 +1748,27 @@ public class EditorModeController : MonoBehaviour {
                 myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
                 myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
             }
+        }
+    }
+
+    void UpdateClock()
+    {
+        if (Time.timeSinceLevelLoad / 60 < 10)
+        {
+            minutesText.text = "0" + Mathf.FloorToInt(Time.timeSinceLevelLoad / 60).ToString();
+        }
+        else
+        {
+            minutesText.text = Mathf.FloorToInt(Time.timeSinceLevelLoad / 60).ToString();
+        }
+
+        if (Time.timeSinceLevelLoad % 60 < 10)
+        {
+            secondsText.text = "0" + Mathf.RoundToInt(Time.timeSinceLevelLoad % 60).ToString();
+        }
+        else
+        {
+            secondsText.text = Mathf.RoundToInt(Time.timeSinceLevelLoad % 60).ToString();
         }
     }
 
