@@ -23,7 +23,9 @@ public class Social : MonoBehaviour {
     * 1 -> NPC choses a message he doesn't know from NPC_Other (receives message)
     * 0.5 -> Equal weight between messages from NPC ot NPC_Other
     */
-     
+
+    float msgDecaymentAtStart = 0;
+
     void Start () {
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
@@ -59,7 +61,7 @@ public class Social : MonoBehaviour {
                         npc.gameObject.GetComponent<NPCData>(), this.GetComponent<NPCData>());
                         npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
                     }
-
+                    
                     bool messageOfInterest = false;
                     //If there is a message and npc is recieving the message 
                     //and message is of interest for him (this happens when NPC did not exceed limit of messages and 
@@ -82,6 +84,7 @@ public class Social : MonoBehaviour {
                         else
                         {
                             isReceivingMessage = true;
+                            msgDecaymentAtStart = choosedMessage.messageDecayment;
                         }
                         remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
                         npc.gameObject.GetComponent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
@@ -143,6 +146,8 @@ public class Social : MonoBehaviour {
                 isTalking = false;
                 if (isReceivingMessage && choosedMessage != null)
                 {
+                    bool wasRepeated = false;
+
                     if (this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id) == null)
                     {
                         this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id,
@@ -152,11 +157,14 @@ public class Social : MonoBehaviour {
                     else
                     {
                         this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).messageDecayment = 1.0f;
+                        wasRepeated = true;
                     }
                     isReceivingMessage = false;
 
-                    sdl.WriteLine(talkPartner.GetComponent<NPCData>().name + " >> "  + this.GetComponent<NPCData>().name + " || "
-                        + "{ " + this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).ToString() + " }");
+                    sdl.WriteMessageToLog(talkPartner.GetComponent<NPCData>().name + " >> " + this.GetComponent<NPCData>().name + " || "
+                        + "{ " + this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).ToString() + " }" +
+                        " || Decayment: " + msgDecaymentAtStart, choosedMessage.id, wasRepeated);
+                    msgDecaymentAtStart = 0.0f;
 
                     //Checks if the message recieved is the message being tracked
                     this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
