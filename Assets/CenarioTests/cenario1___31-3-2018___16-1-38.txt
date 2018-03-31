@@ -1,0 +1,44 @@
+[01:07]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6642431
+[01:15]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[02:15]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.7053627
+[02:22]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[03:23]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.7039047
+[03:30]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[04:31]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.7038293
+[04:38]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[05:39]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.7024319
+[05:46]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[06:48]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6988342
+[06:55]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[07:57]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.69593
+[08:05]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[09:06]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.699464
+[09:13]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[10:15]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6964098
+[10:23]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[11:25]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6920029
+[11:33]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[12:33]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.7038552
+[12:41]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[13:43]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6969673
+[13:50]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[14:52]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.6936019
+[15:00]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+[16:01]  WoodLover >> RockLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 0.700969
+[16:08]  RockLover >> WoodLover || { ID: 0 msgTime: 7 { Wood 100,} Description: Wood was killed here } || Decayment: 1
+
+
+Message ID = 0 Count = 28
+
+
+Total Messages = 28
+
+Repeated Messages = 27
+
+New Messages = 1
+
+Total Simulation Time: [16:50]  
+
+
+
+Message With ID = 0 Is alive in = 2 NPCs and is present in 2 NPCs

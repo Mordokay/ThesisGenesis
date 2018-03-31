@@ -34,9 +34,14 @@ public class NPCData : MonoBehaviour {
         currentCooperativenessLevel = 0.0f;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         DecayMessages();
+    }
+
+    private void Update()
+    {
+        
         //It takes 50 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
@@ -115,16 +120,27 @@ public class NPCData : MonoBehaviour {
                 m.messageDecayment -= Time.deltaTime / 180.0f;
                 if (m.messageDecayment < 0.0f)
                 {
-                    m.messageDecayment = 0.0f;
+                    string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
+                    GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
+
+                    messages.Remove(m);
+                    //m.messageDecayment = 0.0f;
                 }
             }
             else
             {
                 //Variable decayment
-                m.messageDecayment = m.messageDecayment / (1 + 0.05f * Time.deltaTime);
-                if (m.messageDecayment < 0.000001f)
+                m.messageDecayment -= (m.messageDecayment / 8.0f) * Time.deltaTime;
+
+               // m.messageDecayment = m.messageDecayment / (1 + Time.deltaTime);
+                if (m.messageDecayment < 0.00001f)
                 {
-                    m.messageDecayment = 0.0f;
+                    string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
+                    GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
+
+                    messages.Remove(m);
+
+                    //m.messageDecayment = 0.0f;
                 }
             }
         }
@@ -161,11 +177,8 @@ public class NPCData : MonoBehaviour {
                 }
             }
 
-            //The message recieved is gonna have a decayment of 1 initially
-            recievedMessageScore *= msg.messageDecayment * msg.messageDecayment;
+            //recievedMessageScore *= msg.messageDecayment;
 
-            //Debug.Log("recievedMessageScore " + recievedMessageScore);
-            //Debug.Log("recievedMessage " + msg.ToString());
             foreach (Message m in messages)
             {
                 float totalScore = 0.0f;
@@ -179,7 +192,7 @@ public class NPCData : MonoBehaviour {
                 }
 
                 //Total score is multiplied by the decayment of the message
-                totalScore *= m.messageDecayment * m.messageDecayment;
+                totalScore *= m.messageDecayment;
 
                 if (totalScore < lessInterestingMessageScore)
                 {
@@ -188,20 +201,14 @@ public class NPCData : MonoBehaviour {
                 }
             }
 
-            //Debug.Log("lessInterestingMessageScore " + lessInterestingMessageScore);
-            //Debug.Log("lessInterestingMessage " + lessInterestingMessage.ToString());
             //If the message we recieved is more interesting than one of our messages ...
             //We replace the least interesting message with our new recieved message
             if (recievedMessageScore > lessInterestingMessageScore)
             {
-                //Debug.Log("Score comparison: " + recievedMessageScore + " <> " + lessInterestingMessageScore);
-                //Debug.Log("Replaced message: " + lessInterestingMessage.ToString());
-                //Debug.Log("With new message: " + msg.ToString());
                 if (messages.Find(x => x.id == msg.id) == null)
                 {
                     messages.Remove(lessInterestingMessage);
                 }
-                //messages.RemoveAll(p => p.id == lessInterestingMessage.id);
                 return true;
             }
         }

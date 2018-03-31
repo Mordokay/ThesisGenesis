@@ -1,0 +1,31 @@
+[00:35]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.2243076
+[00:44]  2 >> 1 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.8390089
+[01:10]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.3417086
+[01:19]  2 >> 1 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.8390089
+[01:45]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.3415852
+[01:54]  2 >> 1 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.8390699
+[02:20]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.3406413
+[02:29]  2 >> 1 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.8336578
+[02:56]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.3345728
+[03:05]  2 >> 1 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.83642
+[03:32]  1 >> 2 || { ID: 0 msgTime: 5 { Gathering 100,} Description: Sex } || Decayment: 0.3340203
+[03:41]  2 >> 1 || { ID: 1 msgTime: 5 { Gathering 100,} Description: Drugs } || Decayment: 2.113539E-05
+[04:08]  1 >> 2 || { ID: 1 msgTime: 5 { Gathering 100,} Description: Drugs } || Decayment: 0.3317066
+
+
+Message ID = 0 Count = 11
+Message ID = 1 Count = 2
+
+
+Total Messages = 13
+
+Repeated Messages = 11
+
+New Messages = 2
+
+Total Simulation Time: [04:13]  
+
+
+
+Message With ID = 0 Is alive in = 0 NPCs and is present in 0 NPCs
+Message With ID = 1 Is alive in = 2 NPCs and is present in 2 NPCs

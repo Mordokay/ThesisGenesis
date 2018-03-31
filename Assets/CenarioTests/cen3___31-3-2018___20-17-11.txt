@@ -1,0 +1,104 @@
+[01:05]  CityVilager6 >> CityVilager7 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0005044744
+[01:06]  CityVilager4 >> CityVilager3 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.0004341236
+[01:11]  CityVilager7 >> CityVilager1 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.8912379
+[01:11]  CityVilager8 >> CityVilager5 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0002214036
+[01:13]  CityVilager3 >> CityVilager4 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.6904144
+[01:19]  CityVilager5 >> CityVilager9 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.6469122
+[01:42]  CityVilager9 >> CityVilager2 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.1051026
+[02:05]  CityVilager4 >> CityVilager7 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.00242353
+[02:05]  CityVilager6 >> WoodFolk4 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.000874984
+[02:14]  CityVilager7 >> CityVilager4 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.5838138
+[02:19]  CityVilager8 >> WoodFolk5 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0003652614
+[02:30]  WoodFolk4 >> WoodFolk2 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0820335
+[02:37]  WoodFolk5 >> WoodFolk6 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.1935821
+[02:41]  CityVilager9 >> CityVilager5 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.001085152
+[02:42]  Removed from CityVilager7 the message Rock with id 2
+[03:08]  CityVilager6 >> CityVilager2 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0007234039
+[03:08]  WoodFolk6 >> WoodFolk3 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.03738033
+[03:09]  CityVilager3 >> CityVilager8 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.001217578
+[03:14]  CityVilager4 >> DesertWizard4 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.0009408619
+[03:22]  DesertWizard4 >> CityVilager4 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.6277695
+[03:22]  CityVilager8 >> CityVilager9 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.3477327
+[03:34]  WoodFolk3 >> CityVilager3 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.06936744
+[03:46]  WoodFolk4 >> WoodFolk2 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0001068662
+[03:51]  Removed from CityVilager8 the message Drugs with id 1
+[03:58]  CityVilager9 >> CityVilager6 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.01974393
+[03:58]  CityVilager5 >> DesertWizard5 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0001008874
+[04:03]  CityVilager6 >> CityVilager8 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.001506261
+[04:04]  CityVilager7 >> WoodFolk5 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.001973815
+[04:09]  Removed from WoodFolk5 the message Drugs with id 1
+[04:09]  CityVilager3 >> CityVilager1 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.02237631
+[04:11]  Removed from CityVilager9 the message Drugs with id 1
+[04:11]  WoodFolk5 >> WoodFolk1 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.7186266
+[04:12]  CityVilager2 >> SnowFolk3 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0005397476
+[04:18]  DesertWizard5 >> DesertWizard3 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.1495871
+[04:20]  SnowFolk3 >> CityVilager2 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.6616514
+[04:21]  CityVilager1 >> CityVilager7 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.3882199
+[04:21]  DesertWizard4 >> DesertWizard || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.0009817625
+[04:23]  WoodFolk6 >> CityVilager9 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0001276509
+[04:23]  CityVilager4 >> WoodFolk4 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.0009432199
+[04:31]  Removed from CityVilager2 the message Drugs with id 1
+[04:36]  DesertWizard3 >> DesertWizard4 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.1960202
+[04:41]  Removed from CityVilager3 the message Sex with id 0
+[04:43]  CityVilager8 >> CityVilager5 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0106929
+[04:44]  WoodFolk4 >> CityVilager4 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.001104333
+[04:53]  Removed from CityVilager1 the message Rock with id 2
+[04:54]  Removed from CityVilager8 the message Sex with id 0
+[04:55]  CityVilager9 >> WoodFolk2 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.03036786
+[04:58]  WoodFolk1 >> WoodFolk3 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.004958579
+[05:05]  Removed from WoodFolk3 the message Drugs with id 1
+[05:05]  WoodFolk5 >> WoodFolk6 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.001868058
+[05:09]  CityVilager2 >> CityVilager6 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.003755692
+[05:13]  CityVilager5 >> CityVilager1 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0409052
+[05:19]  CityVilager3 >> CityVilager2 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0002434974
+[05:22]  CityVilager7 >> CityVilager8 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.000861941
+[05:23]  Removed from WoodFolk2 the message Rock with id 2
+[05:28]  WoodFolk3 >> WoodFolk5 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.04300514
+[05:28]  Removed from CityVilager9 the message Sex with id 0
+[05:29]  CityVilager4 >> CityVilager9 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.006195961
+[05:30]  Removed from CityVilager6 the message Sex with id 0
+[05:30]  Removed from CityVilager5 the message Drugs with id 1
+[05:36]  Removed from CityVilager7 the message Sex with id 0
+[05:39]  SnowFolk3 >> CityVilager5 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 8.725405E-05
+[05:45]  DesertWizard4 >> DesertWizard3 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 4.066509E-05
+[05:49]  Removed from DesertWizard5 the message Drugs with id 1
+[05:53]  Removed from WoodFolk6 the message Drugs with id 1
+[05:53]  Removed from CityVilager1 the message Drugs with id 1
+[05:55]  Removed from CityVilager4 the message Sex with id 0
+[05:55]  Removed from WoodFolk4 the message Sex with id 0
+[05:59]  Removed from DesertWizard the message Sex with id 0
+[06:02]  CityVilager9 >> CityVilager3 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.031688
+[06:03]  CityVilager6 >> WoodFolk4 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.002334221
+[06:03]  WoodFolk5 >> WoodFolk6 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.02334904
+[06:07]  WoodFolk1 >> WoodFolk3 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.0003119729
+[06:08]  Removed from DesertWizard3 the message Drugs with id 1
+[06:08]  Removed from DesertWizard4 the message Drugs with id 1
+[06:10]  CityVilager2 >> CityVilager6 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.002916712
+[06:14]  Removed from CityVilager8 the message Rock with id 2
+[06:22]  CityVilager7 >> CityVilager8 || { ID: 1 msgTime: 4 { Gathering 100,} Description: Drugs } || Decayment: 0.0009550991
+[06:27]  Removed from CityVilager9 the message Drugs with id 1
+[06:27]  Removed from WoodFolk2 the message Drugs with id 1
+[06:29]  WoodFolk6 >> WoodFolk5 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.07041711
+[06:38]  WoodFolk4 >> CityVilager2 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.01954723
+[06:38]  SnowFolk3 >> SnowFolk5 || { ID: 2 msgTime: 4 { Gathering 100,} Description: Rock } || Decayment: 0.0007473311
+[06:41]  DesertWizard4 >> DesertWizard2 || { ID: 0 msgTime: 4 { Gathering 100,} Description: Sex } || Decayment: 0.001315821
+
+
+Message ID = 0 Count = 21
+Message ID = 1 Count = 19
+Message ID = 2 Count = 19
+
+
+Total Messages = 59
+
+Repeated Messages = 15
+
+New Messages = 44
+
+Total Simulation Time: [06:45]  
+
+
+
+Message With ID = 0 Is alive in = 7 NPCs and is present in 7 NPCs
+Message With ID = 1 Is alive in = 5 NPCs and is present in 5 NPCs
+Message With ID = 2 Is alive in = 10 NPCs and is present in 10 NPCs

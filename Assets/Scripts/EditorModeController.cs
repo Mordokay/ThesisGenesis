@@ -947,6 +947,8 @@ public class EditorModeController : MonoBehaviour {
         }
         PlayerPrefs.SetString("mapToLoad", myFile);
 
+        this.GetComponent<SimulationDataLogger>().CloseLogger();
+
         SceneManager.LoadScene(0);
     }
 

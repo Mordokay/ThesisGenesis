@@ -101,6 +101,17 @@ public class SimulationDataLogger : MonoBehaviour {
         }
     }
 
+    public void WriteTextToLog(string line)
+    {
+        if (isWritingStuff)
+        {
+            string currentTime = getCurrentTime();
+
+            writer.WriteLine(currentTime + line);
+            writerLocal.WriteLine(currentTime + line);
+        }
+    }
+
     public void CloseLogger()
     {
         int messagesTotalCount = 0;
@@ -156,7 +167,7 @@ public class SimulationDataLogger : MonoBehaviour {
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
-                writer.WriteLine("Message With ID = " + i + " Is alive in = " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
+                writer.WriteLine("Message With ID = " + i + " Is alive in " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
                 writerLocal.WriteLine("Message With ID = " + i + " Is alive in = " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
                 messagesTotalCount += messageCounter[i];
             }

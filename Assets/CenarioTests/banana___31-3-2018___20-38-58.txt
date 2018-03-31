@@ -1,0 +1,14 @@
+
+
+
+
+Total Messages = 0
+
+Repeated Messages = 0
+
+New Messages = 0
+
+Total Simulation Time: [00:00]  
+
+
+

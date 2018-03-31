@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour {
 
     void Start()
     {
-        SetLinearDecayment();
+        SetVariableDecayment();
 
         messageIdsToRemoveNPCUpdater = new List<int>();
         messageIdPatrolPointToRemove = new List<int>();

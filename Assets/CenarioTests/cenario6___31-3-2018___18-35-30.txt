@@ -1,0 +1,18 @@
+
+
+Message ID = 0 Count = 0
+Message ID = 1 Count = 0
+
+
+Total Messages = 0
+
+Repeated Messages = 0
+
+New Messages = 0
+
+Total Simulation Time: [00:00]  
+
+
+
+Message With ID = 0 Is alive in = 0 NPCs and is present in 0 NPCs
+Message With ID = 1 Is alive in = 0 NPCs and is present in 0 NPCs
