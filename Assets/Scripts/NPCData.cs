@@ -41,7 +41,6 @@ public class NPCData : MonoBehaviour {
 
     private void Update()
     {
-        
         //It takes 50 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
@@ -120,11 +119,12 @@ public class NPCData : MonoBehaviour {
                 m.messageDecayment -= Time.deltaTime / 180.0f;
                 if (m.messageDecayment < 0.0f)
                 {
-                    string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
-                    GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
+                    //string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
+                    //GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
 
-                    messages.Remove(m);
-                    //m.messageDecayment = 0.0f;
+                    //messages.Remove(m);
+
+                    m.messageDecayment = 0.0f;
                 }
             }
             else
@@ -135,12 +135,12 @@ public class NPCData : MonoBehaviour {
                // m.messageDecayment = m.messageDecayment / (1 + Time.deltaTime);
                 if (m.messageDecayment < 0.00001f)
                 {
-                    string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
-                    GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
+                    //string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
+                    //GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);
 
-                    messages.Remove(m);
+                    //messages.Remove(m);
 
-                    //m.messageDecayment = 0.0f;
+                    m.messageDecayment = 0.0f;
                 }
             }
         }
@@ -207,6 +207,9 @@ public class NPCData : MonoBehaviour {
             {
                 if (messages.Find(x => x.id == msg.id) == null)
                 {
+                    string logMessage = "Removed from " + npcName + " message ID: " + lessInterestingMessage.id + " <> " + lessInterestingMessage.description;
+                    GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteRemoveToLog(logMessage, lessInterestingMessage.id);
+
                     messages.Remove(lessInterestingMessage);
                 }
                 return true;

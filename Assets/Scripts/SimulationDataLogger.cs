@@ -12,9 +12,16 @@ public class SimulationDataLogger : MonoBehaviour {
     int[] messageCounter;
     int[] aliveIDs;
     int[] existsIDs;
+    int[] removedCount;
     int repeatedMessageCount;
 
+    string removedMessagesInfo;
+    int removedTotalMessages;
+
     void Start () {
+        removedMessagesInfo = "";
+        removedTotalMessages = 0;
+
         repeatedMessageCount = 0;
 
         messageCounter = new int[100];
@@ -31,6 +38,11 @@ public class SimulationDataLogger : MonoBehaviour {
         foreach (int i in existsIDs)
         {
             existsIDs[i] = 0;
+        }
+        removedCount = new int[100];
+        foreach (int i in removedCount)
+        {
+            removedCount[i] = 0;
         }
 
         if (!PlayerPrefs.GetString("mapToLoad").Equals("default")){
@@ -111,6 +123,17 @@ public class SimulationDataLogger : MonoBehaviour {
             writerLocal.WriteLine(currentTime + line);
         }
     }
+    public void WriteRemoveToLog(string line, int id)
+    {
+        if (isWritingStuff)
+        {
+            removedTotalMessages += 1;
+            removedCount[id] += 1;
+
+            removedMessagesInfo += getCurrentTime() + " " + line + System.Environment.NewLine;
+
+        }
+    }
 
     public void CloseLogger()
     {
@@ -118,6 +141,21 @@ public class SimulationDataLogger : MonoBehaviour {
 
         if (isWritingStuff)
         {
+            writer.WriteLine(System.Environment.NewLine);
+            writerLocal.WriteLine(System.Environment.NewLine);
+
+            writer.WriteLine(removedMessagesInfo);
+            writerLocal.WriteLine(removedMessagesInfo);
+
+            for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
+            {
+                writer.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
+                writerLocal.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
+            }
+
+            writer.WriteLine("Removed " + removedTotalMessages + " total messages");
+            writerLocal.WriteLine("Removed " + removedTotalMessages + " total messages");
+
             writer.WriteLine(System.Environment.NewLine);
             writerLocal.WriteLine(System.Environment.NewLine);
 
@@ -164,6 +202,9 @@ public class SimulationDataLogger : MonoBehaviour {
                     existsIDs[m.id] += 1;
                 }
             }
+
+            writer.WriteLine("There are  " + myNPCs.Count + " NPCs");
+            writerLocal.WriteLine("There are  " + myNPCs.Count + " NPCs");
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {

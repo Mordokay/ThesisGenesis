@@ -44,7 +44,7 @@ public class Social : MonoBehaviour {
         {
             if (onTalkCooldown)
             {
-                Debug.Log("Talk cooldown!!!");
+                //Debug.Log("Talk cooldown!!!");
                 TalkCooldownTime -= Time.deltaTime;
                 if (TalkCooldownTime <= 0.0f)
                 {
@@ -263,7 +263,7 @@ public class Social : MonoBehaviour {
                
                 messageScore = scoreA + scoreB;
 
-                Debug.Log("Message: " + m1.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
+                //Debug.Log("Message: " + m1.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
                 
                 if (messageScore > mostAtractiveMessageScore)
                 {
@@ -313,7 +313,7 @@ public class Social : MonoBehaviour {
 
                 messageScore = scoreA + scoreB;
 
-                Debug.Log("Message: " + m2.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
+                //Debug.Log("Message: " + m2.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
 
                 if (messageScore > mostAtractiveMessageScore)
                 {
@@ -322,7 +322,8 @@ public class Social : MonoBehaviour {
                 }
             }
         }
-        Debug.Log("Most Atractive: " + mostAttractiveMessage);
+        //if (mostAttractiveMessage != null)
+        //    Debug.Log("Most Atractive: " + mostAttractiveMessage);
         return mostAttractiveMessage;
     }
 
