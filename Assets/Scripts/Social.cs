@@ -260,8 +260,16 @@ public class Social : MonoBehaviour {
                 {
                     scoreB *= messageInB.messageDecayment;
                 }
-               
-                messageScore = scoreA + scoreB;
+
+                //If NPC_B has no interest in the message 
+                if (scoreB == 0)
+                {
+                    messageScore = 0;
+                }
+                else
+                {
+                    messageScore = scoreA + scoreB;
+                }
 
                 //Debug.Log("Message: " + m1.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
                 
@@ -311,7 +319,15 @@ public class Social : MonoBehaviour {
                     scoreA *= messageInA.messageDecayment;
                 }
 
-                messageScore = scoreA + scoreB;
+                //If NPC_A has no interest in the message 
+                if (scoreA == 0)
+                {
+                    messageScore = 0;
+                }
+                else
+                {
+                    messageScore = scoreA + scoreB;
+                }
 
                 //Debug.Log("Message: " + m2.description + " scoreA: " + scoreA + " scoreB: " + scoreB + " Total: " + messageScore);
 
