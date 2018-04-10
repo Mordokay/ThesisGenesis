@@ -13,12 +13,31 @@ public class SimulationDataLogger : MonoBehaviour {
     int[] aliveIDs;
     int[] existsIDs;
     int[] removedCount;
+
+    int[] graphPointsPrevious;
+    int[] graphPointsCurrent;
+
     int repeatedMessageCount;
 
     string removedMessagesInfo;
     int removedTotalMessages;
+    public Color[] GraphColors;
+    public GameObject GraphPoint;
+    public GameObject GraphLine;
+    public GameObject GraphHolder;
+
+    int currentMinute;
+
+    public int resWidth = 5760;
+    public int resHeight = 3240;
+    string nameForSave;
+    public Camera graphCamera;
+    public GameObject[] graphLabels;
 
     void Start () {
+        nameForSave = "";
+        currentMinute = -1;
+
         removedMessagesInfo = "";
         removedTotalMessages = 0;
 
@@ -44,6 +63,16 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             removedCount[i] = 0;
         }
+        graphPointsPrevious = new int[10];
+        foreach (int i in graphPointsPrevious)
+        {
+            graphPointsPrevious[i] = 0;
+        }
+        graphPointsCurrent = new int[10];
+        foreach (int i in graphPointsCurrent)
+        {
+            graphPointsCurrent[i] = 0;
+        }
 
         if (!PlayerPrefs.GetString("mapToLoad").Equals("default")){
             isWritingStuff = true;
@@ -51,7 +80,7 @@ public class SimulationDataLogger : MonoBehaviour {
             string cenarioName = PlayerPrefs.GetString("mapToLoad");
             string timestamp = System.DateTime.Now.Day + "-" + System.DateTime.Now.Month + "-" + System.DateTime.Now.Year + "___" +
                 System.DateTime.Now.TimeOfDay.Hours + "-" + System.DateTime.Now.TimeOfDay.Minutes + "-" + System.DateTime.Now.TimeOfDay.Seconds;
-            string nameForSave = cenarioName + "___" + timestamp;
+            nameForSave = cenarioName + "___" + timestamp;
 
             string path = Application.persistentDataPath + "/CenarioTests/" + nameForSave + ".txt";
             string localPath = "Assets/CenarioTests/" + nameForSave + ".txt";
@@ -100,6 +129,11 @@ public class SimulationDataLogger : MonoBehaviour {
     {
         if (isWritingStuff)
         {
+            if (id < 10)
+            {
+                graphPointsCurrent[id] += 1;
+            }
+
             messageCounter[id] += 1;
             if (wasRepeated)
             {
@@ -135,12 +169,70 @@ public class SimulationDataLogger : MonoBehaviour {
         }
     }
 
+    public void AddPoints(int time)
+    {
+        for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID && i < 10; i++)
+        {
+            graphLabels[i].SetActive(true);
+
+            //DrawCurrentPoint and set color
+            GameObject myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsCurrent[i]);
+
+            myPoint.transform.parent = GraphHolder.transform;
+
+
+            //Draw a Line to previous point and color of line
+            GameObject myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, 500.0f + graphPointsPrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsCurrent[i]));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+
+            myLine.transform.parent = GraphHolder.transform;
+
+            graphPointsPrevious[i] = graphPointsCurrent[i];
+            graphPointsCurrent[i] = 0;
+        }
+
+        currentMinute = Mathf.FloorToInt(Time.timeSinceLevelLoad / 60);
+    }
+
     public void CloseLogger()
     {
-        int messagesTotalCount = 0;
-
         if (isWritingStuff)
         {
+            //PngGraphLogger
+
+            nameForSave += "_" + resWidth + "x" + resHeight;
+            string path = Application.persistentDataPath + "/CenarioTests/" + nameForSave + ".png";
+            string localPath = "Assets/CenarioTests/" + nameForSave + ".png";
+
+            graphCamera.gameObject.SetActive(true);
+
+            RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCamera.targetTexture = rt;
+            Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCamera.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCamera.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            byte[] bytes = screenShot.EncodeToPNG();
+
+            //Write to both destinations
+            System.IO.File.WriteAllBytes(path, bytes);
+            System.IO.File.WriteAllBytes(localPath, bytes);
+
+            Debug.Log(string.Format("Took screenshot to: {0}", path));
+
+
+            //TextFileLogger
+            int messagesTotalCount = 0;
+
+
             writer.WriteLine(System.Environment.NewLine);
             writerLocal.WriteLine(System.Environment.NewLine);
 
@@ -192,9 +284,9 @@ public class SimulationDataLogger : MonoBehaviour {
 
             for (int i = 0; i < myNPCs.Count; i++)
             {
-                foreach(Message m in myNPCs[i].GetComponent<NPCData>().messages)
+                foreach (Message m in myNPCs[i].GetComponent<NPCData>().messages)
                 {
-                    if(m.messageDecayment > 0.0f)
+                    if (m.messageDecayment > 0.0f)
                     {
                         aliveIDs[m.id] += 1;
                     }
@@ -224,4 +316,12 @@ public class SimulationDataLogger : MonoBehaviour {
         CloseLogger();
     }
 
+    private void Update()
+    {
+        if (Mathf.FloorToInt(Time.timeSinceLevelLoad / 60) != currentMinute)
+        {
+            //Debug.Log("AddingPoints at minute: " + Mathf.FloorToInt(Time.timeSinceLevelLoad / 60));
+            AddPoints(Mathf.FloorToInt(Time.timeSinceLevelLoad / 60));
+        }
+    }
 }
