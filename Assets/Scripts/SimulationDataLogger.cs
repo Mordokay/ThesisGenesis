@@ -10,12 +10,15 @@ public class SimulationDataLogger : MonoBehaviour {
     StreamWriter writerLocal;
 
     int[] messageCounter;
-    int[] aliveIDs;
+    public int[] aliveIDs;
     int[] existsIDs;
     int[] removedCount;
 
-    int[] graphPointsPrevious;
-    int[] graphPointsCurrent;
+    int[] graphPointsMessagePrevious;
+    int[] graphPointsMessageCurrent;
+
+    int[] graphPointsAlivePrevious;
+    int[] graphPointsExistsPrevious;
 
     int repeatedMessageCount;
 
@@ -24,15 +27,21 @@ public class SimulationDataLogger : MonoBehaviour {
     public Color[] GraphColors;
     public GameObject GraphPoint;
     public GameObject GraphLine;
-    public GameObject GraphHolder;
+    public GameObject GraphHolderMessage;
+    public GameObject GraphHolderAlive;
+    public GameObject GraphHolderExists;
 
     int currentMinute;
 
     public int resWidth = 5760;
     public int resHeight = 3240;
     string nameForSave;
-    public Camera graphCamera;
-    public GameObject[] graphLabels;
+    public Camera graphCameraMessage;
+    public Camera graphCameraAlive;
+    public Camera graphCameraExists;
+    public GameObject[] graphLabelsMessage;
+    public GameObject[] graphLabelsAlive;
+    public GameObject[] graphLabelsExists;
 
     void Start () {
         nameForSave = "";
@@ -63,15 +72,26 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             removedCount[i] = 0;
         }
-        graphPointsPrevious = new int[10];
-        foreach (int i in graphPointsPrevious)
+        graphPointsMessagePrevious = new int[10];
+        foreach (int i in graphPointsMessagePrevious)
         {
-            graphPointsPrevious[i] = 0;
+            graphPointsMessagePrevious[i] = 0;
         }
-        graphPointsCurrent = new int[10];
-        foreach (int i in graphPointsCurrent)
+        graphPointsMessageCurrent = new int[10];
+        foreach (int i in graphPointsMessageCurrent)
         {
-            graphPointsCurrent[i] = 0;
+            graphPointsMessageCurrent[i] = 0;
+        }
+
+        graphPointsAlivePrevious = new int[10];
+        foreach (int i in graphPointsAlivePrevious)
+        {
+            graphPointsAlivePrevious[i] = 0;
+        }
+        graphPointsExistsPrevious = new int[10];
+        foreach (int i in graphPointsExistsPrevious)
+        {
+            graphPointsExistsPrevious[i] = 0;
         }
 
         if (!PlayerPrefs.GetString("mapToLoad").Equals("default")){
@@ -131,7 +151,7 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             if (id < 10)
             {
-                graphPointsCurrent[id] += 1;
+                graphPointsMessageCurrent[id] += 1;
             }
 
             messageCounter[id] += 1;
@@ -171,29 +191,75 @@ public class SimulationDataLogger : MonoBehaviour {
 
     public void AddPoints(int time)
     {
+        foreach (Transform npc in this.GetComponent<EditorModeController>().npcHolder.transform)
+        {
+            foreach (Message m in npc.gameObject.GetComponent<NPCData>().messages)
+            {
+                if (m.messageDecayment > 0.0f)
+                {
+                    aliveIDs[m.id] += 1;
+                }
+                existsIDs[m.id] += 1;
+            }
+        }
+
         for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID && i < 10; i++)
         {
-            graphLabels[i].SetActive(true);
+            graphLabelsMessage[i].SetActive(true);
+            graphLabelsAlive[i].SetActive(true);
+            graphLabelsExists[i].SetActive(true);
 
-            //DrawCurrentPoint and set color
+            //DrawCurrentPoint and set color for Messages
+            Debug.Log("Instantiating point message");
             GameObject myPoint = Instantiate(GraphPoint) as GameObject;
             myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
-            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsCurrent[i]);
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsMessageCurrent[i]);
+            myPoint.transform.parent = GraphHolderMessage.transform;
 
-            myPoint.transform.parent = GraphHolder.transform;
+            //DrawCurrentPoint and set color for Alive
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, aliveIDs[i]);
+            myPoint.transform.parent = GraphHolderAlive.transform;
 
+            //DrawCurrentPoint and set color for Exists
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, -500.0f + existsIDs[i]);
+            myPoint.transform.parent = GraphHolderExists.transform;
 
-            //Draw a Line to previous point and color of line
+            //Draw a Line to previous point and color of line in Messages
             GameObject myLine = Instantiate(GraphLine);
-            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, 500.0f + graphPointsPrevious[i]));
-            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsCurrent[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, 500.0f + graphPointsMessagePrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, 500.0f + graphPointsMessageCurrent[i]));
             myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
             myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderMessage.transform;
 
-            myLine.transform.parent = GraphHolder.transform;
+            //Draw a Line to previous point and color of line in Alive
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, graphPointsAlivePrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, aliveIDs[i]));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderAlive.transform;
 
-            graphPointsPrevious[i] = graphPointsCurrent[i];
-            graphPointsCurrent[i] = 0;
+            //Draw a Line to previous point and color of line in Exists
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, -500.0f + graphPointsExistsPrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, -500.0f + existsIDs[i]));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderExists.transform;
+
+            graphPointsMessagePrevious[i] = graphPointsMessageCurrent[i];
+            graphPointsMessageCurrent[i] = 0;
+
+            graphPointsAlivePrevious[i] = aliveIDs[i];
+            aliveIDs[i] = 0;
+
+            graphPointsExistsPrevious[i] = existsIDs[i];
+            existsIDs[i] = 0;
         }
 
         currentMinute = Mathf.FloorToInt(Time.timeSinceLevelLoad / 60);
@@ -203,35 +269,73 @@ public class SimulationDataLogger : MonoBehaviour {
     {
         if (isWritingStuff)
         {
-            //PngGraphLogger
+            ///////////////////////////////////////////////////////////////////////
+            /////////////////////////PNG GRAPH LOGGER//////////////////////////////
+            ///////////////////////////////////////////////////////////////////////
 
             nameForSave += "_" + resWidth + "x" + resHeight;
-            string path = Application.persistentDataPath + "/CenarioTests/" + nameForSave + ".png";
-            string localPath = "Assets/CenarioTests/" + nameForSave + ".png";
+            string pathMessage = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Message.png";
+            string localPathMessage = "Assets/CenarioTests/" + nameForSave + "_Message.png";
 
-            graphCamera.gameObject.SetActive(true);
+            string pathAlive = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Alive.png";
+            string localPathAlive = "Assets/CenarioTests/" + nameForSave + "_Alive.png";
 
+            string pathExists = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Exists.png";
+            string localPathExists = "Assets/CenarioTests/" + nameForSave + "_Exists.png";
+
+            graphCameraMessage.gameObject.SetActive(true);
+            graphCameraAlive.gameObject.SetActive(true);
+            graphCameraExists.gameObject.SetActive(true);
+
+            //MESSAGE GRAPH
             RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
-            graphCamera.targetTexture = rt;
+            graphCameraMessage.targetTexture = rt;
             Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
-            graphCamera.Render();
+            graphCameraMessage.Render();
             RenderTexture.active = rt;
             screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
-            graphCamera.targetTexture = null;
+            graphCameraMessage.targetTexture = null;
             RenderTexture.active = null; // JC: added to avoid errors
             Destroy(rt);
             byte[] bytes = screenShot.EncodeToPNG();
 
-            //Write to both destinations
-            System.IO.File.WriteAllBytes(path, bytes);
-            System.IO.File.WriteAllBytes(localPath, bytes);
+            System.IO.File.WriteAllBytes(pathMessage, bytes);
+            System.IO.File.WriteAllBytes(localPathMessage, bytes);
 
-            Debug.Log(string.Format("Took screenshot to: {0}", path));
+            //ALIVE GRAPH
+            rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCameraAlive.targetTexture = rt;
+            screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCameraAlive.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCameraAlive.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            bytes = screenShot.EncodeToPNG();
 
+            System.IO.File.WriteAllBytes(pathAlive, bytes);
+            System.IO.File.WriteAllBytes(localPathAlive, bytes);
 
-            //TextFileLogger
+            //EXISTS GRAPH
+            rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCameraExists.targetTexture = rt;
+            screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCameraExists.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCameraExists.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            bytes = screenShot.EncodeToPNG();
+
+            System.IO.File.WriteAllBytes(pathExists, bytes);
+            System.IO.File.WriteAllBytes(localPathExists, bytes);
+
+            ///////////////////////////////////////////////////////////////////////
+            /////////////////////////TEXT FILE LOGGER//////////////////////////////
+            ///////////////////////////////////////////////////////////////////////
             int messagesTotalCount = 0;
-
 
             writer.WriteLine(System.Environment.NewLine);
             writerLocal.WriteLine(System.Environment.NewLine);
