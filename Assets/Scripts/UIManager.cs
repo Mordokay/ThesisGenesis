@@ -742,6 +742,11 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<MouseInputController>().eventSpawnerArea.SetActive(false);
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public void ReturnToMainPanel()
     {
         mainPanel.SetActive(true);

@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class SimulationDataLogger : MonoBehaviour {
 
-    bool isWritingStuff;
+    public bool isWritingStuff;
     StreamWriter writer;
-    StreamWriter writerLocal;
+    //StreamWriter writerLocal;
 
     int[] messageCounter;
     public int[] aliveIDs;
@@ -44,6 +44,10 @@ public class SimulationDataLogger : MonoBehaviour {
     public GameObject[] graphLabelsExists;
 
     void Start () {
+        //graphCameraMessage.gameObject.SetActive(false);
+        //graphCameraAlive.gameObject.SetActive(false);
+        //graphCameraExists.gameObject.SetActive(false);
+
         nameForSave = "";
         currentMinute = -1;
 
@@ -107,7 +111,7 @@ public class SimulationDataLogger : MonoBehaviour {
 
             //Write some text to the test.txt file
             writer = new StreamWriter(path, false);
-            writerLocal = new StreamWriter(localPath, false);
+            //writerLocal = new StreamWriter(localPath, false);
 
             Debug.Log(nameForSave);
         }
@@ -163,7 +167,7 @@ public class SimulationDataLogger : MonoBehaviour {
             string currentTime = getCurrentTime();
 
             writer.WriteLine(currentTime + line);
-            writerLocal.WriteLine(currentTime + line);
+            //writerLocal.WriteLine(currentTime + line);
         }
     }
 
@@ -174,7 +178,7 @@ public class SimulationDataLogger : MonoBehaviour {
             string currentTime = getCurrentTime();
 
             writer.WriteLine(currentTime + line);
-            writerLocal.WriteLine(currentTime + line);
+           // writerLocal.WriteLine(currentTime + line);
         }
     }
     public void WriteRemoveToLog(string line, int id)
@@ -273,19 +277,19 @@ public class SimulationDataLogger : MonoBehaviour {
             /////////////////////////PNG GRAPH LOGGER//////////////////////////////
             ///////////////////////////////////////////////////////////////////////
 
-            nameForSave += "_" + resWidth + "x" + resHeight;
-            string pathMessage = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Message.png";
-            string localPathMessage = "Assets/CenarioTests/" + nameForSave + "_Message.png";
+            string imageName = nameForSave + "_" + resWidth + "x" + resHeight;
+            string pathMessage = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Message.png";
+           // string localPathMessage = "Assets/CenarioTests/" + imageName + "_Message.png";
 
-            string pathAlive = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Alive.png";
-            string localPathAlive = "Assets/CenarioTests/" + nameForSave + "_Alive.png";
+            string pathAlive = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Alive.png";
+            //string localPathAlive = "Assets/CenarioTests/" + imageName + "_Alive.png";
 
-            string pathExists = Application.persistentDataPath + "/CenarioTests/" + nameForSave + "_Exists.png";
-            string localPathExists = "Assets/CenarioTests/" + nameForSave + "_Exists.png";
+            string pathExists = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Exists.png";
+            //string localPathExists = "Assets/CenarioTests/" + imageName + "_Exists.png";
 
-            graphCameraMessage.gameObject.SetActive(true);
-            graphCameraAlive.gameObject.SetActive(true);
-            graphCameraExists.gameObject.SetActive(true);
+           // graphCameraMessage.gameObject.SetActive(true);
+            //graphCameraAlive.gameObject.SetActive(true);
+            //graphCameraExists.gameObject.SetActive(true);
 
             //MESSAGE GRAPH
             RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
@@ -300,7 +304,7 @@ public class SimulationDataLogger : MonoBehaviour {
             byte[] bytes = screenShot.EncodeToPNG();
 
             System.IO.File.WriteAllBytes(pathMessage, bytes);
-            System.IO.File.WriteAllBytes(localPathMessage, bytes);
+            //System.IO.File.WriteAllBytes(localPathMessage, bytes);
 
             //ALIVE GRAPH
             rt = new RenderTexture(resWidth, resHeight, 24);
@@ -315,7 +319,7 @@ public class SimulationDataLogger : MonoBehaviour {
             bytes = screenShot.EncodeToPNG();
 
             System.IO.File.WriteAllBytes(pathAlive, bytes);
-            System.IO.File.WriteAllBytes(localPathAlive, bytes);
+           // System.IO.File.WriteAllBytes(localPathAlive, bytes);
 
             //EXISTS GRAPH
             rt = new RenderTexture(resWidth, resHeight, 24);
@@ -330,7 +334,7 @@ public class SimulationDataLogger : MonoBehaviour {
             bytes = screenShot.EncodeToPNG();
 
             System.IO.File.WriteAllBytes(pathExists, bytes);
-            System.IO.File.WriteAllBytes(localPathExists, bytes);
+            //System.IO.File.WriteAllBytes(localPathExists, bytes);
 
             ///////////////////////////////////////////////////////////////////////
             /////////////////////////TEXT FILE LOGGER//////////////////////////////
@@ -338,47 +342,47 @@ public class SimulationDataLogger : MonoBehaviour {
             int messagesTotalCount = 0;
 
             writer.WriteLine(System.Environment.NewLine);
-            writerLocal.WriteLine(System.Environment.NewLine);
+            //writerLocal.WriteLine(System.Environment.NewLine);
 
             writer.WriteLine(removedMessagesInfo);
-            writerLocal.WriteLine(removedMessagesInfo);
+            //writerLocal.WriteLine(removedMessagesInfo);
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
-                writerLocal.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
+               // writerLocal.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
             }
 
             writer.WriteLine("Removed " + removedTotalMessages + " total messages");
-            writerLocal.WriteLine("Removed " + removedTotalMessages + " total messages");
+           // writerLocal.WriteLine("Removed " + removedTotalMessages + " total messages");
 
             writer.WriteLine(System.Environment.NewLine);
-            writerLocal.WriteLine(System.Environment.NewLine);
+           // writerLocal.WriteLine(System.Environment.NewLine);
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message ID = " + i + " Count = " + messageCounter[i]);
-                writerLocal.WriteLine("Message ID = " + i + " Count = " + messageCounter[i]);
+                //writerLocal.WriteLine("Message ID = " + i + " Count = " + messageCounter[i]);
                 messagesTotalCount += messageCounter[i];
             }
 
             writer.WriteLine(System.Environment.NewLine);
-            writerLocal.WriteLine(System.Environment.NewLine);
+           // writerLocal.WriteLine(System.Environment.NewLine);
 
             writer.WriteLine("Total Messages = " + messagesTotalCount + System.Environment.NewLine);
-            writerLocal.WriteLine("Total Messages = " + messagesTotalCount + System.Environment.NewLine);
+            //writerLocal.WriteLine("Total Messages = " + messagesTotalCount + System.Environment.NewLine);
 
             writer.WriteLine("Repeated Messages = " + repeatedMessageCount + System.Environment.NewLine);
-            writerLocal.WriteLine("Repeated Messages = " + repeatedMessageCount + System.Environment.NewLine);
+            //writerLocal.WriteLine("Repeated Messages = " + repeatedMessageCount + System.Environment.NewLine);
 
             writer.WriteLine("New Messages = " + (messagesTotalCount - repeatedMessageCount) + System.Environment.NewLine);
-            writerLocal.WriteLine("New Messages = " + (messagesTotalCount - repeatedMessageCount) + System.Environment.NewLine);
+           // writerLocal.WriteLine("New Messages = " + (messagesTotalCount - repeatedMessageCount) + System.Environment.NewLine);
 
             writer.WriteLine("Total Simulation Time: " + getCurrentTime() + System.Environment.NewLine);
-            writerLocal.WriteLine("Total Simulation Time: " + getCurrentTime() + System.Environment.NewLine);
+            //writerLocal.WriteLine("Total Simulation Time: " + getCurrentTime() + System.Environment.NewLine);
 
             writer.WriteLine(System.Environment.NewLine);
-            writerLocal.WriteLine(System.Environment.NewLine);
+            //writerLocal.WriteLine(System.Environment.NewLine);
 
             List<GameObject> myNPCs = new List<GameObject>();
             foreach (Transform npc in this.GetComponent<EditorModeController>().npcHolder.transform)
@@ -400,17 +404,21 @@ public class SimulationDataLogger : MonoBehaviour {
             }
 
             writer.WriteLine("There are  " + myNPCs.Count + " NPCs");
-            writerLocal.WriteLine("There are  " + myNPCs.Count + " NPCs");
+            //writerLocal.WriteLine("There are  " + myNPCs.Count + " NPCs");
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message With ID = " + i + " Is alive in " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
-                writerLocal.WriteLine("Message With ID = " + i + " Is alive in = " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
+                //writerLocal.WriteLine("Message With ID = " + i + " Is alive in = " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
                 messagesTotalCount += messageCounter[i];
             }
 
             writer.Close();
-            writerLocal.Close();
+            //writerLocal.Close();
+
+            //graphCameraMessage.gameObject.SetActive(false);
+            //graphCameraAlive.gameObject.SetActive(false);
+            //graphCameraExists.gameObject.SetActive(false);
         }
     }
 

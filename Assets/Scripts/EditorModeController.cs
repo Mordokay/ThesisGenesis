@@ -176,6 +176,7 @@ public class EditorModeController : MonoBehaviour {
         if(PlayerPrefs.GetInt("loadingMap") == 1)
         {
             MapLoader();
+
         }
     }
 
@@ -947,7 +948,10 @@ public class EditorModeController : MonoBehaviour {
         }
         PlayerPrefs.SetString("mapToLoad", myFile);
 
-        this.GetComponent<SimulationDataLogger>().CloseLogger();
+        if (this.GetComponent<SimulationDataLogger>().isWritingStuff)
+        {
+            this.GetComponent<SimulationDataLogger>().CloseLogger();
+        }
 
         SceneManager.LoadScene(0);
     }
