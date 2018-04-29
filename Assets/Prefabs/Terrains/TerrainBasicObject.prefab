@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4216680632804426}
   - component: {fileID: 212930674155767136}
   - component: {fileID: 65060695090958546}
+  - component: {fileID: 208337406698878300}
   m_Layer: 8
   m_Name: TerrainBasicObject
   m_TagString: Terrain
@@ -53,6 +54,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &208337406698878300
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1882208263621868}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.15, y: 0.15, z: 2.76}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!212 &212930674155767136
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -85,7 +101,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -70048515
-  m_SortingLayer: -3
+  m_SortingLayer: -5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: fd3059239eff87b4d88ada3772bd4829, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

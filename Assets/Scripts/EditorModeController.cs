@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.AI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -1042,21 +1043,22 @@ public class EditorModeController : MonoBehaviour {
                     uMap[i, j].terrainType = System.Int32.Parse(myLineUnderground[j]);
                     GameObject myUnderground = Instantiate(undergroundBasicObject);
                     uMap[i, j].terrainObject = myUnderground;
+                    myUnderground.name = i + " " + j;
+                    myUnderground.transform.parent = undergroundHolder.transform;
+                    myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
+                    myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+
                     if (uMap[i, j].terrainType != -1)
                     {
                         Sprite[] sprites = Resources.LoadAll<Sprite>(texturePacks[uMap[i, j].terrainType].BasicTerrain);
                         uMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
-
-
                         if (tMap[i, j].terrainType == -1)
                         {
                             tMap[i, j].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
                         }
                     }
-                    myUnderground.name = i + " " + j;
-                    myUnderground.transform.parent = undergroundHolder.transform;
-                    myUnderground.transform.position = new Vector3(i - mapWidth / 2, 0.0f, mapHeight / 2 - j);
-                    myUnderground.transform.Rotate(new Vector3(90.0f, 0.0f, 0.0f));
+
+                    UpdateTerrainNavObstacle(i, j);
                 }
             }
             for (int i = 0; i < splitArrayElements.Length; i++)
@@ -1624,7 +1626,28 @@ public class EditorModeController : MonoBehaviour {
         }
         //Debug.Log("( " + x + " , " + y + " )  -> " + patern);
     }
-     
+
+    public void UpdateTerrainNavObstacle(int x, int y)
+    {
+        if (tMap[x, y].terrainType == 3)
+        {
+            tMap[x, y].terrainObject.GetComponent<NavMeshObstacle>().enabled = true;
+        }
+        else
+        {
+            tMap[x, y].terrainObject.GetComponent<NavMeshObstacle>().enabled = false;
+        }
+
+        if (uMap[x, y].terrainType == 3 && tMap[x, y].terrainType == -1)
+        {
+            uMap[x, y].terrainObject.GetComponent<NavMeshObstacle>().enabled = true;
+        }
+        else
+        {
+            uMap[x, y].terrainObject.GetComponent<NavMeshObstacle>().enabled = false;
+        }
+    }
+
     public void SetUndergroundAtPos(int x, int y)
     {
         if (currentTerrainType != -1)
@@ -1645,6 +1668,7 @@ public class EditorModeController : MonoBehaviour {
                     {
                         tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = sprites[4];
                     }
+                    UpdateTerrainNavObstacle(realX, realY);
                 }
             }
         }
@@ -1669,6 +1693,7 @@ public class EditorModeController : MonoBehaviour {
                     }
                 }
             }
+            UpdateTerrainNavObstacle(realX, realY);
         }
     }
 
@@ -1696,6 +1721,7 @@ public class EditorModeController : MonoBehaviour {
                         }
                     }
                 }
+                UpdateTerrainNavObstacle(realX, realY);
             }
         }
     }

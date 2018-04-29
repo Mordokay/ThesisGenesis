@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4959697696845586}
   - component: {fileID: 212213993362244062}
   - component: {fileID: 65912472210883396}
+  - component: {fileID: 208494852496915762}
   m_Layer: 9
   m_Name: TerrainUnderground
   m_TagString: Underground
@@ -53,6 +54,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &208494852496915762
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1414716898247530}
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.15, y: 0.15, z: 2.76}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!212 &212213993362244062
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -85,7 +101,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -319313643
-  m_SortingLayer: -1
+  m_SortingLayer: -6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300040, guid: 6f8886602f589144ca9b279f74fe7bb2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -95,5 +111,5 @@ SpriteRenderer:
   m_Size: {x: 10, y: 10}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
