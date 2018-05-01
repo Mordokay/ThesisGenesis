@@ -19,6 +19,8 @@ public class Social : MonoBehaviour {
 
     bool onTalkCooldown;
     float TalkCooldownTime;
+    bool messageOfInterest;
+
     /*
     * listenerLevel value goes from 0 to 1. 
     * 0 -> NPC choses a message NPC_Other doesn't know (sends message)
@@ -38,8 +40,77 @@ public class Social : MonoBehaviour {
         lookSpeed = 5.0f;
         isReceivingMessage = false;
     }
-	
-	void Update () {
+
+    public void NPC_Colision(GameObject otherNPC)
+    {
+        if (!otherNPC.transform.GetComponent<Social>().isTalking && !otherNPC.transform.GetComponent<Social>().onTalkCooldown
+            && !onTalkCooldown)
+        {
+            choosedMessage = null;
+            //Randomly choose who starts to talk
+            /*
+            if (Random.Range(0, 2) == 0)
+            {
+                //Debug.Log(this.name + " initiated conversation");
+                choosedMessage = getBestMessageToTalk(this.GetComponent<NPCData>(), otherNPC.transform.GetComponent<NPCData>());
+                otherNPC.transform.GetComponent<Social>().choosedMessage = choosedMessage;
+            }
+            else
+            {
+                //Debug.Log(npc.gameObject.name + " initiated conversation");
+                choosedMessage = otherNPC.transform.GetComponent<Social>().getBestMessageToTalk(otherNPC.transform.GetComponent<NPCData>(), this.GetComponent<NPCData>());
+                otherNPC.transform.GetComponent<Social>().choosedMessage = choosedMessage;
+            }
+            */
+            choosedMessage = getBestMessageToTalk(this.GetComponent<NPCData>(), otherNPC.GetComponent<NPCData>());
+            otherNPC.GetComponent<Social>().choosedMessage = choosedMessage;
+
+            messageOfInterest = false;
+            //If there is a message and npc is recieving the message 
+            //and message is of interest for him (this happens when NPC did not exceed limit of messages and 
+            //this message is more interesting then at least one of the messages he is holding)
+            if (choosedMessage != null && !this.GetComponent<NPCData>().messages.Contains(choosedMessage) &&
+                this.GetComponent<NPCData>().isMessageOfInterest(choosedMessage))
+            {
+                messageOfInterest = true;
+            }
+            
+            if (choosedMessage != null && messageOfInterest)
+            {
+                talkPartner = otherNPC;
+
+                if (this.GetComponent<NPCData>().messages.Contains(choosedMessage))
+                {
+                    isReceivingMessage = false;
+                }
+                else
+                {
+                    isReceivingMessage = true;
+                    msgDecaymentAtStart = choosedMessage.messageDecayment;
+                }
+                remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
+                otherNPC.GetComponentInParent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
+                this.isTalking = true;
+                otherNPC.GetComponentInParent<Social>().isTalking = true;
+                otherNPC.GetComponentInParent<Social>().talkPartner = this.gameObject;
+
+                if (!isReceivingMessage)
+                {
+                    otherNPC.GetComponentInParent<Social>().isReceivingMessage = true;
+                }
+                else
+                {
+                    otherNPC.GetComponentInParent<Social>().isReceivingMessage = false;
+                }
+                //this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = true;
+                //otherNPC.transform.GetComponentInParent<NPCPatrolMovement>().agent.isStopped = true;
+                this.GetComponentInChildren<NPCPatrolMovement>().stopped = true;
+                otherNPC.GetComponentInChildren<NPCPatrolMovement>().stopped = true;
+            }
+        }
+    }
+
+    void Update () {
         if (em.npcHolder != null && !isTalking)
         {
             if (onTalkCooldown)
@@ -51,6 +122,7 @@ public class Social : MonoBehaviour {
                     onTalkCooldown = false;
                 }
             }
+            /*
             else
             {
                 foreach (Transform npc in em.npcHolder.transform)
@@ -61,69 +133,18 @@ public class Social : MonoBehaviour {
                         Vector3.Distance(npc.transform.GetChild(1).transform.position, this.transform.GetChild(1).transform.position) <= talkDistance &&
                         !npc.gameObject.GetComponent<Social>().isTalking)
                     {
-                        choosedMessage = null;
-                        //Randomly choose who starts to talk
-                        if (Random.Range(0, 2) == 0)
-                        {
-                            //Debug.Log(this.name + " initiated conversation");
-                            choosedMessage = getBestMessageToTalk(this.GetComponent<NPCData>(), npc.gameObject.GetComponent<NPCData>());
-                            npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
-                        }
-                        else
-                        {
-                            //Debug.Log(npc.gameObject.name + " initiated conversation");
-                            choosedMessage = npc.gameObject.GetComponent<Social>().getBestMessageToTalk(
-                            npc.gameObject.GetComponent<NPCData>(), this.GetComponent<NPCData>());
-                            npc.gameObject.GetComponent<Social>().choosedMessage = choosedMessage;
-                        }
-
-                        bool messageOfInterest = false;
-                        //If there is a message and npc is recieving the message 
-                        //and message is of interest for him (this happens when NPC did not exceed limit of messages and 
-                        //this message is more interesting then at least one of the messages he is holding)
-                        if (choosedMessage != null && !this.GetComponent<NPCData>().messages.Contains(choosedMessage) &&
-                            this.GetComponent<NPCData>().isMessageOfInterest(choosedMessage))
-                        {
-                            messageOfInterest = true;
-                        }
-                        //Debug.Log("messageOfInterest: " + messageOfInterest.ToString());
-                        if (choosedMessage != null && messageOfInterest)
-                        {
-                            //Debug.Log("Start talking!!!");
-                            talkPartner = npc.gameObject;
-
-                            if (this.GetComponent<NPCData>().messages.Contains(choosedMessage))
-                            {
-                                isReceivingMessage = false;
-                            }
-                            else
-                            {
-                                isReceivingMessage = true;
-                                msgDecaymentAtStart = choosedMessage.messageDecayment;
-                            }
-                            remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
-                            npc.gameObject.GetComponent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
-                            this.isTalking = true;
-                            npc.gameObject.GetComponent<Social>().isTalking = true;
-                            npc.gameObject.GetComponent<Social>().talkPartner = this.gameObject;
-
-                            if (!isReceivingMessage)
-                            {
-                                npc.gameObject.GetComponent<Social>().isReceivingMessage = true;
-                            }
-                            else
-                            {
-                                npc.gameObject.GetComponent<Social>().isReceivingMessage = false;
-                            }
-                            this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = true;
-                            npc.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = true;
-                        }
+                        
                     }
                 }
             }
+            */
         }
         else if (isTalking)
         {
+            if (choosedMessage == null)
+            {
+                choosedMessage = talkPartner.GetComponent<Social>().choosedMessage;
+            }
             //It takes a maximum of 5 seconds for Coop and Ass to reach 0
             if (isReceivingMessage)
             {
@@ -140,7 +161,7 @@ public class Social : MonoBehaviour {
                 talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
                 talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
             }
-            if (talkCanvas.activeSelf)
+            if (talkCanvas.activeSelf && choosedMessage != null)
             {
                 talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTransmissionTime);
             }
@@ -158,7 +179,8 @@ public class Social : MonoBehaviour {
             if (remainingMessageTransmissionTime <= 0)
             {
                 remainingMessageTransmissionTime = 0;
-                this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = false;
+                this.GetComponentInChildren<NPCPatrolMovement>().stopped = false;
+                //this.GetComponentInChildren<NPCPatrolMovement>().agent.isStopped = false;
                 isTalking = false;
                 onTalkCooldown = true;
                 TalkCooldownTime = 2.0f;

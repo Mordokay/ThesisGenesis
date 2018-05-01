@@ -715,9 +715,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4911296153742202}
-  - component: {fileID: 136049730126143848}
   - component: {fileID: 195631292629658706}
   - component: {fileID: 114524142994772290}
+  - component: {fileID: 54131211580581270}
+  - component: {fileID: 135313006346141284}
+  - component: {fileID: 135266918184932116}
   m_Layer: 13
   m_Name: NPC_1Object
   m_TagString: NPC
@@ -825,6 +827,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &54131211580581270
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1963933347397744}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &95136384000056548
 Animator:
   serializedVersion: 3
@@ -1877,8 +1894,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!136 &136049730126143848
-CapsuleCollider:
+--- !u!135 &135266918184932116
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1963933347397744}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.28
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135313006346141284
+SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -1886,9 +1915,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 0.5000001
-  m_Direction: 1
+  serializedVersion: 2
+  m_Radius: 0.29
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &195631292629658706
 NavMeshAgent:
@@ -1896,7 +1924,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1963933347397744}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.05
   m_Speed: 2

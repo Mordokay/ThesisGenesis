@@ -715,9 +715,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4439967927944818}
-  - component: {fileID: 136250473159062016}
   - component: {fileID: 195529733103999452}
   - component: {fileID: 114142822131866496}
+  - component: {fileID: 54475685877392740}
+  - component: {fileID: 135549405478637648}
+  - component: {fileID: 135568377235495458}
   m_Layer: 13
   m_Name: NPC_2Object
   m_TagString: NPC
@@ -825,6 +827,21 @@ Transform:
   m_Father: {fileID: 4628730149353074}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &54475685877392740
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992746804159932}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!95 &95986809043206310
 Animator:
   serializedVersion: 3
@@ -1877,8 +1894,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!136 &136250473159062016
-CapsuleCollider:
+--- !u!135 &135549405478637648
+SphereCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -1886,9 +1903,20 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.3
-  m_Height: 0.5000001
-  m_Direction: 1
+  serializedVersion: 2
+  m_Radius: 0.29
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &135568377235495458
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1992746804159932}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.28
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!195 &195529733103999452
 NavMeshAgent:
@@ -1896,7 +1924,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1992746804159932}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.05
   m_Speed: 2

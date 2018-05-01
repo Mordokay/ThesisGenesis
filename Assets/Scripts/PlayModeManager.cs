@@ -6,7 +6,13 @@ public class PlayModeManager : MonoBehaviour {
 
     public int messageID;
 
-	void Start () {
+    void Awake()
+    {
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+    }
+
+    void Start () {
         messageID = 0;		
 	}
 	

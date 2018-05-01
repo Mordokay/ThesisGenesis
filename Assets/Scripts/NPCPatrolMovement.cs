@@ -24,9 +24,12 @@ public class NPCPatrolMovement : MonoBehaviour {
     public bool isWaiting;
     public float remainingDistance;
 
+    public bool stopped;
+
     public void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
-        isWaiting = true;
+        //isWaiting = true;
+        stopped = false;
 
         currentGoalObject = null;
 
@@ -37,8 +40,8 @@ public class NPCPatrolMovement : MonoBehaviour {
         myTalkLine.GetComponent<PatrolGoalFeedback>().origin = this.transform;
         myTalkLine.GetComponent<PatrolGoalFeedback>().isTalkArrow = true;
 
-        agent = GetComponent<NavMeshAgent>();
-        agent.ResetPath();
+        //agent = GetComponent<NavMeshAgent>();
+        //agent.ResetPath();
         waitTime = -1;
 
         GetNewGoal();
@@ -71,19 +74,19 @@ public class NPCPatrolMovement : MonoBehaviour {
                 //Debug.Log(patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])]);
                 if (patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])] != null)
                 {
-                    agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
+                    //agent.destination = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
 
                     currentGoalObject = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].gameObject;
-
-                    myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination =
-                        patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
+                    this.transform.LookAt(currentGoalObject.transform);
+                    //myLineGoalFeedback.GetComponent<PatrolGoalFeedback>().destination =
+                    //    patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].position;
                 }
                 patrolIndex += 1;
             }
         }
         else
         {
-            agent.destination = this.transform.position;
+            //agent.destination = this.transform.position;
         }
     }
 
@@ -125,7 +128,30 @@ public class NPCPatrolMovement : MonoBehaviour {
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
     }
 
-    void Update () {
+    private void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log(other.name);
+        if (other.gameObject.tag.Equals("NPC"))
+        {
+            //Debug.Log("Collided with another NPC!!!");
+            this.GetComponentInParent<Social>().NPC_Colision(other.transform.parent.gameObject);
+        }
+    }
+
+    void Update() {
+        if (!stopped)
+        {
+            float step = 1.0f * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
+
+            //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
+            //this.transform.position += currentGoalObject.transform.position.normalized * Time.deltaTime;
+            if (Vector3.Distance(currentGoalObject.transform.position, this.transform.position) < 0.1f)
+            {
+                GetNewGoal();
+            }
+        }
+        /*
         remainingDistance = Vector3.Distance(currentGoalObject.transform.position, this.transform.position);
         if (uiManager.isGoalFeedbackEnabled)
         {
@@ -208,5 +234,6 @@ public class NPCPatrolMovement : MonoBehaviour {
         {
             thinkingBalloon.SetActive(false);
         }
+        */
     }
 }

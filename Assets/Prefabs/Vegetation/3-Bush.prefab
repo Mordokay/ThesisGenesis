@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 135125997440794942}
   - component: {fileID: 114248315847737480}
   - component: {fileID: 65232140718282258}
-  m_Layer: 10
+  m_Layer: 14
   m_Name: 3-Bush
   m_TagString: Element
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ SphereCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1728561077450484}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
