@@ -145,35 +145,37 @@ public class Social : MonoBehaviour {
             {
                 choosedMessage = talkPartner.GetComponent<Social>().choosedMessage;
             }
-            //It takes a maximum of 5 seconds for Coop and Ass to reach 0
-            if (isReceivingMessage)
-            {
-                this.GetComponent<NPCData>().currentCooperativenessLevel -= Time.deltaTime / 5.0f;
-            }
             else
             {
-                this.GetComponent<NPCData>().currentAssertivenessLevel -= Time.deltaTime / 5.0f;
-            }
+                //It takes a maximum of 5 seconds for Coop and Ass to reach 0
+                if (isReceivingMessage)
+                {
+                    this.GetComponent<NPCData>().currentCooperativenessLevel -= Time.deltaTime / 5.0f;
+                }
+                else
+                {
+                    this.GetComponent<NPCData>().currentAssertivenessLevel -= Time.deltaTime / 5.0f;
+                }
 
-            if (!isReceivingMessage && !talkCanvas.activeSelf)
-            {
-                talkCanvas.SetActive(true);
-                talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
-                talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
+                if (!isReceivingMessage && !talkCanvas.activeSelf)
+                {
+                    talkCanvas.SetActive(true);
+                    talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
+                    talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
+                }
+                if (talkCanvas.activeSelf && choosedMessage != null)
+                {
+                    talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTransmissionTime);
+                }
+                if (Mathf.Abs(Vector3.Angle(this.transform.GetChild(1).transform.forward,
+                    this.transform.GetChild(1).transform.position - talkPartner.transform.GetChild(1).transform.position) - 180.0f) > 1.0f)
+                {
+                    Vector3 targetDir = talkPartner.transform.GetChild(1).transform.position - this.transform.GetChild(1).transform.position;
+                    float step = lookSpeed * Time.deltaTime;
+                    Vector3 newDir = Vector3.RotateTowards(this.transform.GetChild(1).transform.forward, targetDir, step, 0.0F);
+                    this.transform.GetChild(1).transform.rotation = Quaternion.LookRotation(newDir);
+                }
             }
-            if (talkCanvas.activeSelf && choosedMessage != null)
-            {
-                talkCanvas.GetComponentInChildren<Slider>().value = 1 - (remainingMessageTransmissionTime / choosedMessage.messageTransmissionTime);
-            }
-            if (Mathf.Abs(Vector3.Angle(this.transform.GetChild(1).transform.forward,
-                this.transform.GetChild(1).transform.position - talkPartner.transform.GetChild(1).transform.position) - 180.0f) > 1.0f)
-            {
-                Vector3 targetDir = talkPartner.transform.GetChild(1).transform.position - this.transform.GetChild(1).transform.position;
-                float step = lookSpeed * Time.deltaTime;
-                Vector3 newDir = Vector3.RotateTowards(this.transform.GetChild(1).transform.forward, targetDir, step, 0.0F);
-                this.transform.GetChild(1).transform.rotation = Quaternion.LookRotation(newDir);
-            }
-
             //Duration of message being sent
             remainingMessageTransmissionTime -= Time.deltaTime;
             if (remainingMessageTransmissionTime <= 0)
@@ -207,7 +209,7 @@ public class Social : MonoBehaviour {
 
                     sdl.WriteMessageToLog(talkPartner.GetComponent<NPCData>().name + " >> " + this.GetComponent<NPCData>().name + " || "
                         + "{ " + this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).ToString() + " }" +
-                        " || Decayment: " + msgDecaymentAtStart, choosedMessage.id, wasRepeated);
+                        " || Decayment: " + msgDecaymentAtStart, choosedMessage.id, wasRepeated, (talkPartner.transform.GetChild(1).position + this.transform.GetChild(1).position) / 2);
                     msgDecaymentAtStart = 0.0f;
 
                     //Checks if the message recieved is the message being tracked
