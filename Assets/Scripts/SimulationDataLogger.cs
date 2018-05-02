@@ -17,6 +17,10 @@ public class SimulationDataLogger : MonoBehaviour {
     int[] messageSnowPrevious;
     int[] messageDesertCurrent;
     int[] messageDesertPrevious;
+    int[] messageIslandCurrent;
+    int[] messageIslandPrevious;
+    int[] messageRoadsCurrent;
+    int[] messageRoadsPrevious;
 
     int[] aliveIDs;
     int[] existsIDs;
@@ -30,7 +34,6 @@ public class SimulationDataLogger : MonoBehaviour {
 
     int repeatedMessageCount;
 
-    string removedMessagesInfo;
     int removedTotalMessages;
     public Color[] GraphColors;
     public GameObject GraphPoint;
@@ -41,6 +44,8 @@ public class SimulationDataLogger : MonoBehaviour {
     public GameObject GraphHolderForest;
     public GameObject GraphHolderSnow;
     public GameObject GraphHolderDesert;
+    public GameObject GraphHolderIsland;
+    public GameObject GraphHolderRoads;
 
     int currentMinute;
 
@@ -53,12 +58,16 @@ public class SimulationDataLogger : MonoBehaviour {
     public Camera graphCameraForestVilage;
     public Camera graphCameraSnowVilage;
     public Camera graphCameraDesertVilage;
+    public Camera graphCameraIslandVilage;
+    public Camera graphCameraRoads;
     public GameObject[] graphLabelsMessage;
     public GameObject[] graphLabelsAlive;
     public GameObject[] graphLabelsExists;
     public GameObject[] graphLabelsForestVilage;
     public GameObject[] graphLabelsSnowVilage;
     public GameObject[] graphLabelsDesertVilage;
+    public GameObject[] graphLabelsIslandVilage;
+    public GameObject[] graphLabelsRoads;
 
     public float ForestVilageMinX;
     public float ForestVilageMaxX;
@@ -75,6 +84,11 @@ public class SimulationDataLogger : MonoBehaviour {
     public float DesertVilageMinZ;
     public float DesertVilageMaxZ;
 
+    public float IslandVilageMinX;
+    public float IslandVilageMaxX;
+    public float IslandVilageMinZ;
+    public float IslandVilageMaxZ;
+    
     void Start () {
         //graphCameraMessage.gameObject.SetActive(false);
         //graphCameraAlive.gameObject.SetActive(false);
@@ -83,7 +97,6 @@ public class SimulationDataLogger : MonoBehaviour {
         nameForSave = "";
         currentMinute = -1;
 
-        removedMessagesInfo = "";
         removedTotalMessages = 0;
 
         repeatedMessageCount = 0;
@@ -125,6 +138,28 @@ public class SimulationDataLogger : MonoBehaviour {
         foreach (int i in messageDesertPrevious)
         {
             messageDesertPrevious[i] = 0;
+        }
+
+        messageIslandCurrent = new int[20];
+        foreach (int i in messageIslandCurrent)
+        {
+            messageIslandCurrent[i] = 0;
+        }
+        messageIslandPrevious = new int[20];
+        foreach (int i in messageIslandPrevious)
+        {
+            messageIslandPrevious[i] = 0;
+        }
+
+        messageRoadsCurrent = new int[20];
+        foreach (int i in messageRoadsCurrent)
+        {
+            messageRoadsCurrent[i] = 0;
+        }
+        messageRoadsPrevious = new int[20];
+        foreach (int i in messageRoadsPrevious)
+        {
+            messageRoadsPrevious[i] = 0;
         }
 
         aliveIDs = new int[20];
@@ -220,7 +255,7 @@ public class SimulationDataLogger : MonoBehaviour {
         //Debug.Log("position message" + position);
         if (isWritingStuff)
         {
-            if (id < 10)
+            if (id < 20)
             {
                 graphPointsMessageCurrent[id] += 1;
 
@@ -229,16 +264,27 @@ public class SimulationDataLogger : MonoBehaviour {
                 {
                     messageForestCurrent[id] += 1;
                 }
-                //check inside forest zone
-                if (position.x > SnowVilageMinX && position.x < SnowVilageMaxX && position.z > SnowVilageMinZ && position.z < SnowVilageMaxZ)
+                //check inside snow zone
+                else if (position.x > SnowVilageMinX && position.x < SnowVilageMaxX && position.z > SnowVilageMinZ && position.z < SnowVilageMaxZ)
                 {
                     messageSnowCurrent[id] += 1;
                 }
-                //check inside forest zone
-                if (position.x > DesertVilageMinX && position.x < DesertVilageMaxX && position.z > DesertVilageMinZ && position.z < DesertVilageMaxZ)
+                //check inside desert zone
+                else if (position.x > DesertVilageMinX && position.x < DesertVilageMaxX && position.z > DesertVilageMinZ && position.z < DesertVilageMaxZ)
                 {
                     messageDesertCurrent[id] += 1;
                 }
+                //check inside island zone
+                else if (position.x > IslandVilageMinX && position.x < IslandVilageMaxX && position.z > IslandVilageMinZ && position.z < IslandVilageMaxZ)
+                {
+                    messageIslandCurrent[id] += 1;
+                }
+                //of nothing else applies the message is on the roads
+                else
+                {
+                    messageRoadsCurrent[id] += 1;
+                }
+
             }
 
             messageCounter[id] += 1;
@@ -264,6 +310,7 @@ public class SimulationDataLogger : MonoBehaviour {
            // writerLocal.WriteLine(currentTime + line);
         }
     }
+
     public void WriteRemoveToLog(string line, int id)
     {
         if (isWritingStuff)
@@ -271,8 +318,8 @@ public class SimulationDataLogger : MonoBehaviour {
             removedTotalMessages += 1;
             removedCount[id] += 1;
 
-            removedMessagesInfo += getCurrentTime() + " " + line + System.Environment.NewLine;
-
+            string currentTime = getCurrentTime();
+            writer.WriteLine(currentTime + " " + line + System.Environment.NewLine);
         }
     }
 
@@ -282,15 +329,18 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             foreach (Message m in npc.gameObject.GetComponent<NPCData>().messages)
             {
-                if (m.messageDecayment > 0.0f)
+                if (m.id < 20)
                 {
-                    aliveIDs[m.id] += 1;
+                    if (m.messageDecayment > 0.0f)
+                    {
+                        aliveIDs[m.id] += 1;
+                    }
+                    existsIDs[m.id] += 1;
                 }
-                existsIDs[m.id] += 1;
             }
         }
 
-        for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID && i < 10; i++)
+        for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID && i < 20; i++)
         {
             graphLabelsMessage[i].SetActive(true);
             graphLabelsAlive[i].SetActive(true);
@@ -298,6 +348,8 @@ public class SimulationDataLogger : MonoBehaviour {
             graphLabelsForestVilage[i].SetActive(true);
             graphLabelsSnowVilage[i].SetActive(true);
             graphLabelsDesertVilage[i].SetActive(true);
+            graphLabelsIslandVilage[i].SetActive(true);
+            graphLabelsRoads[i].SetActive(true);
 
             //DrawCurrentPoint and set color for Messages
             GameObject myPoint = Instantiate(GraphPoint) as GameObject;
@@ -334,6 +386,18 @@ public class SimulationDataLogger : MonoBehaviour {
             myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
             myPoint.transform.position = new Vector3(500.0f + time, 0.0f, -1500.0f + messageDesertCurrent[i]);
             myPoint.transform.parent = GraphHolderDesert.transform;
+
+            //DrawCurrentPoint and set color for Island
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, -2500.0f + messageIslandCurrent[i]);
+            myPoint.transform.parent = GraphHolderIsland.transform;
+
+            //DrawCurrentPoint and set color for Roads
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(500.0f + time, 0.0f, -3000.0f + messageRoadsCurrent[i]);
+            myPoint.transform.parent = GraphHolderRoads.transform;
 
             //Draw a Line to previous point and color of line in Messages
             GameObject myLine = Instantiate(GraphLine);
@@ -383,6 +447,22 @@ public class SimulationDataLogger : MonoBehaviour {
             myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
             myLine.transform.parent = GraphHolderDesert.transform;
 
+            //Draw a Line to previous point and color of line in island
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, -2500.0f + messageIslandPrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, -2500.0f + messageIslandCurrent[i]));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderIsland.transform;
+
+            //Draw a Line to previous point and color of line in Roads
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + time - 1, 0.0f, -3000.0f + messageRoadsPrevious[i]));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(500.0f + time, 0.0f, -3000.0f + messageRoadsCurrent[i]));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderRoads.transform;
+
             graphPointsMessagePrevious[i] = graphPointsMessageCurrent[i];
             graphPointsMessageCurrent[i] = 0;
 
@@ -400,6 +480,12 @@ public class SimulationDataLogger : MonoBehaviour {
 
             messageDesertPrevious[i] = messageDesertCurrent[i];
             messageDesertCurrent[i] = 0;
+
+            messageIslandPrevious[i] = messageIslandCurrent[i];
+            messageIslandCurrent[i] = 0;
+
+            messageRoadsPrevious[i] = messageRoadsCurrent[i];
+            messageRoadsCurrent[i] = 0;
         }
 
         currentMinute = Mathf.FloorToInt(Time.timeSinceLevelLoad / 60);
@@ -429,9 +515,9 @@ public class SimulationDataLogger : MonoBehaviour {
 
             string pathDesert = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Desert.png";
 
-            // graphCameraMessage.gameObject.SetActive(true);
-            //graphCameraAlive.gameObject.SetActive(true);
-            //graphCameraExists.gameObject.SetActive(true);
+            string pathIsland = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Island.png";
+
+            string pathRoads = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Roads.png";
 
             //MESSAGE GRAPH
             RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
@@ -519,54 +605,68 @@ public class SimulationDataLogger : MonoBehaviour {
             bytes = screenShot.EncodeToPNG();
 
             System.IO.File.WriteAllBytes(pathDesert, bytes);
-            
+
+            //ISLAND GRAPH
+            rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCameraIslandVilage.targetTexture = rt;
+            screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCameraIslandVilage.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCameraIslandVilage.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            bytes = screenShot.EncodeToPNG();
+
+            System.IO.File.WriteAllBytes(pathIsland, bytes);
+
+            //ROADS GRAPH
+            rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCameraRoads.targetTexture = rt;
+            screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCameraRoads.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCameraRoads.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            bytes = screenShot.EncodeToPNG();
+
+            System.IO.File.WriteAllBytes(pathRoads, bytes);
+
             ///////////////////////////////////////////////////////////////////////
             /////////////////////////TEXT FILE LOGGER//////////////////////////////
             ///////////////////////////////////////////////////////////////////////
             int messagesTotalCount = 0;
 
             writer.WriteLine(System.Environment.NewLine);
-            //writerLocal.WriteLine(System.Environment.NewLine);
-
-            writer.WriteLine(removedMessagesInfo);
-            //writerLocal.WriteLine(removedMessagesInfo);
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
-               // writerLocal.WriteLine("Message ID = " + i + " was removed " + removedCount[i] + " times");
             }
 
             writer.WriteLine("Removed " + removedTotalMessages + " total messages");
-           // writerLocal.WriteLine("Removed " + removedTotalMessages + " total messages");
 
             writer.WriteLine(System.Environment.NewLine);
-           // writerLocal.WriteLine(System.Environment.NewLine);
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message ID = " + i + " Count = " + messageCounter[i]);
-                //writerLocal.WriteLine("Message ID = " + i + " Count = " + messageCounter[i]);
                 messagesTotalCount += messageCounter[i];
             }
 
             writer.WriteLine(System.Environment.NewLine);
-           // writerLocal.WriteLine(System.Environment.NewLine);
 
             writer.WriteLine("Total Messages = " + messagesTotalCount + System.Environment.NewLine);
-            //writerLocal.WriteLine("Total Messages = " + messagesTotalCount + System.Environment.NewLine);
 
             writer.WriteLine("Repeated Messages = " + repeatedMessageCount + System.Environment.NewLine);
-            //writerLocal.WriteLine("Repeated Messages = " + repeatedMessageCount + System.Environment.NewLine);
 
             writer.WriteLine("New Messages = " + (messagesTotalCount - repeatedMessageCount) + System.Environment.NewLine);
-           // writerLocal.WriteLine("New Messages = " + (messagesTotalCount - repeatedMessageCount) + System.Environment.NewLine);
 
             writer.WriteLine("Total Simulation Time: " + getCurrentTime() + System.Environment.NewLine);
-            //writerLocal.WriteLine("Total Simulation Time: " + getCurrentTime() + System.Environment.NewLine);
 
             writer.WriteLine(System.Environment.NewLine);
-            //writerLocal.WriteLine(System.Environment.NewLine);
 
             List<GameObject> myNPCs = new List<GameObject>();
             foreach (Transform npc in this.GetComponent<EditorModeController>().npcHolder.transform)
@@ -588,21 +688,14 @@ public class SimulationDataLogger : MonoBehaviour {
             }
 
             writer.WriteLine("There are  " + myNPCs.Count + " NPCs");
-            //writerLocal.WriteLine("There are  " + myNPCs.Count + " NPCs");
 
             for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
             {
                 writer.WriteLine("Message With ID = " + i + " Is alive in " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
-                //writerLocal.WriteLine("Message With ID = " + i + " Is alive in = " + aliveIDs[i] + " NPCs and is present in " + existsIDs[i] + " NPCs");
                 messagesTotalCount += messageCounter[i];
             }
 
             writer.Close();
-            //writerLocal.Close();
-
-            //graphCameraMessage.gameObject.SetActive(false);
-            //graphCameraAlive.gameObject.SetActive(false);
-            //graphCameraExists.gameObject.SetActive(false);
         }
     }
 
@@ -616,7 +709,6 @@ public class SimulationDataLogger : MonoBehaviour {
     {
         if (Mathf.FloorToInt(Time.timeSinceLevelLoad / 60) != currentMinute)
         {
-            //Debug.Log("AddingPoints at minute: " + Mathf.FloorToInt(Time.timeSinceLevelLoad / 60));
             AddPoints(Mathf.FloorToInt(Time.timeSinceLevelLoad / 60));
         }
     }
