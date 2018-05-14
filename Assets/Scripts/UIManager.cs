@@ -77,6 +77,8 @@ public class UIManager : MonoBehaviour {
     public GameObject variableDecaymentButton;
     public bool isLinearDecayment;
 
+    public GameObject messageSequenceSelectedFeedback;
+
     void Start()
     {
         SetVariableDecayment();
@@ -126,6 +128,28 @@ public class UIManager : MonoBehaviour {
         foreach (Transform npc in npcHolder.transform)
         {
             npc.gameObject.GetComponent<NPCData>().ShuffleInterests();
+        }
+    }
+
+    public void ShuffleMessageSequence()
+    {
+        gm.GetComponent<Beacon>().GenerateMessageSequence();
+    }
+
+    public void ToggleMessagePlaySequence()
+    {
+        if (Time.timeSinceLevelLoad == 0.0f)
+        {
+            if (gm.GetComponent<Beacon>().isOnSequence)
+            {
+                gm.GetComponent<Beacon>().isOnSequence = false;
+                messageSequenceSelectedFeedback.SetActive(false);
+            }
+            else
+            {
+                gm.GetComponent<Beacon>().isOnSequence = true;
+                messageSequenceSelectedFeedback.SetActive(true);
+            }
         }
     }
 

@@ -40,6 +40,14 @@ public class Message
         return msg;
     }
 
+    public Message(Message msg)
+    {
+        this.id = msg.id;
+        this.messageTransmissionTime = msg.messageTransmissionTime;
+        this.messageDecayment = msg.messageDecayment;
+        this.tags = msg.tags;
+        this.description = msg.description;
+    }
     public Message(int id, float messageTransmissionTime, string description, string tagsText)
     {
         //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);

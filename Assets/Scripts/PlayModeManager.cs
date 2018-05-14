@@ -13,7 +13,7 @@ public class PlayModeManager : MonoBehaviour {
     }
 
     void Start () {
-        messageID = 0;		
+        //messageID = 0;		
 	}
 	
 	public int getMessageId()

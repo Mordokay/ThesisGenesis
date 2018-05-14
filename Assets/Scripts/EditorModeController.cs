@@ -923,6 +923,26 @@ public class EditorModeController : MonoBehaviour {
         {
             mapContent = mapContent.Substring(0, mapContent.Length - 1);
         }
+
+        mapContent += "|";
+
+        for (int i = 0; i < this.GetComponent<Beacon>().messageSequence.Length; i++)
+        {
+            Message msg = this.GetComponent<Beacon>().messageSequence[i];
+
+            mapContent += this.GetComponent<Beacon>().messageTimeOfSpawn[i] + "#";
+
+            mapContent += msg.id + "&" + msg.messageTransmissionTime + "&" + msg.description + "&";
+            foreach (Message.Tag tag in msg.tags)
+            {
+                mapContent += tag.name + " " + tag.weight + ",";
+            }
+            mapContent = mapContent.Substring(0, mapContent.Length - 1);
+
+            mapContent += "@";
+        }
+        mapContent = mapContent.Substring(0, mapContent.Length - 1);
+
         //mapContent += "|";
 
         //Write some text to the test.txt file
@@ -1003,6 +1023,7 @@ public class EditorModeController : MonoBehaviour {
             string[] splitArrayPatrolPoints = splitGameData[4].Split(char.Parse("@"));
             string[] splitArrayNPC = splitGameData[5].Split(char.Parse("@"));
             string[] splitArrayEventSpawners = splitGameData[6].Split(char.Parse("@"));
+            string[] splitArrayMessageSequence = splitGameData[7].Split(char.Parse("@"));
 
             this.GetComponent<PlayModeManager>().messageID = messageIdCount;
 
@@ -1180,6 +1201,21 @@ public class EditorModeController : MonoBehaviour {
                     mySpawnEvent.transform.position = pos;
                     mySpawnEvent.GetComponent<EventSpawnManager>().InitializeSpawnEvent(myTags, transmissionDistance, transmissionTime, description);
                     mySpawnEvent.transform.GetChild(0).transform.localScale = Vector3.one * transmissionDistance;
+                }
+            }
+
+            if (splitArrayMessageSequence[0] != "")
+            {
+                this.GetComponent<Beacon>().InitializeSequenceMessages();
+                for (int i = 0; i < splitArrayMessageSequence.Length; i++)
+                {
+                    //Debug.Log(splitArrayMessageSequence[i]);
+                    string[] myArrayMessageData = splitArrayMessageSequence[i].Split('#');
+                    this.GetComponent<Beacon>().messageTimeOfSpawn[i] = float.Parse(myArrayMessageData[0]);
+
+                    string[] messageData = myArrayMessageData[1].Split('&');
+
+                    this.GetComponent<Beacon>().messageSequence[i] = new Message(System.Int32.Parse(messageData[0]), float.Parse(messageData[1]), messageData[2], messageData[3]);
                 }
             }
         }

@@ -14,19 +14,56 @@ public class Beacon : MonoBehaviour {
     public float messageTime;
     public float timeToNextEvent;
 
+    public bool isOnSequence;
+
     UIManager uiManager;
+
+    public Message[] messageSequence;
+    public float[] messageTimeOfSpawn;
+
+    int currentMessageOnSequence;
+
+    bool sequenceInitialized = false;
 
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         timeToNextEvent = 60.0f;
-        /*
-        if (npcHolder.transform.childCount > 0) {
-            SpawnEvent();
-        }
-        else
+        currentMessageOnSequence = 0;
+
+        if (!sequenceInitialized)
         {
-            timeToNextEvent = UnityEngine.Random.Range(timeBetweenEventsMin, timeBetweenEventsMax);
-        }*/
+            sequenceInitialized = true;
+            messageSequence = new Message[10];
+            messageTimeOfSpawn = new float[10];
+        }
+        //messageSequence = new Message[10];
+        //messageTimeOfSpawn = new float[10];
+        //GenerateMessageSequence();
+        isOnSequence = false;
+    }
+
+    public void InitializeSequenceMessages()
+    {
+        sequenceInitialized = true;
+        messageSequence = new Message[10];
+        messageTimeOfSpawn = new float[10];
+    }
+
+    public void GenerateMessageSequence()
+    {
+        float rangeMin = 0.0f;
+        float rangeMax = 250.0f;
+
+        for (int i = 0; i < 10; i++)
+        {
+            //int eventID = this.GetComponent<PlayModeManager>().getMessageId();
+            Message msg = CreateMessage(i);
+            messageSequence[i] = msg;
+            messageTimeOfSpawn[i] = UnityEngine.Random.Range(rangeMin, rangeMax);
+
+            rangeMin += 200.0f;
+            rangeMax += 200.0f;
+        }
     }
 
     private void SpawnEvent()
@@ -71,16 +108,43 @@ public class Beacon : MonoBehaviour {
     }
 
     void Update () {
-        timeToNextEvent -= Time.deltaTime;
-        if (timeToNextEvent <= 0)
+        if (isOnSequence && sequenceInitialized)
         {
-            if (npcHolder.transform.childCount > 0)
+            //Check if its time for the message to me spawned
+            if(messageTimeOfSpawn[currentMessageOnSequence] <= Time.timeSinceLevelLoad)
             {
-                SpawnEvent();
+                GameObject selectedNPC = npcHolder.transform.GetChild(UnityEngine.Random.Range(0, npcHolder.transform.childCount)).gameObject;
+
+                //rotates between random NPCs until it finds one who has interest in the message
+                while (!selectedNPC.GetComponent<NPCData>().isMessageOfInterest(messageSequence[currentMessageOnSequence]))
+                {
+                    selectedNPC = npcHolder.transform.GetChild(UnityEngine.Random.Range(0, npcHolder.transform.childCount)).gameObject;
+                }
+
+                int eventID = this.GetComponent<PlayModeManager>().getMessageId();
+                messageSequence[currentMessageOnSequence].id = eventID;
+
+                selectedNPC.GetComponent<NPCData>().ReceiveMessage(new Message(messageSequence[currentMessageOnSequence]));
+
+                uiManager.messageTrackingID.text = messageSequence[currentMessageOnSequence].id.ToString();
+                selectedNPC.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
+
+                currentMessageOnSequence += 1;
             }
-            else
+        }
+        else
+        {
+            timeToNextEvent -= Time.deltaTime;
+            if (timeToNextEvent <= 0)
             {
-                timeToNextEvent = UnityEngine.Random.Range(timeBetweenEventsMin, timeBetweenEventsMax);
+                if (npcHolder.transform.childCount > 0)
+                {
+                    SpawnEvent();
+                }
+                else
+                {
+                    timeToNextEvent = UnityEngine.Random.Range(timeBetweenEventsMin, timeBetweenEventsMax);
+                }
             }
         }
     }

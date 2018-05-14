@@ -199,6 +199,7 @@ public class Social : MonoBehaviour {
                         this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id,
                             choosedMessage.messageTransmissionTime, choosedMessage.description,
                             choosedMessage.tags));
+                       this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                     }
                     else
                     {
