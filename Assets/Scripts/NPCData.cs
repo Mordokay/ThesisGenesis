@@ -27,8 +27,48 @@ public class NPCData : MonoBehaviour {
 
     UIManager uiManager;
 
+    float ForestVilageMinX;
+    float ForestVilageMaxX;
+    float ForestVilageMinZ;
+    float ForestVilageMaxZ;
+
+    float SnowVilageMinX;
+    float SnowVilageMaxX;
+    float SnowVilageMinZ;
+    float SnowVilageMaxZ;
+
+    float DesertVilageMinX;
+    float DesertVilageMaxX;
+    float DesertVilageMinZ;
+    float DesertVilageMaxZ;
+
+    float IslandVilageMinX;
+    float IslandVilageMaxX;
+    float IslandVilageMinZ;
+    float IslandVilageMaxZ;
+
     private void Start()
     {
+        ForestVilageMinX = -49.0f;
+        ForestVilageMaxX = -8.0f;
+        ForestVilageMinZ = 17.0f;
+        ForestVilageMaxZ = 49.0f;
+
+        SnowVilageMinX = -49.0f;
+        SnowVilageMaxX = -23.0f;
+        SnowVilageMinZ = -48.0f;
+        SnowVilageMaxZ = 11.0f;
+
+        DesertVilageMinX = 11.0f;
+        DesertVilageMaxX = 48.0f;
+        DesertVilageMinZ = 24.0f;
+        DesertVilageMaxZ = 39.0f;
+
+        IslandVilageMinX = 21.0f;
+        IslandVilageMaxX = 48.0f;
+        IslandVilageMinZ = -31.0f;
+        IslandVilageMaxZ = 5.0f;
+
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         currentAssertivenessLevel = 0.0f;
         currentCooperativenessLevel = 0.0f;
@@ -61,25 +101,6 @@ public class NPCData : MonoBehaviour {
 
         currentAssertivenessLevel = Mathf.Clamp(currentAssertivenessLevel, 0.0f, 1.0f);
         currentCooperativenessLevel = Mathf.Clamp(currentCooperativenessLevel, 0.0f, 1.0f);
-        /*
-        if (currentAssertivenessLevel > 1.0f)
-        {
-            currentAssertivenessLevel = 1.0f;
-        }
-        else if (currentAssertivenessLevel < 0.0f)
-        {
-            currentAssertivenessLevel = 0.0f;
-        }
-
-        if (currentCooperativenessLevel > 1.0f)
-        {
-            currentCooperativenessLevel = 1.0f;
-        }
-        else if (currentCooperativenessLevel < 0.0f)
-        {
-            currentCooperativenessLevel = 0.0f;
-        }
-        */
     }
 
     [System.Serializable]
@@ -107,6 +128,92 @@ public class NPCData : MonoBehaviour {
             friendshipLevel = f;
         }
     };
+
+    public void ShuffleInterests()
+    {
+        interests.Clear();
+        if (transform.position.x > ForestVilageMinX && transform.position.x < ForestVilageMaxX && transform.position.z > ForestVilageMinZ && transform.position.z < ForestVilageMaxZ)
+        {
+            Shuffle("Wood", "Stone", "Berries", "Cactus");
+        }
+        else if (transform.position.x > SnowVilageMinX && transform.position.x < SnowVilageMaxX && transform.position.z > SnowVilageMinZ && transform.position.z < SnowVilageMaxZ)
+        {
+            Shuffle("Stone", "Berries", "Cactus", "Wood");
+        }
+        else if (transform.position.x > IslandVilageMinX && transform.position.x < IslandVilageMaxX && transform.position.z > IslandVilageMinZ && transform.position.z < IslandVilageMaxZ)
+        {
+            Shuffle("Berries", "Cactus", "Wood", "Stone");
+        }
+        else if (transform.position.x > DesertVilageMinX && transform.position.x < DesertVilageMaxX && transform.position.z > DesertVilageMinZ && transform.position.z < DesertVilageMaxZ)
+        {
+            Shuffle("Cactus", "Wood", "Stone", "Berries");
+        }
+        else
+        {
+            ShuffleRandom();
+        }
+    }
+
+    public void Shuffle(string tag1, string tag2, string tag3, string tag4)
+    {
+        float randomValue = 0.0f;
+        float totalWeight = 0.0f;
+
+        randomValue = Random.Range(75.0f, 100.0f);
+        totalWeight += randomValue;
+        interests.Add(new Interest(tag1, randomValue));
+
+        if (Random.Range(0, 100) > 50)
+        {
+            randomValue = Random.Range(50.0f, 75.0f);
+            totalWeight += randomValue;
+            interests.Add(new Interest(tag2, randomValue));
+
+            if (Random.Range(0, 100) > 50)
+            {
+                randomValue = Random.Range(25.0f, 50.0f);
+                totalWeight += randomValue;
+                interests.Add(new Interest(tag3, randomValue));
+
+                if (Random.Range(0, 100) > 50)
+                {
+                    randomValue = Random.Range(0.0f, 25.0f);
+                    totalWeight += randomValue;
+                    interests.Add(new Interest(tag4, randomValue));
+                }
+            }
+        }
+        foreach(Interest i in interests)
+        {
+            i.weight = i.weight / totalWeight;
+        }
+
+        Debug.Log("Shuffling " + tag1);
+    }
+
+    public void ShuffleRandom()
+    {
+        float randomValue = Random.Range(10.0f, 100.0f);
+        float totalWeight = randomValue;
+        interests.Add(new Interest("Wood", randomValue));
+
+        randomValue = Random.Range(10.0f, 100.0f);
+        totalWeight += randomValue;
+        interests.Add(new Interest("Stone", randomValue));
+
+        randomValue = Random.Range(10.0f, 100.0f);
+        totalWeight += randomValue;
+        interests.Add(new Interest("Berries", randomValue));
+
+        randomValue = Random.Range(10.0f, 100.0f);
+        totalWeight += randomValue;
+        interests.Add(new Interest("Cactus", randomValue));
+
+        foreach (Interest i in interests)
+        {
+            i.weight = i.weight / totalWeight;
+        }
+    }
 
     public void DecayMessages()
     {

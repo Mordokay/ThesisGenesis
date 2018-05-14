@@ -121,6 +121,14 @@ public class UIManager : MonoBehaviour {
         variableDecaymentButton.GetComponent<Image>().color = Color.yellow;
     }
 
+    public void ShuffleNPCInterests()
+    {
+        foreach (Transform npc in npcHolder.transform)
+        {
+            npc.gameObject.GetComponent<NPCData>().ShuffleInterests();
+        }
+    }
+
     public void ToggleWatchMode()
     {
         if (isWatchModeEnabled)
