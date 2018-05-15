@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour {
 
     public GameObject SidePanel;
     public GameObject mainPanel;
-    public GameObject addPlayerPanel;
+    public GameObject messageSequence_Panel;
     public GameObject drawTerrainPanel;
     public GameObject addElementPanel;
     public GameObject addNPC_Panel;
@@ -104,10 +104,11 @@ public class UIManager : MonoBehaviour {
         listConstruct.SetActive(true);
     }
 
-    public void ShowPlayerPanel()
+    public void ShowMessageSequencePanel()
     {
         mainPanel.SetActive(false);
-        addPlayerPanel.SetActive(true);
+        messageSequence_Panel.SetActive(true);
+        gm.GetComponent<Beacon>().RefreshMessageSequenceText();
     }
 
     public void SetLinearDecayment()
@@ -782,7 +783,7 @@ public class UIManager : MonoBehaviour {
     public void ReturnToMainPanel()
     {
         mainPanel.SetActive(true);
-        addPlayerPanel.SetActive(false);
+        messageSequence_Panel.SetActive(false);
         drawTerrainPanel.SetActive(false);
         addElementPanel.SetActive(false);
         addNPC_Panel.SetActive(false);

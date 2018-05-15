@@ -6143,7 +6143,7 @@ RectTransform:
   m_Children:
   - {fileID: 1074500722}
   m_Father: {fileID: 832659440}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6467,7 +6467,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 149735069}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 11.6}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 80653777}
@@ -9348,7 +9348,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 203286941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.82}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 1309500259}
@@ -26609,7 +26609,7 @@ MonoBehaviour:
   SnowVilageMaxZ: 11
   DesertVilageMinX: 11
   DesertVilageMaxX: 48
-  DesertVilageMinZ: 24
+  DesertVilageMinZ: 15
   DesertVilageMaxZ: 49
   IslandVilageMinX: 21
   IslandVilageMaxX: 48
@@ -26641,6 +26641,7 @@ MonoBehaviour:
   isOnSequence: 0
   messageSequence: []
   messageTimeOfSpawn: []
+  messageSequenceText: {fileID: 543035440}
 --- !u!1 &527062142
 GameObject:
   m_ObjectHideFlags: 0
@@ -27452,12 +27453,12 @@ RectTransform:
   m_LocalScale: {x: 0.8334315, y: 0.8334315, z: 0.8334315}
   m_Children: []
   m_Father: {fileID: 832659440}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000048816, y: 0.0000076294}
-  m_SizeDelta: {x: 400, y: 241.3}
+  m_AnchoredPosition: {x: 6.3, y: 146}
+  m_SizeDelta: {x: 409, y: 930.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &543035440
 MonoBehaviour:
@@ -27480,21 +27481,18 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 5bb7237d03fda58469a481a705bf5131, type: 3}
-    m_FontSize: 50
+    m_FontSize: 25
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 5
+    m_MinSize: 2
     m_MaxSize: 50
-    m_Alignment: 4
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'THIS IS WHERE I EDIT THE PLAYER
-
-
-    ...'
+  m_Text: Message Sequence info comes here with the <Time of Spawn> <ID> <TAGS:WEIGHTS>
 --- !u!222 &543035441
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28049,7 +28047,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 561231924}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 303553932}
@@ -28911,7 +28909,7 @@ GameObject:
   - component: {fileID: 597328836}
   - component: {fileID: 597328835}
   m_Layer: 5
-  m_Name: EditPlayerButton
+  m_Name: ShowMessageSequenceButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28976,7 +28974,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1205624279}
-        m_MethodName: ShowPlayerPanel
+        m_MethodName: ShowMessageSequencePanel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -38558,7 +38556,7 @@ GameObject:
   m_Component:
   - component: {fileID: 832659440}
   m_Layer: 5
-  m_Name: PlayerPanel
+  m_Name: MessageSequencePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38574,8 +38572,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 142271490}
   - {fileID: 543035439}
+  - {fileID: 142271490}
   m_Father: {fileID: 17401795}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -40037,7 +40035,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 858494673}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 1963856314}
@@ -43580,7 +43578,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 935084764}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.82}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 2128008056}
@@ -53394,7 +53392,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1167550605}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.82}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 355141733}
@@ -55089,7 +55087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SidePanel: {fileID: 17401794}
   mainPanel: {fileID: 226726789}
-  addPlayerPanel: {fileID: 832659439}
+  messageSequence_Panel: {fileID: 832659439}
   drawTerrainPanel: {fileID: 2043289517}
   addElementPanel: {fileID: 1975910584}
   addNPC_Panel: {fileID: 593620701}
@@ -74078,7 +74076,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Edit Player
+  m_Text: Message Sequence
 --- !u!222 &1630463640
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -76488,7 +76486,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1687191627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 103.2, y: 108.8, z: 50.32649}
   m_Children: []
   m_Father: {fileID: 856068856}

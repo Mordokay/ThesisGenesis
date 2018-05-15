@@ -61,8 +61,8 @@ public class NPCData : MonoBehaviour {
 
         DesertVilageMinX = 11.0f;
         DesertVilageMaxX = 48.0f;
-        DesertVilageMinZ = 24.0f;
-        DesertVilageMaxZ = 39.0f;
+        DesertVilageMinZ = 15.0f;
+        DesertVilageMaxZ = 49.0f;
 
         IslandVilageMinX = 21.0f;
         IslandVilageMaxX = 48.0f;
@@ -131,6 +131,7 @@ public class NPCData : MonoBehaviour {
 
     public void ShuffleInterests()
     {
+        ShuffleAssCoop();
         interests.Clear();
         if (transform.position.x > ForestVilageMinX && transform.position.x < ForestVilageMaxX && transform.position.z > ForestVilageMinZ && transform.position.z < ForestVilageMaxZ)
         {
@@ -152,6 +153,12 @@ public class NPCData : MonoBehaviour {
         {
             ShuffleRandom();
         }
+    }
+
+    public void ShuffleAssCoop()
+    {
+        assertiveness = Random.Range(0.2f, 0.8f);
+        cooperativeness = Random.Range(0.2f, 0.8f);
     }
 
     public void Shuffle(string tag1, string tag2, string tag3, string tag4)

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Beacon : MonoBehaviour {
 
@@ -25,6 +26,8 @@ public class Beacon : MonoBehaviour {
 
     bool sequenceInitialized = false;
 
+    public Text messageSequenceText;
+
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         timeToNextEvent = 60.0f;
@@ -33,8 +36,8 @@ public class Beacon : MonoBehaviour {
         if (!sequenceInitialized)
         {
             sequenceInitialized = true;
-            messageSequence = new Message[10];
-            messageTimeOfSpawn = new float[10];
+            messageSequence = new Message[15];
+            messageTimeOfSpawn = new float[15];
         }
         //messageSequence = new Message[10];
         //messageTimeOfSpawn = new float[10];
@@ -42,11 +45,29 @@ public class Beacon : MonoBehaviour {
         isOnSequence = false;
     }
 
+    public void RefreshMessageSequenceText()
+    {
+        string outputText = "";
+        for(int i = 0; i < messageSequence.Length; i++)
+        {
+            if (messageTimeOfSpawn[i] - Time.timeSinceLevelLoad > 0.0f)
+            {
+                outputText += "TimeOfSpawn: " + (messageTimeOfSpawn[i] - Time.timeSinceLevelLoad) + " ID: " + messageSequence[i].id + System.Environment.NewLine;
+                foreach (Message.Tag t in messageSequence[i].tags)
+                {
+                    outputText += "< " + t.name + " " + t.weight + "> ";
+                }
+                outputText += System.Environment.NewLine;
+            }
+        }
+        messageSequenceText.text = outputText;
+    }
+
     public void InitializeSequenceMessages()
     {
         sequenceInitialized = true;
-        messageSequence = new Message[10];
-        messageTimeOfSpawn = new float[10];
+        messageSequence = new Message[15];
+        messageTimeOfSpawn = new float[15];
     }
 
     public void GenerateMessageSequence()
@@ -54,7 +75,7 @@ public class Beacon : MonoBehaviour {
         float rangeMin = 0.0f;
         float rangeMax = 250.0f;
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 15; i++)
         {
             //int eventID = this.GetComponent<PlayModeManager>().getMessageId();
             Message msg = CreateMessage(i);
@@ -106,8 +127,12 @@ public class Beacon : MonoBehaviour {
 
         return new Message(eventID, messageTime, "This is an event " + tagA + " and " + tagB, TAGS);
     }
-
+    
     void Update () {
+        if (messageSequenceText.gameObject.transform.parent.gameObject.activeSelf)
+        {
+            RefreshMessageSequenceText();
+        }
         if (isOnSequence && sequenceInitialized)
         {
             //Check if its time for the message to me spawned
