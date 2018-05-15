@@ -135,19 +135,19 @@ public class NPCData : MonoBehaviour {
         interests.Clear();
         if (transform.position.x > ForestVilageMinX && transform.position.x < ForestVilageMaxX && transform.position.z > ForestVilageMinZ && transform.position.z < ForestVilageMaxZ)
         {
-            Shuffle("Wood", "Stone", "Berries", "Cactus");
+            Shuffle("Wood", "Rock", "Berries", "Cactus");
         }
         else if (transform.position.x > SnowVilageMinX && transform.position.x < SnowVilageMaxX && transform.position.z > SnowVilageMinZ && transform.position.z < SnowVilageMaxZ)
         {
-            Shuffle("Stone", "Berries", "Cactus", "Wood");
+            Shuffle("Rock", "Berries", "Cactus", "Wood");
         }
         else if (transform.position.x > IslandVilageMinX && transform.position.x < IslandVilageMaxX && transform.position.z > IslandVilageMinZ && transform.position.z < IslandVilageMaxZ)
         {
-            Shuffle("Berries", "Cactus", "Wood", "Stone");
+            Shuffle("Berries", "Cactus", "Wood", "Rock");
         }
         else if (transform.position.x > DesertVilageMinX && transform.position.x < DesertVilageMaxX && transform.position.z > DesertVilageMinZ && transform.position.z < DesertVilageMaxZ)
         {
-            Shuffle("Cactus", "Wood", "Stone", "Berries");
+            Shuffle("Cactus", "Wood", "Rock", "Berries");
         }
         else
         {
@@ -206,7 +206,7 @@ public class NPCData : MonoBehaviour {
 
         randomValue = Random.Range(10.0f, 100.0f);
         totalWeight += randomValue;
-        interests.Add(new Interest("Stone", randomValue));
+        interests.Add(new Interest("Rock", randomValue));
 
         randomValue = Random.Range(10.0f, 100.0f);
         totalWeight += randomValue;
