@@ -10,6 +10,7 @@ public class PlayModeManager : MonoBehaviour {
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 30;
+        Application.runInBackground = true;
     }
 
     void Start () {
