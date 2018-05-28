@@ -15,7 +15,7 @@ public class WizardController : MonoBehaviour {
 
     void Start()
     {
-        sawPlayerCanvas = this.transform.parent.transform.GetChild(5).gameObject;
+        sawPlayerCanvas = this.transform.parent.transform.GetChild(6).gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
         canvas = GameObject.FindGameObjectWithTag("Canvas");
 

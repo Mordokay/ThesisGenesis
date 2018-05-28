@@ -19,6 +19,8 @@ public class ElementController : MonoBehaviour {
     UIManager uiManager;
     QuestsController qc;
 
+    public int watchedEventId;
+
     private void Start()
     {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
@@ -70,6 +72,10 @@ public class ElementController : MonoBehaviour {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
                     npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
+                    if (watchedEventId != 99)
+                    {
+                        npc.gameObject.GetComponent<NPCData>().ActivateWatchedEvent(watchedEventId);
+                    }
 
                     uiManager.messageTrackingID.text = eventId.ToString();
                     npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();

@@ -47,8 +47,17 @@ public class NPCData : MonoBehaviour {
     float IslandVilageMinZ;
     float IslandVilageMaxZ;
 
+    bool activatedCanvasWatchedEvent;
+    float timeSinceCanvasActivation;
+    float watchedCanvasDuration;
+    public GameObject watchedEventCanvas;
+
     private void Start()
     {
+        timeSinceCanvasActivation = 0.0f;
+        //NPCs show that they watched the event during 4 seconds
+        watchedCanvasDuration = 4.0f;
+
         ForestVilageMinX = -49.0f;
         ForestVilageMaxX = -8.0f;
         ForestVilageMinZ = 17.0f;
@@ -74,6 +83,8 @@ public class NPCData : MonoBehaviour {
         currentCooperativenessLevel = 0.0f;
     }
 
+    public List<GameObject> canvasWatchedEvents;
+
     private void FixedUpdate()
     {
         DecayMessages();
@@ -81,6 +92,17 @@ public class NPCData : MonoBehaviour {
 
     private void Update()
     {
+        if (activatedCanvasWatchedEvent)
+        {
+            watchedEventCanvas.transform.position = this.transform.GetChild(1).gameObject.transform.position;
+            timeSinceCanvasActivation += Time.deltaTime;
+            if (timeSinceCanvasActivation > watchedCanvasDuration)
+            {
+                activatedCanvasWatchedEvent = false;
+                DisableCanvasWatchedEvent();
+                timeSinceCanvasActivation = 0.0f;
+            }
+        }
         //It takes 10 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
@@ -375,6 +397,22 @@ public class NPCData : MonoBehaviour {
         if (isMessageOfInterest(msg))
         {
             messages.Add(msg);
+        }
+    }
+
+    public void ActivateWatchedEvent(int id)
+    {
+        DisableCanvasWatchedEvent();
+        canvasWatchedEvents[id].SetActive(true);
+
+        activatedCanvasWatchedEvent = true;
+    }
+
+    public void DisableCanvasWatchedEvent()
+    {
+        foreach(GameObject canvas in canvasWatchedEvents)
+        {
+            canvas.SetActive(false);
         }
     }
 

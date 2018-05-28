@@ -229,6 +229,7 @@ MonoBehaviour:
     weight: 30
   description: Player demolished a house!
   slider: {fileID: 1856982468375194}
+  watchedEventId: 99
 --- !u!114 &114514542220928492
 MonoBehaviour:
   m_ObjectHideFlags: 1

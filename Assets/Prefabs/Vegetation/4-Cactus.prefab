@@ -261,6 +261,7 @@ MonoBehaviour:
     weight: 5
   description: I saw the player break a cactus! he was carefull with those spikes.
   slider: {fileID: 1196321479463534}
+  watchedEventId: 3
 --- !u!114 &114355792152909088
 MonoBehaviour:
   m_ObjectHideFlags: 1

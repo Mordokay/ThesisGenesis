@@ -194,6 +194,7 @@ MonoBehaviour:
     weight: 3
   description: The player managed to break a rock with his axe!!
   slider: {fileID: 1127986361561310}
+  watchedEventId: 1
 --- !u!114 &114170071049746372
 MonoBehaviour:
   m_ObjectHideFlags: 1
