@@ -28,9 +28,17 @@ public class WizardController : MonoBehaviour {
     {
         if (!wantsToFollowPlayer)
         {
-            if(this.GetComponentInParent<NPCData>().messages.Count > 0)
+            foreach(Message m in this.GetComponentInParent<NPCData>().messages)
             {
-                wantsToFollowPlayer = true;
+                Message.Tag t = m.tags.Find(x => x.name == this.GetComponentInParent<NPCData>().interests[0].name);
+                if(t != null)
+                {
+                    wantsToFollowPlayer = true;
+                }
+                else
+                {
+                    wantsToFollowPlayer = false;
+                }
             }
         }
     }
@@ -57,6 +65,7 @@ public class WizardController : MonoBehaviour {
                 {
                     isFollowingPlayer = false;
                     sawPlayerCanvas.SetActive(false);
+                    this.transform.LookAt(this.GetComponent<NPCPatrolMovement>().currentGoalObject.transform);
                     Debug.Log("I stopped following the player!!!");
                 }
             }
@@ -66,7 +75,7 @@ public class WizardController : MonoBehaviour {
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
+        if (collision.gameObject.tag.Equals("Player") && wantsToFollowPlayer)
         {
             Time.timeScale = 0.0f;
             canvas.transform.GetChild(0).gameObject.SetActive(true);

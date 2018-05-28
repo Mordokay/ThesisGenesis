@@ -219,7 +219,7 @@ MonoBehaviour:
     weight: 5
   description: I saw him chopping a tree in the snow ... thats cold!
   slider: {fileID: 1997222221788220}
-  watchedEventId: 99
+  watchedEventId: 0
 --- !u!114 &114576451717469844
 MonoBehaviour:
   m_ObjectHideFlags: 1

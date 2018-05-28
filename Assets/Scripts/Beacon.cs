@@ -159,6 +159,9 @@ public class Beacon : MonoBehaviour {
         }
         else
         {
+            //Temporary removal of beacon ... only premade message sequence works
+
+            /*
             timeToNextEvent -= Time.deltaTime;
             if (timeToNextEvent <= 0)
             {
@@ -171,6 +174,7 @@ public class Beacon : MonoBehaviour {
                     timeToNextEvent = UnityEngine.Random.Range(timeBetweenEventsMin, timeBetweenEventsMax);
                 }
             }
+            */
         }
     }
 }

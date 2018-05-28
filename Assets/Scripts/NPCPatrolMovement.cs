@@ -169,7 +169,8 @@ public class NPCPatrolMovement : MonoBehaviour {
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
                     this.transform.LookAt(player.transform);
                 }
-                else {
+                else if(currentGoalObject != null)
+                {
                     float step = 1.0f * Time.deltaTime;
                     transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
 

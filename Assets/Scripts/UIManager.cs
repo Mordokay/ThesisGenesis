@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
     public GameObject canvasBackroundBox;
 
     public GameObject questsPanel;
+    public GameObject InstructionPanel;
 
     public GameObject spawnEventPlayModePanel;
 
@@ -825,5 +826,13 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().removeNPCButtonImage.color = Color.white;
 
         NPCBeingUpdated = null;
+    }
+
+    private void Update()
+    {
+        if (Time.timeSinceLevelLoad > 0.0f && InstructionPanel.activeSelf)
+        {
+            InstructionPanel.SetActive(false);
+        }
     }
 }
