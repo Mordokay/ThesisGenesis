@@ -26,7 +26,11 @@ public class NPCPatrolMovement : MonoBehaviour {
 
     public bool stopped;
 
+    GameObject player;
+
     public void Start () {
+        player = GameObject.FindGameObjectWithTag("Player");
+
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         //isWaiting = true;
         stopped = false;
@@ -139,16 +143,43 @@ public class NPCPatrolMovement : MonoBehaviour {
     }
 
     void Update() {
-        if (!stopped)
+        if (this.GetComponentInParent<NPCData>().NPCType == 0)
         {
-            float step = 1.0f * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
-
-            //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
-            //this.transform.position += currentGoalObject.transform.position.normalized * Time.deltaTime;
-            if (Vector3.Distance(currentGoalObject.transform.position, this.transform.position) < 0.1f)
+            if (!stopped)
             {
-                GetNewGoal();
+                float step = 1.0f * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
+
+                //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
+                //this.transform.position += currentGoalObject.transform.position.normalized * Time.deltaTime;
+                if (Vector3.Distance(currentGoalObject.transform.position, this.transform.position) < 0.1f)
+                {
+                    GetNewGoal();
+                }
+            }
+        }
+        //The movement of Wizards
+        else
+        {
+            if (!stopped)
+            {
+                if (this.GetComponent<WizardController>().isFollowingPlayer)
+                {
+                    float step = (1.9f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
+                    transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
+                    this.transform.LookAt(player.transform);
+                }
+                else {
+                    float step = 1.0f * Time.deltaTime;
+                    transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
+
+                    //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
+                    //this.transform.position += currentGoalObject.transform.position.normalized * Time.deltaTime;
+                    if (Vector3.Distance(currentGoalObject.transform.position, this.transform.position) < 0.1f)
+                    {
+                        GetNewGoal();
+                    }
+                }
             }
         }
         /*

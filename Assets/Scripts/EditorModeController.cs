@@ -958,6 +958,17 @@ public class EditorModeController : MonoBehaviour {
 #endif
     }
 
+    public void LoadCurrentMap()
+    {
+        PlayerPrefs.SetInt("loadingMap", 1);
+        string mapToLoad = PlayerPrefs.GetString("mapToLoad");
+        if (this.GetComponent<SimulationDataLogger>().isWritingStuff)
+        {
+            this.GetComponent<SimulationDataLogger>().CloseLogger();
+        }
+        SceneManager.LoadScene(0);
+    }
+
     public void LoadMap()
     {
         PlayerPrefs.SetInt("loadingMap", 1);

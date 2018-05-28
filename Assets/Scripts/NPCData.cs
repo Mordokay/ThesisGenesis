@@ -131,27 +131,30 @@ public class NPCData : MonoBehaviour {
 
     public void ShuffleInterests()
     {
-        ShuffleAssCoop();
-        interests.Clear();
-        if (transform.position.x > ForestVilageMinX && transform.position.x < ForestVilageMaxX && transform.position.z > ForestVilageMinZ && transform.position.z < ForestVilageMaxZ)
+        if (NPCType == 0)
         {
-            Shuffle("Wood", "Rock", "Berries", "Cactus");
-        }
-        else if (transform.position.x > SnowVilageMinX && transform.position.x < SnowVilageMaxX && transform.position.z > SnowVilageMinZ && transform.position.z < SnowVilageMaxZ)
-        {
-            Shuffle("Rock", "Berries", "Cactus", "Wood");
-        }
-        else if (transform.position.x > IslandVilageMinX && transform.position.x < IslandVilageMaxX && transform.position.z > IslandVilageMinZ && transform.position.z < IslandVilageMaxZ)
-        {
-            Shuffle("Berries", "Cactus", "Wood", "Rock");
-        }
-        else if (transform.position.x > DesertVilageMinX && transform.position.x < DesertVilageMaxX && transform.position.z > DesertVilageMinZ && transform.position.z < DesertVilageMaxZ)
-        {
-            Shuffle("Cactus", "Wood", "Rock", "Berries");
-        }
-        else
-        {
-            ShuffleRandom();
+            ShuffleAssCoop();
+            interests.Clear();
+            if (transform.position.x > ForestVilageMinX && transform.position.x < ForestVilageMaxX && transform.position.z > ForestVilageMinZ && transform.position.z < ForestVilageMaxZ)
+            {
+                Shuffle("Wood", "Rock", "Berries", "Cactus");
+            }
+            else if (transform.position.x > SnowVilageMinX && transform.position.x < SnowVilageMaxX && transform.position.z > SnowVilageMinZ && transform.position.z < SnowVilageMaxZ)
+            {
+                Shuffle("Rock", "Berries", "Cactus", "Wood");
+            }
+            else if (transform.position.x > IslandVilageMinX && transform.position.x < IslandVilageMaxX && transform.position.z > IslandVilageMinZ && transform.position.z < IslandVilageMaxZ)
+            {
+                Shuffle("Berries", "Cactus", "Wood", "Rock");
+            }
+            else if (transform.position.x > DesertVilageMinX && transform.position.x < DesertVilageMaxX && transform.position.z > DesertVilageMinZ && transform.position.z < DesertVilageMaxZ)
+            {
+                Shuffle("Cactus", "Wood", "Rock", "Berries");
+            }
+            else
+            {
+                ShuffleRandom();
+            }
         }
     }
 
@@ -170,19 +173,19 @@ public class NPCData : MonoBehaviour {
         totalWeight += randomValue;
         interests.Add(new Interest(tag1, randomValue));
 
-        if (Random.Range(0, 100) > 50)
+        if (Random.Range(0, 100) < 60)
         {
             randomValue = Random.Range(50.0f, 75.0f);
             totalWeight += randomValue;
             interests.Add(new Interest(tag2, randomValue));
 
-            if (Random.Range(0, 100) > 50)
+            if (Random.Range(0, 100) < 60)
             {
                 randomValue = Random.Range(25.0f, 50.0f);
                 totalWeight += randomValue;
                 interests.Add(new Interest(tag3, randomValue));
 
-                if (Random.Range(0, 100) > 50)
+                if (Random.Range(0, 100) < 60)
                 {
                     randomValue = Random.Range(0.0f, 25.0f);
                     totalWeight += randomValue;
@@ -200,22 +203,57 @@ public class NPCData : MonoBehaviour {
 
     public void ShuffleRandom()
     {
-        float randomValue = Random.Range(10.0f, 100.0f);
-        float totalWeight = randomValue;
-        interests.Add(new Interest("Wood", randomValue));
+        string[] TAGS = { "Wood", "Rock", "Berries", "Cactus" };
+        ArrayList choosenTAGS = new ArrayList();
 
-        randomValue = Random.Range(10.0f, 100.0f);
+        float randomValue = 0.0f;
+        float totalWeight = 0.0f;
+
+        randomValue = Random.Range(75.0f, 100.0f);
         totalWeight += randomValue;
-        interests.Add(new Interest("Rock", randomValue));
+        string tag1 = TAGS[Random.Range(0, TAGS.Length)];
+        choosenTAGS.Add(tag1);
+        interests.Add(new Interest(tag1, randomValue));
 
-        randomValue = Random.Range(10.0f, 100.0f);
-        totalWeight += randomValue;
-        interests.Add(new Interest("Berries", randomValue));
+        if (Random.Range(0, 100) < 70)
+        {
+            string tag2 = TAGS[Random.Range(0, TAGS.Length)];
+            while (choosenTAGS.Contains(tag2))
+            {
+                tag2 = TAGS[Random.Range(0, TAGS.Length)];
+            }
+            choosenTAGS.Add(tag2);
+            randomValue = Random.Range(50.0f, 75.0f);
+            totalWeight += randomValue;
+            interests.Add(new Interest(tag2, randomValue));
 
-        randomValue = Random.Range(10.0f, 100.0f);
-        totalWeight += randomValue;
-        interests.Add(new Interest("Cactus", randomValue));
+            if (Random.Range(0, 100) < 70)
+            {
+                string tag3 = TAGS[Random.Range(0, TAGS.Length)];
+                while (choosenTAGS.Contains(tag3))
+                {
+                    tag3 = TAGS[Random.Range(0, TAGS.Length)];
+                }
+                choosenTAGS.Add(tag3);
 
+                randomValue = Random.Range(25.0f, 80.0f);
+                totalWeight += randomValue;
+                interests.Add(new Interest(tag3, randomValue));
+
+                if (Random.Range(0, 100) < 70)
+                {
+                    string tag4 = TAGS[Random.Range(0, TAGS.Length)];
+                    while (choosenTAGS.Contains(tag4))
+                    {
+                        tag4 = TAGS[Random.Range(0, TAGS.Length)];
+                    }
+                    choosenTAGS.Add(tag4);
+                    randomValue = Random.Range(0.0f, 25.0f);
+                    totalWeight += randomValue;
+                    interests.Add(new Interest(tag4, randomValue));
+                }
+            }
+        }
         foreach (Interest i in interests)
         {
             i.weight = i.weight / totalWeight;
