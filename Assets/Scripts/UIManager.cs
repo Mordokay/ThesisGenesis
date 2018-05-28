@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
+    public GameObject questsPanel;
+
     public GameObject spawnEventPlayModePanel;
 
     public GameObject listNatural;
@@ -158,6 +160,10 @@ public class UIManager : MonoBehaviour {
     {
         if (isWatchModeEnabled)
         {
+            //Enables the quests panel
+            questsPanel.SetActive(true);
+            gm.GetComponent<QuestsController>().RefreshQuestsText();
+
             isWatchModeEnabled = false;
 
             SidePanel.SetActive(false);
@@ -173,6 +179,9 @@ public class UIManager : MonoBehaviour {
         }
         else
         {
+            //Disables the quests panel
+            questsPanel.SetActive(false);
+
             //Player must stop atacking
             player.GetComponent<PlayerMovement>().isAtacking = false;
             player.GetComponent<Animator>().SetBool("Attack", false);
@@ -744,6 +753,10 @@ public class UIManager : MonoBehaviour {
             ToggleWatchMode();
         }
 
+        //Enables the quests panel
+        questsPanel.SetActive(true);
+        gm.GetComponent<QuestsController>().RefreshQuestsText();
+
         Time.timeScale = 1.0f;
         SidePanel.SetActive(false);
         canvasBackroundBox.SetActive(false);
@@ -759,6 +772,9 @@ public class UIManager : MonoBehaviour {
     public void Pause()
     {
         ReturnToMainPanel();
+
+        //Enables the quests panel
+        questsPanel.SetActive(false);
 
         //If its in Watch mode ... removes it
         if (isWatchModeEnabled)

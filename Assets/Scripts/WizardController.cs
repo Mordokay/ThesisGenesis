@@ -70,7 +70,6 @@ public class WizardController : MonoBehaviour {
         {
             Time.timeScale = 0.0f;
             canvas.transform.GetChild(0).gameObject.SetActive(true);
-            //Player looses the game if this happens
         }
     }
 }

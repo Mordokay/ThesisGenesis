@@ -17,6 +17,7 @@ public class ElementController : MonoBehaviour {
     public GameObject slider;
     float maxHealth;
     UIManager uiManager;
+    QuestsController qc;
 
     private void Start()
     {
@@ -24,11 +25,35 @@ public class ElementController : MonoBehaviour {
         maxHealth = health;
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
+        qc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<QuestsController>();
     }
 
     void Update () {
 		if(health <= 0)
         {
+            if (this.name.Contains("Golden"))
+            {
+                if (this.name.Contains("Tree"))
+                {
+                    Debug.Log("Updates Wood quest!!!!");
+                    qc.IncrementQuestsPanel(0);
+                }
+                else if (this.name.Contains("Rock"))
+                {
+                    Debug.Log("Updates Rock quest!!!!");
+                    qc.IncrementQuestsPanel(1);
+                }
+                else if (this.name.Contains("Berries"))
+                {
+                    Debug.Log("Updates Berries quest!!!!");
+                    qc.IncrementQuestsPanel(2);
+                }
+                else if (this.name.Contains("Cactus"))
+                {
+                    Debug.Log("Updates Cactus quest!!!!");
+                    qc.IncrementQuestsPanel(3);
+                }
+            }
             int eventId = pm.getMessageId();
             foreach (Transform npc in emc.npcHolder.transform)
             {
@@ -51,7 +76,7 @@ public class ElementController : MonoBehaviour {
                 }
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
-
+            /*
             foreach (Transform patrolPoint in emc.patrolPointsHolder.transform)
             {
                 //check if Patrol Points are at a close distance;
@@ -69,7 +94,7 @@ public class ElementController : MonoBehaviour {
                     patrolPoint.gameObject.GetComponent<PatrolPointData>().ReceiveEvent(new Message(eventId, messageTime, description, tagString));
                 }
             }
-
+            */
             emc.RemoveElement(this.gameObject);
         }
 	}
