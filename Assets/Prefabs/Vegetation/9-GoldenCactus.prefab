@@ -188,7 +188,7 @@ MonoBehaviour:
     weight: 100
   description: Golden Cactus was harvested!!!
   slider: {fileID: 1837766765263776}
-  watchedEventId: 8
+  watchedEventId: 7
 --- !u!114 &114382719244406302
 MonoBehaviour:
   m_ObjectHideFlags: 1

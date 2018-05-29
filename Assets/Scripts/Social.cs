@@ -21,13 +21,6 @@ public class Social : MonoBehaviour {
     float TalkCooldownTime;
     bool messageOfInterest;
 
-    /*
-    * listenerLevel value goes from 0 to 1. 
-    * 0 -> NPC choses a message NPC_Other doesn't know (sends message)
-    * 1 -> NPC choses a message he doesn't know from NPC_Other (receives message)
-    * 0.5 -> Equal weight between messages from NPC ot NPC_Other
-    */
-
     float msgDecaymentAtStart = 0;
 
     void Start () {
@@ -157,11 +150,59 @@ public class Social : MonoBehaviour {
                     this.GetComponent<NPCData>().currentAssertivenessLevel -= Time.deltaTime / 5.0f;
                 }
 
-                if (!isReceivingMessage && !talkCanvas.activeSelf)
+                if (/*!isReceivingMessage &&*/ !talkCanvas.activeSelf)
                 {
                     talkCanvas.SetActive(true);
                     talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
-                    talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
+                    //talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
+                    talkCanvas.GetComponentInChildren<Text>().text = "";
+                    for (int i = 3; i <= 10; i++)
+                    {
+                        talkCanvas.transform.GetChild(i).gameObject.SetActive(false);
+                    }
+                    switch (choosedMessage.tags[0].name)
+                    {
+                        case "Wood":
+                            if (choosedMessage.description.Contains("Golden"))
+                            {
+                                talkCanvas.transform.GetChild(7).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                talkCanvas.transform.GetChild(3).gameObject.SetActive(true);
+                            }
+                            break;
+                        case "Rock":
+                            if (choosedMessage.description.Contains("Golden"))
+                            {
+                                talkCanvas.transform.GetChild(8).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                talkCanvas.transform.GetChild(4).gameObject.SetActive(true);
+                            }
+                            break;
+                        case "Berries":
+                            if (choosedMessage.description.Contains("Golden"))
+                            {
+                                talkCanvas.transform.GetChild(9).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                talkCanvas.transform.GetChild(5).gameObject.SetActive(true);
+                            }
+                            break;
+                        case "Cactus":
+                            if (choosedMessage.description.Contains("Golden"))
+                            {
+                                talkCanvas.transform.GetChild(10).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                talkCanvas.transform.GetChild(6).gameObject.SetActive(true);
+                            }
+                            break;
+                    }
                 }
                 if (talkCanvas.activeSelf && choosedMessage != null)
                 {

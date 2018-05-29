@@ -212,11 +212,7 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Wood
-    weight: 50
-  - name: Gathering
-    weight: 50
-  - name: Lumberjack
-    weight: 5
+    weight: 100
   description: I saw him chopping a tree in the snow ... thats cold!
   slider: {fileID: 1997222221788220}
   watchedEventId: 0

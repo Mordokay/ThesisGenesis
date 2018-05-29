@@ -226,10 +226,8 @@ MonoBehaviour:
   messageSendDistance: 4
   messageTime: 4
   tags:
-  - name: Gathering
-    weight: 50
   - name: Berries
-    weight: 50
+    weight: 100
   description: Player is picking some berries!
   slider: {fileID: 1800339123177940}
   watchedEventId: 2

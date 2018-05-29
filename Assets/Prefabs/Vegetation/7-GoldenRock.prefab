@@ -188,7 +188,7 @@ MonoBehaviour:
     weight: 100
   description: Golden Rock was harvested!!!
   slider: {fileID: 1542679483090130}
-  watchedEventId: 6
+  watchedEventId: 5
 --- !u!114 &114334040242260126
 MonoBehaviour:
   m_ObjectHideFlags: 1
