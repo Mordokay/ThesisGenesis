@@ -165,7 +165,7 @@ public class NPCPatrolMovement : MonoBehaviour {
             {
                 if (this.GetComponent<WizardController>().isFollowingPlayer)
                 {
-                    float step = (1.9f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
+                    float step = (1.1f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
                     this.transform.LookAt(player.transform);
                 }
