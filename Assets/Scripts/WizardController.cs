@@ -31,13 +31,10 @@ public class WizardController : MonoBehaviour {
             foreach(Message m in this.GetComponentInParent<NPCData>().messages)
             {
                 Message.Tag t = m.tags.Find(x => x.name == this.GetComponentInParent<NPCData>().interests[0].name);
-                if(t != null && m.description.Contains("Golden"))
+                if(t != null && m.description.Contains("Golden") && m.id != -99)
                 {
                     wantsToFollowPlayer = true;
-                }
-                else
-                {
-                    wantsToFollowPlayer = false;
+                    break;
                 }
             }
         }

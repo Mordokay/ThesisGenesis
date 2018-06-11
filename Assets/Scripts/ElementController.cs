@@ -28,6 +28,45 @@ public class ElementController : MonoBehaviour {
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
         qc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<QuestsController>();
+
+    }
+
+    public void BeaconPulse(bool isGolden)
+    {
+        foreach (Transform npc in emc.npcHolder.transform)
+        {
+            //check if NPC is at a close distance;
+            if (Vector3.Distance(npc.GetChild(1).position, this.transform.position) < messageSendDistance)
+            {
+                string tagString = "";
+                foreach (Message.Tag t in tags)
+                {
+                    tagString += t.name + " " + 1 + ",";
+                }
+                if (tags.Count > 0)
+                {
+                    tagString = tagString.Substring(0, tagString.Length - 1);
+                }
+
+                if (isGolden)
+                {
+                    npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(-99, messageTime, "Auto Golden Message", tagString));
+                    Debug.Log("Name: " + npc.gameObject.name + " golden");
+                }
+                else
+                {
+                    npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(-99, messageTime, "Auto Message", tagString));
+                    Debug.Log("Name: " + npc.gameObject.name + " NOT golden");
+                }
+
+                if (watchedEventId != 99)
+                {
+                    npc.gameObject.GetComponent<NPCData>().ActivateWatchedEvent(watchedEventId);
+                }
+
+                
+            }
+        }
     }
 
     void Update () {

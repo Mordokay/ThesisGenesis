@@ -98,6 +98,9 @@ public class EditorModeController : MonoBehaviour {
     List<TexturePack> texturePacks;
     public List<Element> elementList;
 
+    public List<Element> NormalElementList;
+    public List<Element> GoldenElementList;
+
     public int currentTerrainType;
     public int currentElementIdSelected;
     public int currentConstructIdSelected;
@@ -134,7 +137,6 @@ public class EditorModeController : MonoBehaviour {
     public class Element
     {
         public int elementID;
-        public Vector3 elementPos;
         public GameObject elementObject;
         public string type;
 
@@ -1111,10 +1113,21 @@ public class EditorModeController : MonoBehaviour {
                     {
                         case "n":
                             myElement = Instantiate(naturalElementsPrefabs[System.Int32.Parse(myElementData[1])]);
-
                             myElement.transform.parent = elementHolder.transform;
                             myElement.transform.position = new Vector3(float.Parse(myElementData[2]), 0.0f, float.Parse(myElementData[3]));
                             elementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
+
+                            //separates natural elements into golden/normal
+                            //used for beacon pulse probability
+
+                            if(System.Int32.Parse(myElementData[1]) <= 4)
+                            {
+                                NormalElementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
+                            }
+                            else
+                            {
+                                GoldenElementList.Add(new Element(myElement, "n", System.Int32.Parse(myElementData[1])));
+                            }
                             break;
                         case "c":
                             myElement = Instantiate(constructElementsPrefabs[System.Int32.Parse(myElementData[1])]);

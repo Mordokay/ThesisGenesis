@@ -254,51 +254,53 @@ public class SimulationDataLogger : MonoBehaviour {
 
     public void WriteMessageToLog(string line, int id, bool wasRepeated, Vector3 position)
     {
-        //Debug.Log("position message" + position);
-        if (isWritingStuff)
+        if (id != -99)
         {
-            if (id < 20)
+            //Debug.Log("position message" + position);
+            if (isWritingStuff)
             {
-                graphPointsMessageCurrent[id] += 1;
+                if (id < 20)
+                {
+                    graphPointsMessageCurrent[id] += 1;
 
-                //check inside forest zone
-                if (position.x > ForestVilageMinX && position.x < ForestVilageMaxX && position.z > ForestVilageMinZ && position.z < ForestVilageMaxZ)
-                {
-                    messageForestCurrent[id] += 1;
-                }
-                //check inside snow zone
-                else if (position.x > SnowVilageMinX && position.x < SnowVilageMaxX && position.z > SnowVilageMinZ && position.z < SnowVilageMaxZ)
-                {
-                    messageSnowCurrent[id] += 1;
-                }
-                //check inside desert zone
-                else if (position.x > DesertVilageMinX && position.x < DesertVilageMaxX && position.z > DesertVilageMinZ && position.z < DesertVilageMaxZ)
-                {
-                    messageDesertCurrent[id] += 1;
-                }
-                //check inside island zone
-                else if (position.x > IslandVilageMinX && position.x < IslandVilageMaxX && position.z > IslandVilageMinZ && position.z < IslandVilageMaxZ)
-                {
-                    messageIslandCurrent[id] += 1;
-                }
-                //of nothing else applies the message is on the roads
-                else
-                {
-                    messageRoadsCurrent[id] += 1;
+                    //check inside forest zone
+                    if (position.x > ForestVilageMinX && position.x < ForestVilageMaxX && position.z > ForestVilageMinZ && position.z < ForestVilageMaxZ)
+                    {
+                        messageForestCurrent[id] += 1;
+                    }
+                    //check inside snow zone
+                    else if (position.x > SnowVilageMinX && position.x < SnowVilageMaxX && position.z > SnowVilageMinZ && position.z < SnowVilageMaxZ)
+                    {
+                        messageSnowCurrent[id] += 1;
+                    }
+                    //check inside desert zone
+                    else if (position.x > DesertVilageMinX && position.x < DesertVilageMaxX && position.z > DesertVilageMinZ && position.z < DesertVilageMaxZ)
+                    {
+                        messageDesertCurrent[id] += 1;
+                    }
+                    //check inside island zone
+                    else if (position.x > IslandVilageMinX && position.x < IslandVilageMaxX && position.z > IslandVilageMinZ && position.z < IslandVilageMaxZ)
+                    {
+                        messageIslandCurrent[id] += 1;
+                    }
+                    //of nothing else applies the message is on the roads
+                    else
+                    {
+                        messageRoadsCurrent[id] += 1;
+                    }
                 }
 
+                messageCounter[id] += 1;
+                if (wasRepeated)
+                {
+                    repeatedMessageCount += 1;
+                }
+
+                string currentTime = getCurrentTime();
+
+                writer.WriteLine(currentTime + line);
+                //writerLocal.WriteLine(currentTime + line);
             }
-
-            messageCounter[id] += 1;
-            if (wasRepeated)
-            {
-                repeatedMessageCount += 1;
-            }
-
-            string currentTime = getCurrentTime();
-
-            writer.WriteLine(currentTime + line);
-            //writerLocal.WriteLine(currentTime + line);
         }
     }
 
@@ -334,7 +336,7 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             foreach (Message m in npc.gameObject.GetComponent<NPCData>().messages)
             {
-                if (m.id < 20)
+                if (m.id < 20 && m.id != -99)
                 {
                     if (m.messageDecayment > 0.0f)
                     {
@@ -776,12 +778,14 @@ public class SimulationDataLogger : MonoBehaviour {
             {
                 foreach (Message m in myNPCs[i].GetComponent<NPCData>().messages)
                 {
-                    if (m.messageDecayment > 0.0f)
-                    {
-                        aliveIDs[m.id] += 1;
-                    }
+                    if (m.id != -99) {
+                        if (m.messageDecayment > 0.0f)
+                        {
+                            aliveIDs[m.id] += 1;
+                        }
 
-                    existsIDs[m.id] += 1;
+                        existsIDs[m.id] += 1;
+                    }
                 }
             }
 

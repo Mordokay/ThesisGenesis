@@ -28,6 +28,9 @@ public class Beacon : MonoBehaviour {
 
     public Text messageSequenceText;
 
+    float timeToNextElementalBeaconEvent;
+
+
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         timeToNextEvent = 60.0f;
@@ -43,6 +46,28 @@ public class Beacon : MonoBehaviour {
         //messageTimeOfSpawn = new float[10];
         //GenerateMessageSequence();
         isOnSequence = false;
+
+
+        //InvokeRepeating("SpawnElementalEvent", 10.0f, 20.0f);
+        timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
+        Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
+    }
+
+    void SpawnElementalEvent()
+    {
+        // 10% of times, every 5 to 15 seconds, a pulse will happen on a normal object (NOT golden)
+        if (UnityEngine.Random.Range(0, 100) < 10)
+        {
+            EditorModeController.Element element =
+                this.GetComponent<EditorModeController>().NormalElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().NormalElementList.Count)];
+            element.elementObject.GetComponent<ElementController>().BeaconPulse(false);
+        }
+        else
+        {
+            EditorModeController.Element element =
+                this.GetComponent<EditorModeController>().GoldenElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().GoldenElementList.Count)];
+            element.elementObject.GetComponent<ElementController>().BeaconPulse(true);
+        }
     }
 
     public void RefreshMessageSequenceText()
@@ -129,6 +154,14 @@ public class Beacon : MonoBehaviour {
     }
     
     void Update () {
+        timeToNextElementalBeaconEvent -= Time.deltaTime;
+        if(timeToNextElementalBeaconEvent <= 0.0f)
+        {
+            SpawnElementalEvent();
+            timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
+            Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
+        }
+
         if (messageSequenceText.gameObject.transform.parent.gameObject.activeSelf)
         {
             RefreshMessageSequenceText();
