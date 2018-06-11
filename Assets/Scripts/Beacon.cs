@@ -73,7 +73,7 @@ public class Beacon : MonoBehaviour {
     public void GenerateMessageSequence()
     {
         float rangeMin = 0.0f;
-        float rangeMax = 250.0f;
+        float rangeMax = 50.0f;
 
         for (int i = 0; i < 15; i++)
         {
@@ -82,8 +82,8 @@ public class Beacon : MonoBehaviour {
             messageSequence[i] = msg;
             messageTimeOfSpawn[i] = UnityEngine.Random.Range(rangeMin, rangeMax);
 
-            rangeMin += 200.0f;
-            rangeMax += 200.0f;
+            rangeMin += 50.0f;
+            rangeMax += 50.0f;
         }
     }
 

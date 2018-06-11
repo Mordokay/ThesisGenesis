@@ -28,10 +28,10 @@ public class QuestsController : MonoBehaviour {
 
     public void RefreshQuestsText()
     {
-        goldenTreeQuestText.text = totalGoldenTreeGathered + "/10";
-        goldenRockQuestText.text = totalGoldenRockGathered + "/10";
-        goldenBerriesQuestText.text = totalGoldenBerriesGathered + "/10";
-        goldenCactusQuestText.text = totalGoldenCactusGathered + "/10";
+        goldenTreeQuestText.text = totalGoldenTreeGathered + "/2";
+        goldenRockQuestText.text = totalGoldenRockGathered + "/2";
+        goldenBerriesQuestText.text = totalGoldenBerriesGathered + "/2";
+        goldenCactusQuestText.text = totalGoldenCactusGathered + "/2";
     }
 
     public void IncrementQuestsPanel(int type)
@@ -40,30 +40,30 @@ public class QuestsController : MonoBehaviour {
         {
             case 0:
                 totalGoldenTreeGathered += 1;
-                if (totalGoldenTreeGathered > 10)
+                if (totalGoldenTreeGathered > 2)
                 {
-                    totalGoldenTreeGathered = 10;
+                    totalGoldenTreeGathered = 2;
                 }
                 break;
             case 1:
                 totalGoldenRockGathered += 1;
-                if (totalGoldenRockGathered > 10)
+                if (totalGoldenRockGathered > 2)
                 {
-                    totalGoldenRockGathered = 10;
+                    totalGoldenRockGathered = 2;
                 }
                 break;
             case 2:
                 totalGoldenBerriesGathered += 1;
-                if (totalGoldenBerriesGathered > 10)
+                if (totalGoldenBerriesGathered > 2)
                 {
                     totalGoldenBerriesGathered = 10;
                 }
                 break;
             case 3:
                 totalGoldenCactusGathered += 1;
-                if (totalGoldenCactusGathered > 10)
+                if (totalGoldenCactusGathered > 2)
                 {
-                    totalGoldenCactusGathered = 10;
+                    totalGoldenCactusGathered = 2;
                 }
                 break;
         }
@@ -71,7 +71,7 @@ public class QuestsController : MonoBehaviour {
     }
 
     void Update () {
-	    if(totalGoldenTreeGathered + totalGoldenRockGathered + totalGoldenBerriesGathered + totalGoldenCactusGathered == 40)
+	    if(totalGoldenTreeGathered + totalGoldenRockGathered + totalGoldenBerriesGathered + totalGoldenCactusGathered == 8)
         {
             //Player wins the game and shows panel!!!
             Time.timeScale = 0.0f;

@@ -46,6 +46,7 @@ public class SimulationDataLogger : MonoBehaviour {
     public GameObject GraphHolderDesert;
     public GameObject GraphHolderIsland;
     public GameObject GraphHolderRoads;
+    public GameObject GraphHolderResumed;
 
     public int resWidth = 5760;
     public int resHeight = 3240;
@@ -58,6 +59,7 @@ public class SimulationDataLogger : MonoBehaviour {
     public Camera graphCameraDesertVilage;
     public Camera graphCameraIslandVilage;
     public Camera graphCameraRoads;
+    public Camera graphCameraResumed;
     public GameObject[] graphLabelsMessage;
     public GameObject[] graphLabelsAlive;
     public GameObject[] graphLabelsExists;
@@ -88,8 +90,8 @@ public class SimulationDataLogger : MonoBehaviour {
     public float IslandVilageMaxZ;
     
     void Start () {
-        //Draws a point every 30 seconds on the graphs
-        InvokeRepeating("AddPoints", 0.0f, 30.0f);
+        //Draws a point every 10 seconds on the graphs
+        InvokeRepeating("AddPoints", 0.0f, 10.0f);
 
         //graphCameraMessage.gameObject.SetActive(false);
         //graphCameraAlive.gameObject.SetActive(false);
@@ -325,8 +327,8 @@ public class SimulationDataLogger : MonoBehaviour {
 
     public void AddPoints()
     {
-        //Draws a point every 30 seconds
-        int currentTimePoint = Mathf.FloorToInt(Time.timeSinceLevelLoad / 30);
+        //Draws a point every 10 seconds
+        int currentTimePoint = Mathf.FloorToInt(Time.timeSinceLevelLoad / 10);
 
         foreach (Transform npc in this.GetComponent<EditorModeController>().npcHolder.transform)
         {
@@ -402,6 +404,37 @@ public class SimulationDataLogger : MonoBehaviour {
             myPoint.transform.position = new Vector3(500.0f + currentTimePoint, 0.0f, -3000.0f + messageRoadsCurrent[i]);
             myPoint.transform.parent = GraphHolderRoads.transform;
 
+            //RESUMED GRAPH -->>> Go on Z axis 8.0f for each graph
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, 40.0f + graphPointsMessageCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, 32.0f + messageForestCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, 24.0f + messageSnowCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, 16.0f + messageDesertCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, 8.0f + messageIslandCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
+            myPoint = Instantiate(GraphPoint) as GameObject;
+            myPoint.GetComponent<SpriteRenderer>().color = GraphColors[i];
+            myPoint.transform.position = new Vector3(1000.0f + currentTimePoint, 0.0f, messageRoadsCurrent[i] / 6.0f);
+            myPoint.transform.parent = GraphHolderResumed.transform;
+
             //Draw a Line to previous point and color of line in Messages
             GameObject myLine = Instantiate(GraphLine);
             myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(500.0f + currentTimePoint - 1, 0.0f, 500.0f + graphPointsMessagePrevious[i]));
@@ -466,6 +499,54 @@ public class SimulationDataLogger : MonoBehaviour {
             myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
             myLine.transform.parent = GraphHolderRoads.transform;
 
+            //////////////////////////////////////////////////////////////
+            ///////Draw a Line to previous point  on RESUMED GRAPH////////
+            //////////////////////////////////////////////////////////////
+            
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, 40.0f + graphPointsMessagePrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, 40.0f + graphPointsMessageCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, 32.0f + messageForestPrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, 32.0f + messageForestCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, 24.0f + messageSnowPrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, 24.0f + messageSnowCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, 16.0f + messageDesertPrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, 16.0f + messageDesertCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, 8.0f + messageIslandPrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, 8.0f + messageIslandCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            myLine = Instantiate(GraphLine);
+            myLine.GetComponent<LineRenderer>().SetPosition(0, new Vector3(1000.0f + currentTimePoint - 1, 0.0f, messageRoadsPrevious[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(1000.0f + currentTimePoint, 0.0f, messageRoadsCurrent[i] / 6.0f));
+            myLine.GetComponent<LineRenderer>().startColor = GraphColors[i];
+            myLine.GetComponent<LineRenderer>().endColor = GraphColors[i];
+            myLine.transform.parent = GraphHolderResumed.transform;
+
+            ////////////////////////////////////////////////////////////////////////////
+
             graphPointsMessagePrevious[i] = graphPointsMessageCurrent[i];
             graphPointsMessageCurrent[i] = 0;
 
@@ -519,6 +600,8 @@ public class SimulationDataLogger : MonoBehaviour {
             string pathIsland = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Island.png";
 
             string pathRoads = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Roads.png";
+
+            string pathResumed = Application.persistentDataPath + "/CenarioTests/" + imageName + "_Resumed.png";
 
             //MESSAGE GRAPH
             RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
@@ -634,6 +717,20 @@ public class SimulationDataLogger : MonoBehaviour {
             bytes = screenShot.EncodeToPNG();
 
             System.IO.File.WriteAllBytes(pathRoads, bytes);
+
+            //RESUMED GRAPH
+            rt = new RenderTexture(resWidth, resHeight, 24);
+            graphCameraResumed.targetTexture = rt;
+            screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+            graphCameraResumed.Render();
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, resWidth, resHeight), 0, 0);
+            graphCameraResumed.targetTexture = null;
+            RenderTexture.active = null; // JC: added to avoid errors
+            Destroy(rt);
+            bytes = screenShot.EncodeToPNG();
+
+            System.IO.File.WriteAllBytes(pathResumed, bytes);
 
             ///////////////////////////////////////////////////////////////////////
             /////////////////////////TEXT FILE LOGGER//////////////////////////////
