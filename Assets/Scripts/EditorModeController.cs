@@ -1066,6 +1066,13 @@ public class EditorModeController : MonoBehaviour {
                 {
                     tMap[i, j].terrainType = System.Int32.Parse(myLineTerrain[j]);
                     GameObject myTerrain = Instantiate(terrainBasicObject);
+
+                    //If terrain type is water enable the collider
+                    if(tMap[i, j].terrainType == 3)
+                    {
+                        myTerrain.transform.GetChild(0).gameObject.SetActive(true);
+                    }
+
                     tMap[i, j].terrainObject = myTerrain;
                     myTerrain.name = i + " " + j;
                     myTerrain.transform.parent = terrainHolder.transform;
@@ -1729,6 +1736,7 @@ public class EditorModeController : MonoBehaviour {
         {
             tMap[realX, realY].terrainType = -1;
             tMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite = uMap[realX, realY].terrainObject.GetComponent<SpriteRenderer>().sprite;
+            tMap[realX, realY].terrainObject.transform.GetChild(0).gameObject.SetActive(false);
             for (int i = -1; i <= 1; i++)
             {
                 for (int j = -1; j <= 1; j++)
@@ -1756,7 +1764,10 @@ public class EditorModeController : MonoBehaviour {
                 //Debug.Log("Setting terrain type to: " + currentTerrainType + " at position: ( " + realX + " , " + realY + " )");
                 //Debug.Log("mapWidth: " + mapWidth + " mapHeight: " + mapHeight);
                 tMap[realX, realY].terrainType = currentTerrainType;
-
+                if(currentTerrainType == 3)
+                {
+                    tMap[realX, realY].terrainObject.transform.GetChild(0).gameObject.SetActive(true);
+                }
                 for (int i = -1; i <= 1; i++)
                 {
                     for (int j = -1; j <= 1; j++)
