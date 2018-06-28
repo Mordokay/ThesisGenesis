@@ -216,7 +216,7 @@ public class SimulationDataLogger : MonoBehaviour {
             writer = new StreamWriter(path, false);
             //writerLocal = new StreamWriter(localPath, false);
 
-            Debug.Log(nameForSave);
+            //Debug.Log(nameForSave);
         }
         else
         {

@@ -111,13 +111,18 @@ public class EditorModeController : MonoBehaviour {
     public bool isPlacingElements = false;
     public bool isPlacingPlayer = false;
     public bool isPlacingNPC = false;
-    public bool isEditorMode = true;
+    public bool isEditorMode = false;
     public bool isSpawningEvent = false;
     public bool isInspectingElement = false;
     public bool removeTerrain = false;   
     public bool removePatrolPoint = false;
     public bool removeElement = false;
     public bool removeNPC = false;
+
+    public bool adminMode = false;
+    public bool firstAdminKeyPressed = false;
+    public GameObject leftPanel;
+    public GameObject rightPanel;
 
     public bool hasToUpdatePatrolPointsNumbers;
 
@@ -161,6 +166,8 @@ public class EditorModeController : MonoBehaviour {
     public Text minutesText;
     public Text secondsText;
 
+    public Text debugText;
+
     private void Start()
     {
         InvokeRepeating("UpdateClock", 0.0f, 1.0f);
@@ -179,7 +186,10 @@ public class EditorModeController : MonoBehaviour {
         if(PlayerPrefs.GetInt("loadingMap") == 1)
         {
             MapLoader();
-
+        }
+        else
+        {
+            LoadMap("Neogenesis");
         }
     }
 
@@ -721,7 +731,7 @@ public class EditorModeController : MonoBehaviour {
     public void SaveToTxt()
     {
         Debug.Log(Application.persistentDataPath);
-        string path = "";
+        //string path = "";
         string localPath = "";
         if (nameForSave.text == "")
         {
@@ -729,7 +739,7 @@ public class EditorModeController : MonoBehaviour {
         }
         else if (nameForSave.text != "")
         {
-            path = Application.persistentDataPath + "/" + nameForSave.text + ".txt";
+            //path = Application.persistentDataPath + "/" + nameForSave.text + ".txt";
             localPath = "Assets/Resources/" + nameForSave.text + ".txt";
         }
 
@@ -948,17 +958,22 @@ public class EditorModeController : MonoBehaviour {
         //mapContent += "|";
 
         //Write some text to the test.txt file
-        StreamWriter writer = new StreamWriter(path, false);
+        //StreamWriter writer = new StreamWriter(path, false);
         StreamWriter writerLocal = new StreamWriter(localPath, false);
-        writer.Write(mapContent);
+        //writer.Write(mapContent);
         writerLocal.Write(mapContent);
-        writer.Close();
+        //writer.Close();
         writerLocal.Close();
 
 #if UNITY_EDITOR
         AssetDatabase.Refresh();
 #endif
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }    
 
     public void LoadCurrentMap()
     {
@@ -968,6 +983,20 @@ public class EditorModeController : MonoBehaviour {
         {
             this.GetComponent<SimulationDataLogger>().CloseLogger();
         }
+        SceneManager.LoadScene(0);
+    }
+
+    public void LoadMap(string mapName)
+    {
+        PlayerPrefs.SetInt("loadingMap", 1);
+
+        PlayerPrefs.SetString("mapToLoad", mapName);
+
+        if (this.GetComponent<SimulationDataLogger>().isWritingStuff)
+        {
+            this.GetComponent<SimulationDataLogger>().CloseLogger();
+        }
+
         SceneManager.LoadScene(0);
     }
 
@@ -992,41 +1021,25 @@ public class EditorModeController : MonoBehaviour {
 
     public void MapLoader()
     {
-        /*
-        var children = new List<GameObject>();
-        foreach (Transform child in terrainHolder.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-        foreach (Transform child in undergroundHolder.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-        foreach (Transform child in elementHolder.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-        foreach (Transform child in patrolPointsHolder.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-        foreach (Transform child in npcHolder.transform) children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-
-        elementList.Clear();
-        */
-
-        /*
-        string myFile = "default";
-        if (nameForLoad.text != "")
-        {
-            myFile = nameForLoad.text;
-        }
-        */
-
         string myFile = PlayerPrefs.GetString("mapToLoad");
 
         //Application.persistentDataPath
 
-        if (File.Exists(Application.persistentDataPath + "/" + myFile + ".txt"))
+        //StreamReader readerLocal = new StreamReader("Assets/Resources/" + myFile + ".txt");
+        //Debug.Log(readerLocal.ReadLine());
+        //debugText.text = readerLocal.ReadLine();
+
+        TextAsset textFile = Resources.Load(myFile) as TextAsset;
+        //if (File.Exists("Assets/Resources/" + myFile + ".txt"))
+        if (textFile != null)
         {
-
-            StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + myFile + ".txt");
-            string mySaveString = reader.ReadLine();
-
-            //TextAsset asset = Resources.Load(myFile) as TextAsset;
+            
+            //StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + myFile + ".txt");
+            //StreamReader reader = new StreamReader("Assets/Resources/" + myFile + ".txt");
+            //string mySaveString = reader.ReadLine();
+            string mySaveString = textFile.text;
+            debugText.text = mySaveString;
+            //Debug.Log(mySaveString);
 
             string[] splitGameData = mySaveString.Split(char.Parse("|"));
             int messageIdCount = System.Int32.Parse(splitGameData[0]);
@@ -1249,6 +1262,10 @@ public class EditorModeController : MonoBehaviour {
                     this.GetComponent<Beacon>().messageSequence[i] = new Message(System.Int32.Parse(messageData[0]), float.Parse(messageData[1]), messageData[2], messageData[3]);
                 }
             }
+        }
+        else
+        {
+            debugText.text = "File does NOT exists!!!";
         }
         PlayerPrefs.SetInt("loadingMap", 0);
     }
@@ -1877,6 +1894,40 @@ public class EditorModeController : MonoBehaviour {
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.M) && !firstAdminKeyPressed)
+        {
+            firstAdminKeyPressed = true;
+        }
+        else if(Input.GetKeyDown(KeyCode.K) && firstAdminKeyPressed)
+        {
+            if (adminMode)
+            {
+                leftPanel.SetActive(false);
+                rightPanel.SetActive(false);
+                adminMode = false;
+                isEditorMode = false;
+                //this.GetComponent<Zoom>().zoomToPlayMode = true;
+                UI_Manager.Play();
+                firstAdminKeyPressed = false;
+            }
+            else
+            {
+                leftPanel.SetActive(true);
+                rightPanel.SetActive(true);
+                adminMode = true;
+                isEditorMode = true;
+                firstAdminKeyPressed = false;
+                UI_Manager.Pause();
+                UI_Manager.InstructionPanel.SetActive(false);
+            }
+        }
+        else if (!Input.GetKeyDown(KeyCode.M) && !Input.GetKeyDown(KeyCode.K) && Input.anyKeyDown)
+        {
+            firstAdminKeyPressed = false;
+        }
+
+
+
         if (hasToUpdatePatrolPointsNumbers)
         {
             refreshPatrolPointNumber();

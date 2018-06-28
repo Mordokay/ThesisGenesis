@@ -51,12 +51,12 @@ public class ElementController : MonoBehaviour {
                 if (isGolden)
                 {
                     npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(-99, messageTime, "Auto Golden Message", tagString));
-                    Debug.Log("Name: " + npc.gameObject.name + " golden");
+                    //Debug.Log("Name: " + npc.gameObject.name + " golden");
                 }
                 else
                 {
                     npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(-99, messageTime, "Auto Message", tagString));
-                    Debug.Log("Name: " + npc.gameObject.name + " NOT golden");
+                    //Debug.Log("Name: " + npc.gameObject.name + " NOT golden");
                 }
 
                 if (watchedEventId != 99)

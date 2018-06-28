@@ -160,6 +160,16 @@ public class Social : MonoBehaviour {
                     {
                         talkCanvas.transform.GetChild(i).gameObject.SetActive(false);
                     }
+
+                    if(choosedMessage.id < 0)
+                    {
+                        talkCanvas.transform.GetChild(11).gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        talkCanvas.transform.GetChild(11).gameObject.SetActive(true);
+                    }
+
                     switch (choosedMessage.tags[0].name)
                     {
                         case "Wood":

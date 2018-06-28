@@ -50,7 +50,7 @@ public class Beacon : MonoBehaviour {
 
         //InvokeRepeating("SpawnElementalEvent", 10.0f, 20.0f);
         timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
-        Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
+        //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
     }
 
     void SpawnElementalEvent()
@@ -159,7 +159,7 @@ public class Beacon : MonoBehaviour {
         {
             SpawnElementalEvent();
             timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
-            Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
+            //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
         }
 
         if (messageSequenceText.gameObject.transform.parent.gameObject.activeSelf)

@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
+    public GameObject playerMenu;
+
     public GameObject questsPanel;
     public GameObject InstructionPanel;
 
@@ -830,9 +832,23 @@ public class UIManager : MonoBehaviour {
 
     private void Update()
     {
-        if (Time.timeSinceLevelLoad > 0.0f && InstructionPanel.activeSelf)
+        if (InstructionPanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
             InstructionPanel.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (playerMenu.activeSelf)
+            {
+                playerMenu.SetActive(false);
+                Time.timeScale = 1.0f;
+            }
+            else
+            {
+                playerMenu.SetActive(true);
+                Time.timeScale = 0.0f;
+            }
         }
     }
 }

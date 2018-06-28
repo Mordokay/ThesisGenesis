@@ -34,6 +34,7 @@ public class WizardController : MonoBehaviour {
                 if(t != null && m.description.Contains("Golden") && m.id != -99)
                 {
                     wantsToFollowPlayer = true;
+                    Debug.Log("Wants to follow player!!!");
                     break;
                 }
             }
