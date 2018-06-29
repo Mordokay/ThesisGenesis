@@ -123,6 +123,8 @@ public class EditorModeController : MonoBehaviour {
     public bool firstAdminKeyPressed = false;
     public GameObject leftPanel;
     public GameObject rightPanel;
+    public GameObject quitButton;
+    public GameObject playerIDText;
 
     public bool hasToUpdatePatrolPointsNumbers;
 
@@ -1904,6 +1906,8 @@ public class EditorModeController : MonoBehaviour {
             {
                 leftPanel.SetActive(false);
                 rightPanel.SetActive(false);
+                quitButton.SetActive(true);
+                playerIDText.SetActive(true);
                 adminMode = false;
                 isEditorMode = false;
                 //this.GetComponent<Zoom>().zoomToPlayMode = true;
@@ -1914,6 +1918,8 @@ public class EditorModeController : MonoBehaviour {
             {
                 leftPanel.SetActive(true);
                 rightPanel.SetActive(true);
+                quitButton.SetActive(false);
+                playerIDText.SetActive(false);
                 adminMode = true;
                 isEditorMode = true;
                 firstAdminKeyPressed = false;

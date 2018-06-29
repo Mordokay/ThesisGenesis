@@ -9,7 +9,7 @@ public class SimulationDataLogger : MonoBehaviour {
     StreamWriter writer;
     //StreamWriter writerLocal;
 
-    int[] messageCounter;
+    public int[] messageCounter;
 
     int[] messageForestCurrent;
     int[] messageForestPrevious;
@@ -32,7 +32,7 @@ public class SimulationDataLogger : MonoBehaviour {
     int[] graphPointsAlivePrevious;
     int[] graphPointsExistsPrevious;
 
-    int repeatedMessageCount;
+    public int repeatedMessageCount;
 
     int removedTotalMessages;
     public Color[] GraphColors;
@@ -88,8 +88,11 @@ public class SimulationDataLogger : MonoBehaviour {
     public float IslandVilageMaxX;
     public float IslandVilageMinZ;
     public float IslandVilageMaxZ;
-    
+
+    int postDataSubmission;
+
     void Start () {
+        postDataSubmission = 0;
         //Draws a point every 10 seconds on the graphs
         InvokeRepeating("AddPoints", 0.0f, 10.0f);
 
@@ -800,10 +803,18 @@ public class SimulationDataLogger : MonoBehaviour {
             writer.Close();
         }
     }
-
+    
+    
+    /*
     void OnApplicationQuit()
     {
         PlayerPrefs.SetString("mapToLoad", "default");
-        CloseLogger();
+
+        //Uploads final data info to database
+        SendsDataToDatabase();
+
+        //Temporarily disable drawing of graphs
+        //CloseLogger();
     }
+    */
 }

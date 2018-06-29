@@ -44,12 +44,22 @@ public class QuestsController : MonoBehaviour {
                 {
                     totalGoldenTreeGathered = 4;
                 }
+                else
+                {
+                    //sends grabing data to database
+                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("tree"));
+                }
                 break;
             case 1:
                 totalGoldenRockGathered += 1;
                 if (totalGoldenRockGathered > 4)
                 {
                     totalGoldenRockGathered = 4;
+                }
+                else
+                {
+                    //sends grabing data to database
+                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("rock"));
                 }
                 break;
             case 2:
@@ -58,12 +68,22 @@ public class QuestsController : MonoBehaviour {
                 {
                     totalGoldenBerriesGathered = 4;
                 }
+                else
+                {
+                    //sends grabing data to database
+                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("berries"));
+                }
                 break;
             case 3:
                 totalGoldenCactusGathered += 1;
                 if (totalGoldenCactusGathered > 4)
                 {
                     totalGoldenCactusGathered = 4;
+                }
+                else
+                {
+                    //sends grabing data to database
+                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("cactus"));
                 }
                 break;
         }
