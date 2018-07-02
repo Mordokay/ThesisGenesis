@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     public GameObject inspectorPanel;
     public GameObject canvasBackroundBox;
 
+    public GameObject AnswerQuestions_Panel;
+
     public GameObject playerMenu;
 
     public GameObject questsPanel;
@@ -828,6 +830,13 @@ public class UIManager : MonoBehaviour {
         gm.GetComponent<EditorModeController>().removeNPCButtonImage.color = Color.white;
 
         NPCBeingUpdated = null;
+    }
+
+    public void AnswerQuestionsPanel()
+    {
+        AnswerQuestions_Panel.SetActive(true);
+        this.transform.GetChild(0).gameObject.SetActive(false);
+        this.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     private void Update()

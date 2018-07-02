@@ -30,11 +30,16 @@ public class Beacon : MonoBehaviour {
 
     float timeToNextElementalBeaconEvent;
 
+    public float timebetweenElementalEventsMin;
+    public float timebetweenElementalEventsMax;
 
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         timeToNextEvent = 60.0f;
         currentMessageOnSequence = 0;
+
+        timebetweenElementalEventsMin = 5.0f;
+        timebetweenElementalEventsMax = 10.0f;
 
         if (!sequenceInitialized)
         {
@@ -49,19 +54,21 @@ public class Beacon : MonoBehaviour {
 
 
         //InvokeRepeating("SpawnElementalEvent", 10.0f, 20.0f);
-        timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
+        timeToNextElementalBeaconEvent = UnityEngine.Random.Range(timebetweenElementalEventsMin, timebetweenElementalEventsMax);
         //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
     }
 
     void SpawnElementalEvent()
     {
         // 10% of times, every 5 to 15 seconds, a pulse will happen on a normal object (NOT golden)
-        if (UnityEngine.Random.Range(0, 100) < 10)
+        //On Mode=3 messages from gold and normal objects are considered
+        if (UnityEngine.Random.Range(0, 100) < 40 && this.GetComponent<MySQLManager>().playerMode == "3")
         {
             EditorModeController.Element element =
                 this.GetComponent<EditorModeController>().NormalElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().NormalElementList.Count)];
             element.elementObject.GetComponent<ElementController>().BeaconPulse(false);
         }
+        //Messages on Mode=2 are always gold messages
         else
         {
             EditorModeController.Element element =
@@ -155,10 +162,11 @@ public class Beacon : MonoBehaviour {
     
     void Update () {
         timeToNextElementalBeaconEvent -= Time.deltaTime;
-        if(timeToNextElementalBeaconEvent <= 0.0f)
+        if(timeToNextElementalBeaconEvent <= 0.0f && this.GetComponent<MySQLManager>().playerMode != ""
+            && this.GetComponent<MySQLManager>().playerMode != "1")
         {
             SpawnElementalEvent();
-            timeToNextElementalBeaconEvent = UnityEngine.Random.Range(5.0f, 15.0f);
+            timeToNextElementalBeaconEvent = UnityEngine.Random.Range(timebetweenElementalEventsMin, timebetweenElementalEventsMax);
             //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
         }
 

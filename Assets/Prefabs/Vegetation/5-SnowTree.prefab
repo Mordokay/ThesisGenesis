@@ -102,7 +102,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4298667046175532}
-  - component: {fileID: 208640006624104004}
   - component: {fileID: 135133813980269544}
   - component: {fileID: 114397875744009024}
   - component: {fileID: 65711645500102922}
@@ -212,7 +211,7 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Wood
-    weight: 100
+    weight: 10
   description: I saw him chopping a tree in the snow ... thats cold!
   slider: {fileID: 1997222221788220}
   watchedEventId: 0
@@ -340,21 +339,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!208 &208640006624104004
-NavMeshObstacle:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1767939985580876}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.1, y: 1, z: 0.1}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!212 &212266790309706336
 SpriteRenderer:
   m_ObjectHideFlags: 1

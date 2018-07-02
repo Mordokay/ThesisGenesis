@@ -118,7 +118,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4218168051779110}
-  - component: {fileID: 208071195287706592}
   - component: {fileID: 135256869182273590}
   - component: {fileID: 114148586374601012}
   - component: {fileID: 65701088793331694}
@@ -185,7 +184,7 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Rock
-    weight: 100
+    weight: 10
   description: The player managed to break a rock with his axe!!
   slider: {fileID: 1127986361561310}
   watchedEventId: 1
@@ -340,21 +339,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!208 &208071195287706592
-NavMeshObstacle:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1724716541881416}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 0
-  m_Extents: {x: 0.1, y: 1, z: 0.1}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
 --- !u!212 &212625198842905992
 SpriteRenderer:
   m_ObjectHideFlags: 1

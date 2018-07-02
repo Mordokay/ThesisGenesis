@@ -23,7 +23,13 @@ public class MySQLManager : MonoBehaviour
     string getPlayerID = "http://web.ist.utl.pt/ist165821/GetPlayerID.php";
 
     string playerID = "";
-    string playerMode = "";
+
+    public IEnumerator RecordData(int q1Value, int q2Value, int q3Value, int q4Value, int q5Value, string text)
+    {
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsQuestionsToDatabase(q1Value, q2Value, q3Value, q4Value, q5Value, text));
+    }
+
+    public string playerMode = "";
     string playerTableName = "";
 
     GameObject player;
@@ -37,10 +43,10 @@ public class MySQLManager : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        StartCoroutine(CallStuff());
+        StartCoroutine(SetUp());
     }
 
-    IEnumerator CallStuff()
+    IEnumerator SetUp()
     {
         yield return StartCoroutine(GetBestMode());
         yield return StartCoroutine(GetPlayerID());
@@ -136,7 +142,6 @@ public class MySQLManager : MonoBehaviour
 
     public IEnumerator SendsDataToDatabase()
     {
-
         int messagesTotalCount = 0;
         int repeatedMessageCount = this.GetComponent<SimulationDataLogger>().repeatedMessageCount;
 
@@ -152,6 +157,16 @@ public class MySQLManager : MonoBehaviour
         yield return StartCoroutine(InsertTime());
     }
 
+    public IEnumerator SendsQuestionsToDatabase(int q1Value, int q2Value, int q3Value, int q4Value, int q5Value, string text)
+    {
+        yield return StartCoroutine(InsertData("Q1", q1Value, 0));
+        yield return StartCoroutine(InsertData("Q2", q2Value, 0));
+        yield return StartCoroutine(InsertData("Q3", q3Value, 0));
+        yield return StartCoroutine(InsertData("Q4", q4Value, 0));
+        yield return StartCoroutine(InsertData("Q5", q5Value, 0));
+        yield return StartCoroutine(InsertData("D1_"+ text, 0, 0));
+    }
+
     public void QuitGame()
     {
         StartCoroutine( QuitGameEnumerator());
@@ -159,13 +174,11 @@ public class MySQLManager : MonoBehaviour
 
     public IEnumerator QuitGameEnumerator()
     {
-
         //Debug.Log("fodasse!");
         PlayerPrefs.SetString("mapToLoad", "default");
 
         //Uploads final data info to database
         yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsDataToDatabase());
-        Debug.Log("Gonna quit!!!");
         Application.Quit();
     }
 

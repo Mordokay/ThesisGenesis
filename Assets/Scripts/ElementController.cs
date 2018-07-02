@@ -41,6 +41,7 @@ public class ElementController : MonoBehaviour {
                 string tagString = "";
                 foreach (Message.Tag t in tags)
                 {
+                    //AutoMessages always have minimum weight=1
                     tagString += t.name + " " + 1 + ",";
                 }
                 if (tags.Count > 0)
