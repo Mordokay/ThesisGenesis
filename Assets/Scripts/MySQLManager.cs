@@ -179,32 +179,18 @@ public class MySQLManager : MonoBehaviour
 
         //Uploads final data info to database
         yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsDataToDatabase());
+
         Application.Quit();
     }
 
     void Update()
     {
         timeSinceLastPositionUpdate += Time.deltaTime;
-        //sends position data every 5 seconds to database
-        if (timeSinceLastPositionUpdate > 5.0f)
+        //sends position data every 2 seconds to database
+        if (timeSinceLastPositionUpdate > 2.0f)
         {
             timeSinceLastPositionUpdate = 0.0f;
             StartCoroutine(InsertPlayerPos());
         }
-        /*
-        if (Input.GetKeyDown(KeyCode.N)){
-            Debug.Log("Calling stuff");
-            StartCoroutine(CallStuff());
-        }
-        else if(Input.GetKeyDown(KeyCode.J)){
-            Debug.Log("AddingPos");
-            StartCoroutine(InsertPlayerPos());
-        }
-        else if (Input.GetKeyDown(KeyCode.I))
-        {
-            Debug.Log("InsertTime");
-            StartCoroutine(InsertTime());
-        }
-        */
     }
 }

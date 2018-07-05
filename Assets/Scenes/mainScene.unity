@@ -19691,7 +19691,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: And this is the final question and it is an important one ...
+  m_Text: Here you can comment something about your experience
 --- !u!222 &321014426
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -44772,19 +44772,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 5bb7237d03fda58469a481a705bf5131, type: 3}
+    m_FontSize: 11
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Small text '
+  m_Text: description ...
 --- !u!222 &770056808
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -61662,7 +61662,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: And this is the final question and it is an important one ...
+  m_Text: And this is the final question and it is an important one!
 --- !u!222 &1096871288
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66712,8 +66712,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: IN this small text box I am describing what the values 1 to 5 mean. Rank
-    your experience on the basis of theyr relevance (1 for lowest, 5 to highest)
+  m_Text: In this small text box I am describing what the values 1 to 5 mean. Rank
+    your experience on the basis of their relevance (1 for lowest, 5 to highest).
+    Be precise ... you have all the time in the world.
 --- !u!222 &1195397206
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -73617,7 +73618,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1305375993}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0000013412}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1287256332}
@@ -73627,7 +73628,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -10}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1306213765

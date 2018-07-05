@@ -28,10 +28,10 @@ public class QuestsController : MonoBehaviour {
 
     public void RefreshQuestsText()
     {
-        goldenTreeQuestText.text = totalGoldenTreeGathered + "/4";
-        goldenRockQuestText.text = totalGoldenRockGathered + "/4";
-        goldenBerriesQuestText.text = totalGoldenBerriesGathered + "/4";
-        goldenCactusQuestText.text = totalGoldenCactusGathered + "/4";
+        goldenTreeQuestText.text = totalGoldenTreeGathered + "/3";
+        goldenRockQuestText.text = totalGoldenRockGathered + "/3";
+        goldenBerriesQuestText.text = totalGoldenBerriesGathered + "/3";
+        goldenCactusQuestText.text = totalGoldenCactusGathered + "/3";
     }
 
     public void IncrementQuestsPanel(int type)
