@@ -732,7 +732,7 @@ public class EditorModeController : MonoBehaviour {
 
     public void SaveToTxt()
     {
-        Debug.Log(Application.persistentDataPath);
+        //Debug.Log(Application.persistentDataPath);
         //string path = "";
         string localPath = "";
         if (nameForSave.text == "")

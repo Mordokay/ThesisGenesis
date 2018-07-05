@@ -40,9 +40,9 @@ public class QuestsController : MonoBehaviour {
         {
             case 0:
                 totalGoldenTreeGathered += 1;
-                if (totalGoldenTreeGathered > 4)
+                if (totalGoldenTreeGathered > 3)
                 {
-                    totalGoldenTreeGathered = 4;
+                    totalGoldenTreeGathered = 3;
                 }
                 else
                 {
@@ -52,9 +52,9 @@ public class QuestsController : MonoBehaviour {
                 break;
             case 1:
                 totalGoldenRockGathered += 1;
-                if (totalGoldenRockGathered > 4)
+                if (totalGoldenRockGathered > 3)
                 {
-                    totalGoldenRockGathered = 4;
+                    totalGoldenRockGathered = 3;
                 }
                 else
                 {
@@ -64,9 +64,9 @@ public class QuestsController : MonoBehaviour {
                 break;
             case 2:
                 totalGoldenBerriesGathered += 1;
-                if (totalGoldenBerriesGathered > 4)
+                if (totalGoldenBerriesGathered > 3)
                 {
-                    totalGoldenBerriesGathered = 4;
+                    totalGoldenBerriesGathered = 3;
                 }
                 else
                 {
@@ -76,9 +76,9 @@ public class QuestsController : MonoBehaviour {
                 break;
             case 3:
                 totalGoldenCactusGathered += 1;
-                if (totalGoldenCactusGathered > 4)
+                if (totalGoldenCactusGathered > 3)
                 {
-                    totalGoldenCactusGathered = 4;
+                    totalGoldenCactusGathered = 3;
                 }
                 else
                 {
@@ -91,7 +91,7 @@ public class QuestsController : MonoBehaviour {
     }
 
     void Update () {
-	    if(totalGoldenTreeGathered + totalGoldenRockGathered + totalGoldenBerriesGathered + totalGoldenCactusGathered == 16)
+	    if(totalGoldenTreeGathered + totalGoldenRockGathered + totalGoldenBerriesGathered + totalGoldenCactusGathered == 12)
         {
             //Player wins the game and shows panel!!!
             Time.timeScale = 0.0f;
