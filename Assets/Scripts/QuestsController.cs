@@ -96,6 +96,7 @@ public class QuestsController : MonoBehaviour {
             //Player wins the game and shows panel!!!
             Time.timeScale = 0.0f;
             canvas.transform.GetChild(1).gameObject.SetActive(true);
+            StartCoroutine(this.GetComponent<MySQLManager>().SendsDataToDatabase());
         }
 	}
 }

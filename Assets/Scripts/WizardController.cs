@@ -13,12 +13,14 @@ public class WizardController : MonoBehaviour {
     GameObject sawPlayerCanvas;
     GameObject canvas;
 
+    GameObject gm;
+
     void Start()
     {
         sawPlayerCanvas = this.transform.parent.transform.GetChild(6).gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
         canvas = GameObject.FindGameObjectWithTag("Canvas");
-
+        gm = GameObject.Find("GameManager");
         myInterest = this.GetComponentInParent<NPCData>().interests[0].name;
         minimumFollowDistance = 5.0f;
         InvokeRepeating("CheckInterests", 0.0f, 1.0f);
@@ -77,6 +79,7 @@ public class WizardController : MonoBehaviour {
         {
             Time.timeScale = 0.0f;
             canvas.transform.GetChild(0).gameObject.SetActive(true);
+            StartCoroutine(gm.GetComponent<MySQLManager>().SendsDataToDatabase());
         }
     }
 }
