@@ -10,15 +10,16 @@ public class QuestsController : MonoBehaviour {
     public int totalGoldenBerriesGathered;
     public int totalGoldenCactusGathered;
 
-    public Text goldenTreeQuestText;
-    public Text goldenRockQuestText;
-    public Text goldenBerriesQuestText;
-    public Text goldenCactusQuestText;
-
+    public int totalGoldenObjectsGathered;
+    public Slider progressBar;
+    public Text progressBarText;
     GameObject canvas;
 
     void Start () {
         canvas = GameObject.FindGameObjectWithTag("Canvas");
+
+        totalGoldenObjectsGathered = 0;
+        UpdateQuestsBar();
 
         totalGoldenTreeGathered = 0;
         totalGoldenRockGathered = 0;
@@ -26,68 +27,38 @@ public class QuestsController : MonoBehaviour {
         totalGoldenCactusGathered = 0;
     }
 
-    public void RefreshQuestsText()
+    public void UpdateQuestsBar()
     {
-        goldenTreeQuestText.text = totalGoldenTreeGathered + "/3";
-        goldenRockQuestText.text = totalGoldenRockGathered + "/3";
-        goldenBerriesQuestText.text = totalGoldenBerriesGathered + "/3";
-        goldenCactusQuestText.text = totalGoldenCactusGathered + "/3";
+        progressBar.value = totalGoldenObjectsGathered / 12.0f;
+        progressBarText.text = totalGoldenObjectsGathered + "/12";
     }
 
-    public void IncrementQuestsPanel(int type)
+    public void IncrementQuestbar(int type)
     {
+        totalGoldenObjectsGathered += 1;
         switch (type)
         {
             case 0:
                 totalGoldenTreeGathered += 1;
-                if (totalGoldenTreeGathered > 3)
-                {
-                    totalGoldenTreeGathered = 3;
-                }
-                else
-                {
-                    //sends grabing data to database
-                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("tree"));
-                }
+                //sends grabing data to database
+                StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("tree"));
                 break;
             case 1:
-                totalGoldenRockGathered += 1;
-                if (totalGoldenRockGathered > 3)
-                {
-                    totalGoldenRockGathered = 3;
-                }
-                else
-                {
-                    //sends grabing data to database
-                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("rock"));
-                }
+                //sends grabing data to database
+                StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("rock"));
                 break;
             case 2:
                 totalGoldenBerriesGathered += 1;
-                if (totalGoldenBerriesGathered > 3)
-                {
-                    totalGoldenBerriesGathered = 3;
-                }
-                else
-                {
-                    //sends grabing data to database
-                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("berries"));
-                }
+                //sends grabing data to database
+                StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("berries"));
                 break;
             case 3:
                 totalGoldenCactusGathered += 1;
-                if (totalGoldenCactusGathered > 3)
-                {
-                    totalGoldenCactusGathered = 3;
-                }
-                else
-                {
-                    //sends grabing data to database
-                    StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("cactus"));
-                }
+                //sends grabing data to database
+                StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("cactus"));
                 break;
         }
-        RefreshQuestsText();
+        UpdateQuestsBar();
     }
 
     void Update () {

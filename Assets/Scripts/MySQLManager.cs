@@ -24,9 +24,9 @@ public class MySQLManager : MonoBehaviour
 
     string playerID = "";
 
-    public IEnumerator RecordData(int q1Value, int q2Value, int q3Value, int q4Value, int q5Value, string text)
+    public IEnumerator RecordData(int[] questionsAnswers)
     {
-        yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsQuestionsToDatabase(q1Value, q2Value, q3Value, q4Value, q5Value, text));
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsQuestionsToDatabase(questionsAnswers));
     }
 
     public string playerMode = "";
@@ -37,7 +37,6 @@ public class MySQLManager : MonoBehaviour
 
     public Text playerID1;
     public Text playerID2;
-    public Text playerID3;
     public Text playerIDMenu;
 
     void Start()
@@ -54,7 +53,6 @@ public class MySQLManager : MonoBehaviour
 
         playerID1.text = "PlayerID: " + playerID;
         playerID2.text = "PlayerID: " + playerID;
-        playerID3.text = "PlayerID: " + playerID;
         playerIDMenu.text = "PlayerID:" + System.Environment.NewLine + playerID;
 
         yield return StartCoroutine(AddPlayerID_GameMode(playerID, playerMode));
@@ -117,7 +115,7 @@ public class MySQLManager : MonoBehaviour
         WWW hs_post = new WWW(post_url);
         yield return hs_post; // Wait until the download is done
 
-        Debug.Log(hs_post.text);
+        //Debug.Log(hs_post.text);
     }
 
     IEnumerator GetBestMode()
@@ -157,14 +155,12 @@ public class MySQLManager : MonoBehaviour
         yield return StartCoroutine(InsertTime());
     }
 
-    public IEnumerator SendsQuestionsToDatabase(int q1Value, int q2Value, int q3Value, int q4Value, int q5Value, string text)
+    public IEnumerator SendsQuestionsToDatabase(int[] questionValues)
     {
-        yield return StartCoroutine(InsertData("Q1", q1Value, 0));
-        yield return StartCoroutine(InsertData("Q2", q2Value, 0));
-        yield return StartCoroutine(InsertData("Q3", q3Value, 0));
-        yield return StartCoroutine(InsertData("Q4", q4Value, 0));
-        yield return StartCoroutine(InsertData("Q5", q5Value, 0));
-        yield return StartCoroutine(InsertData("D1_"+ text, 0, 0));
+        for(int i = 0; i < questionValues.Length; i++)
+        {
+            yield return StartCoroutine(InsertData("Q" + (i+1).ToString(), questionValues[i], 0));
+        }
     }
 
     public void QuitGame()

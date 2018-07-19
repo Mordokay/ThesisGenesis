@@ -167,7 +167,7 @@ public class UIManager : MonoBehaviour {
         {
             //Enables the quests panel
             questsPanel.SetActive(true);
-            gm.GetComponent<QuestsController>().RefreshQuestsText();
+            gm.GetComponent<QuestsController>().UpdateQuestsBar();
 
             isWatchModeEnabled = false;
 
@@ -760,7 +760,7 @@ public class UIManager : MonoBehaviour {
 
         //Enables the quests panel
         questsPanel.SetActive(true);
-        gm.GetComponent<QuestsController>().RefreshQuestsText();
+        gm.GetComponent<QuestsController>().UpdateQuestsBar();
 
         Time.timeScale = 1.0f;
         SidePanel.SetActive(false);

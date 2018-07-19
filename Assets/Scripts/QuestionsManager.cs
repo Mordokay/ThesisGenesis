@@ -5,50 +5,27 @@ using UnityEngine.UI;
 
 public class QuestionsManager : MonoBehaviour {
 
-    public int Q1Value;
-    public int Q2Value;
-    public int Q3Value;
-    public int Q4Value;
-    public int Q5Value;
+    public int[] questionsAnswers = new int[33];
 
     public GameObject submitButton;
     public InputField inputField;
     public GameObject quitButton;
 
-    private void Start()
+    public void SetQuestion(string question_value)
     {
-        Q1Value = -1;
-        Q2Value = -1;
-        Q3Value = -1;
-        Q4Value = -1;
-        Q5Value = -1;
+        string[] data = question_value.Split('_');
+        int question = System.Convert.ToInt32(data[0]);
+        int value = System.Convert.ToInt32(data[1]);
+        if (questionsAnswers[question] == 0)
+        {
+            questionsAnswers[question] = value;
+        }
+        else
+        {
+            questionsAnswers[question] = 0;
+        }
     }
-
-    public void SetQuestion1(int value)
-    {
-        Q1Value = value;
-    }
-
-    public void SetQuestion2(int value)
-    {
-        Q2Value = value;
-    }
-
-    public void SetQuestion3(int value)
-    {
-        Q3Value = value;
-    }
-
-    public void SetQuestion4(int value)
-    {
-        Q4Value = value;
-    }
-
-    public void SetQuestion5(int value)
-    {
-        Q5Value = value;
-    }
-
+    
     public void SendQuestionaireData()
     {
         StartCoroutine(SendQuestionaireDataEnumerator());
@@ -56,16 +33,29 @@ public class QuestionsManager : MonoBehaviour {
 
     public IEnumerator SendQuestionaireDataEnumerator()
     {
-        yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordData(Q1Value, Q2Value, Q3Value, Q4Value, Q5Value, inputField.text));
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordData(questionsAnswers));
         submitButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(true);
     }
 
     public void Update()
     {
-        if(Q1Value != -1 && Q2Value != -1 && Q3Value != -1 && Q4Value != -1 && Q5Value != -1)
+        bool allAnswered = true;
+        for(int i = 0; i < questionsAnswers.Length; i++)
+        {
+            if(questionsAnswers[i] == 0)
+            {
+                allAnswered = false;
+            }
+        }
+
+        if(allAnswered)
         {
             submitButton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            submitButton.GetComponent<Button>().interactable = false;
         }
     }
 }

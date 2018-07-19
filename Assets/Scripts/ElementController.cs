@@ -78,22 +78,22 @@ public class ElementController : MonoBehaviour {
                 if (this.name.Contains("Tree"))
                 {
                     Debug.Log("Updates Wood quest!!!!");
-                    qc.IncrementQuestsPanel(0);
+                    qc.IncrementQuestbar(0);
                 }
                 else if (this.name.Contains("Rock"))
                 {
                     Debug.Log("Updates Rock quest!!!!");
-                    qc.IncrementQuestsPanel(1);
+                    qc.IncrementQuestbar(1);
                 }
                 else if (this.name.Contains("Berries"))
                 {
                     Debug.Log("Updates Berries quest!!!!");
-                    qc.IncrementQuestsPanel(2);
+                    qc.IncrementQuestbar(2);
                 }
                 else if (this.name.Contains("Cactus"))
                 {
                     Debug.Log("Updates Cactus quest!!!!");
-                    qc.IncrementQuestsPanel(3);
+                    qc.IncrementQuestbar(3);
                 }
             }
             int eventId = pm.getMessageId();
