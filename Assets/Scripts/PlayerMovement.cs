@@ -6,6 +6,10 @@ public class PlayerMovement : MonoBehaviour
 {
     public bool isWalking;
     public bool isAtacking;
+    public GameObject objectBeingAtacked;
+    float attackIntervalTime;
+    float timeSinceLastAtack;
+    float attackDamage;
 
     public float moveSpeed;
     EditorModeController em;
@@ -15,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     {
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
+        timeSinceLastAtack = Time.timeSinceLevelLoad;
+        attackDamage = 8.0f;
+        attackIntervalTime = 0.5f;
     }
 
 
@@ -22,7 +29,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!em.isEditorMode)
         {
-            if(mic.eventSpawnerArea.activeSelf && Input.mousePosition.x > 0.76 * Screen.width)
+            if(objectBeingAtacked == null)
+            {
+                if (isAtacking)
+                {
+                    isAtacking = false;
+                    this.GetComponent<Animator>().SetBool("Attack", false);
+                }
+            }
+            if (isAtacking && Time.timeSinceLevelLoad - timeSinceLastAtack > attackIntervalTime)
+            {
+                objectBeingAtacked.GetComponent<ElementController>().Attack(attackDamage);
+                timeSinceLastAtack = Time.timeSinceLevelLoad;
+            }
+
+            if (mic.eventSpawnerArea.activeSelf && Input.mousePosition.x > 0.76 * Screen.width)
             {
                 this.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 return;

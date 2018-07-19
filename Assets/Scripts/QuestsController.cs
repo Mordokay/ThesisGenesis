@@ -10,17 +10,22 @@ public class QuestsController : MonoBehaviour {
     public int totalGoldenBerriesGathered;
     public int totalGoldenCactusGathered;
 
+    public int playerStash;
     public int totalGoldenObjectsGathered;
     public Slider progressBar;
     public Text progressBarText;
     GameObject canvas;
 
+    public GameObject[] StashImages;
+    bool sentData;
+
     void Start () {
+        sentData = false;
         canvas = GameObject.FindGameObjectWithTag("Canvas");
 
         totalGoldenObjectsGathered = 0;
         UpdateQuestsBar();
-
+        playerStash = 0;
         totalGoldenTreeGathered = 0;
         totalGoldenRockGathered = 0;
         totalGoldenBerriesGathered = 0;
@@ -29,13 +34,30 @@ public class QuestsController : MonoBehaviour {
 
     public void UpdateQuestsBar()
     {
+        if(playerStash > 0)
+        {
+            totalGoldenObjectsGathered += playerStash;
+            playerStash = 0;
+        }
         progressBar.value = totalGoldenObjectsGathered / 12.0f;
         progressBarText.text = totalGoldenObjectsGathered + "/12";
+
+        foreach(GameObject imageStash in StashImages)
+        {
+            imageStash.SetActive(false);
+        }
     }
 
-    public void IncrementQuestbar(int type)
+    public void IncrementStash(int type)
     {
-        totalGoldenObjectsGathered += 1;
+        StashImages[playerStash].SetActive(true);
+        foreach(Transform child in StashImages[playerStash].transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+        StashImages[playerStash].transform.GetChild(type).gameObject.SetActive(true);
+        playerStash += 1;
+        
         switch (type)
         {
             case 0:
@@ -58,16 +80,16 @@ public class QuestsController : MonoBehaviour {
                 StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("cactus"));
                 break;
         }
-        UpdateQuestsBar();
     }
 
     void Update () {
-	    if(totalGoldenTreeGathered + totalGoldenRockGathered + totalGoldenBerriesGathered + totalGoldenCactusGathered == 12)
+	    if(totalGoldenObjectsGathered == 12 && !sentData)
         {
             //Player wins the game and shows panel!!!
             Time.timeScale = 0.0f;
             canvas.transform.GetChild(1).gameObject.SetActive(true);
             StartCoroutine(this.GetComponent<MySQLManager>().SendsDataToDatabase());
+            sentData = true;
         }
 	}
 }

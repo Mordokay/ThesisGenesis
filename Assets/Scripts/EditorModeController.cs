@@ -278,33 +278,37 @@ public class EditorModeController : MonoBehaviour {
 
     public void RemoveElement(GameObject obj)
     {
-        if (obj.GetComponent<ElementController>().description.Contains("Golden"))
+        ElementController ec = obj.GetComponent<ElementController>();
+        if (ec != null)
         {
-            for (int i = GoldenElementList.Count - 1; i >= 0; i--)
+            if (obj.GetComponent<ElementController>().description.Contains("Golden"))
             {
-                if (GoldenElementList[i].elementObject.Equals(obj))
+                for (int i = GoldenElementList.Count - 1; i >= 0; i--)
                 {
-                    GoldenElementList.RemoveAt(i);
+                    if (GoldenElementList[i].elementObject.Equals(obj))
+                    {
+                        GoldenElementList.RemoveAt(i);
+                    }
                 }
             }
-        }
-        else
-        {
-            for (int i = NormalElementList.Count - 1; i >= 0; i--)
+            else
             {
-                if (NormalElementList[i].elementObject.Equals(obj))
+                for (int i = NormalElementList.Count - 1; i >= 0; i--)
                 {
-                    NormalElementList.RemoveAt(i);
+                    if (NormalElementList[i].elementObject.Equals(obj))
+                    {
+                        NormalElementList.RemoveAt(i);
+                    }
                 }
             }
-        }
 
-        for (int i = elementList.Count-1 ; i >=0; i--)
-        {
-            if (elementList[i].elementObject.Equals(obj))
+            for (int i = elementList.Count - 1; i >= 0; i--)
             {
-                elementList.RemoveAt(i);
-                Destroy(obj);
+                if (elementList[i].elementObject.Equals(obj))
+                {
+                    elementList.RemoveAt(i);
+                    Destroy(obj);
+                }
             }
         }
     }
@@ -1935,6 +1939,9 @@ public class EditorModeController : MonoBehaviour {
             }
             else
             {
+                UI_Manager.questsPanel.SetActive(false);
+                UI_Manager.stashPanel.SetActive(false);
+
                 leftPanel.SetActive(true);
                 rightPanel.SetActive(true);
                 quitButton.SetActive(false);

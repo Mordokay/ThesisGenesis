@@ -67,6 +67,27 @@ public class MouseInputController : MonoBehaviour {
                 }
                 lastMousePos = Input.mousePosition;
             }
+            //player attacks
+            if (!gm.GetComponent<EditorModeController>().isEditorMode)
+            {
+                RaycastHit hit;
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, ElementLayerMask);
+                //Debug.Log(hit.collider.name);
+                if (hit.collider != null && Vector3.Distance(hit.collider.gameObject.transform.position, player.transform.position) < 1.5f)
+                {
+                    if (!player.GetComponent<PlayerMovement>().isAtacking)
+                    {
+                        player.GetComponent<PlayerMovement>().isAtacking = true;
+                        player.GetComponent<Animator>().SetBool("Attack", true);
+                    }
+                    player.GetComponent<PlayerMovement>().objectBeingAtacked = hit.collider.gameObject;
+                }
+                else
+                {
+                    player.GetComponent<PlayerMovement>().isAtacking = false;
+                    player.GetComponent<Animator>().SetBool("Attack", false);
+                }
+            }
         }
 
         if (Input.GetMouseButton(1))
@@ -99,7 +120,6 @@ public class MouseInputController : MonoBehaviour {
         }
         if (Input.GetMouseButtonDown(0))
         {
-            //player attacks
             if (!gm.GetComponent<EditorModeController>().isEditorMode)
             {
                 if (eventSpawnerArea.activeSelf)
@@ -115,11 +135,6 @@ public class MouseInputController : MonoBehaviour {
                         Vector3 pos = hit.point;
                         gm.GetComponent<EditorModeController>().AddEvent(pos, 1);
                     }
-                }
-                else
-                {
-                    player.GetComponent<PlayerMovement>().isAtacking = true;
-                    player.GetComponent<Animator>().SetBool("Attack", true);
                 }
             }
             else

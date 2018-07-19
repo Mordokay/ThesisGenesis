@@ -140,14 +140,16 @@ public class MySQLManager : MonoBehaviour
 
     public IEnumerator SendsDataToDatabase()
     {
-        int messagesTotalCount = 0;
+        int messagesTotalCount = this.GetComponent<SimulationDataLogger>().totalMessages;
         int repeatedMessageCount = this.GetComponent<SimulationDataLogger>().repeatedMessageCount;
 
+        /*
         for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
         {
             //StartCoroutine(InsertData("msg_" + i + "_talked", this.GetComponent<SimulationDataLogger>().messageCounter[i], 0));
             messagesTotalCount += this.GetComponent<SimulationDataLogger>().messageCounter[i];
         }
+        */
 
         yield return StartCoroutine(InsertData("totalMsgCount", messagesTotalCount, 0));
         yield return StartCoroutine(InsertData("repeatedMsgCount", repeatedMessageCount, 0));
@@ -165,12 +167,13 @@ public class MySQLManager : MonoBehaviour
 
     public void QuitGame()
     {
-        StartCoroutine( QuitGameEnumerator());
+        PlayerPrefs.SetString("mapToLoad", "default");
+        Application.Quit();
+        //StartCoroutine( QuitGameEnumerator());
     }
 
     public IEnumerator QuitGameEnumerator()
     {
-        //Debug.Log("fodasse!");
         PlayerPrefs.SetString("mapToLoad", "default");
 
         //Uploads final data info to database

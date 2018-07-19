@@ -13,6 +13,7 @@ TagManager:
   - UI
   - NPC
   - Canvas
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -29,8 +30,8 @@ TagManager:
   - Player
   - NPC
   - Bush
-  - 
-  - 
+  - Temple
+  - Item
   - 
   - 
   - 

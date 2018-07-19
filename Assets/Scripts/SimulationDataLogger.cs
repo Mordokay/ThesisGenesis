@@ -91,7 +91,13 @@ public class SimulationDataLogger : MonoBehaviour {
 
     int postDataSubmission;
 
+    public int totalMessages;
     void Start () {
+
+        repeatedMessageCount = 0;
+        totalMessages = 0;
+
+        /*
         postDataSubmission = 0;
         //Draws a point every 10 seconds on the graphs
         InvokeRepeating("AddPoints", 0.0f, 10.0f);
@@ -225,6 +231,7 @@ public class SimulationDataLogger : MonoBehaviour {
         {
             isWritingStuff = false;
         }
+        */
     }
 
     public string getCurrentTime()
@@ -257,6 +264,13 @@ public class SimulationDataLogger : MonoBehaviour {
 
     public void WriteMessageToLog(string line, int id, bool wasRepeated, Vector3 position)
     {
+
+        totalMessages += 1;
+        if (wasRepeated)
+        {
+            repeatedMessageCount += 1;
+        }
+        /*
         if (id != -99)
         {
             //Debug.Log("position message" + position);
@@ -305,10 +319,12 @@ public class SimulationDataLogger : MonoBehaviour {
                 //writerLocal.WriteLine(currentTime + line);
             }
         }
+        */
     }
 
     public void WriteTextToLog(string line)
     {
+        /*
         if (isWritingStuff)
         {
             string currentTime = getCurrentTime();
@@ -316,10 +332,12 @@ public class SimulationDataLogger : MonoBehaviour {
             writer.WriteLine(currentTime + line);
            // writerLocal.WriteLine(currentTime + line);
         }
+        */
     }
 
     public void WriteRemoveToLog(string line, int id)
     {
+        /*
         if (isWritingStuff)
         {
             removedTotalMessages += 1;
@@ -328,6 +346,7 @@ public class SimulationDataLogger : MonoBehaviour {
             string currentTime = getCurrentTime();
             writer.WriteLine(currentTime + " " + line + System.Environment.NewLine);
         }
+        */
     }
 
     public void AddPoints()
@@ -580,6 +599,7 @@ public class SimulationDataLogger : MonoBehaviour {
 
     public void CloseLogger()
     {
+        /*
         if (isWritingStuff)
         {
             ///////////////////////////////////////////////////////////////////////
@@ -802,6 +822,7 @@ public class SimulationDataLogger : MonoBehaviour {
 
             writer.Close();
         }
+        */
     }
     
     

@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 4961445671515690}
   - component: {fileID: 212393259320169788}
   m_Layer: 10
-  m_Name: 1-FenceVerticalImage
+  m_Name: HouseImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -348,7 +348,7 @@ NavMeshObstacle:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1633144808249448}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Shape: 1
   m_Extents: {x: 2.05, y: 0.5, z: 1.075}

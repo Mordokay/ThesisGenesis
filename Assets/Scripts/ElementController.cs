@@ -20,6 +20,7 @@ public class ElementController : MonoBehaviour {
     QuestsController qc;
 
     public int watchedEventId;
+    public GameObject itemToDrop;
 
     private void Start()
     {
@@ -73,29 +74,44 @@ public class ElementController : MonoBehaviour {
     void Update () {
 		if(health <= 0)
         {
-            if (this.name.Contains("Golden"))
+            if (qc.playerStash < 4)
             {
-                if (this.name.Contains("Tree"))
+                if (this.name.Contains("Golden"))
                 {
-                    Debug.Log("Updates Wood quest!!!!");
-                    qc.IncrementQuestbar(0);
-                }
-                else if (this.name.Contains("Rock"))
-                {
-                    Debug.Log("Updates Rock quest!!!!");
-                    qc.IncrementQuestbar(1);
-                }
-                else if (this.name.Contains("Berries"))
-                {
-                    Debug.Log("Updates Berries quest!!!!");
-                    qc.IncrementQuestbar(2);
-                }
-                else if (this.name.Contains("Cactus"))
-                {
-                    Debug.Log("Updates Cactus quest!!!!");
-                    qc.IncrementQuestbar(3);
+                    if (this.name.Contains("Tree"))
+                    {
+                        Debug.Log("Updates Wood quest!!!!");
+                        qc.IncrementStash(0);
+                    }
+                    else if (this.name.Contains("Rock"))
+                    {
+                        Debug.Log("Updates Rock quest!!!!");
+                        qc.IncrementStash(1);
+                    }
+                    else if (this.name.Contains("Berries"))
+                    {
+                        Debug.Log("Updates Berries quest!!!!");
+                        qc.IncrementStash(2);
+                    }
+                    else if (this.name.Contains("Cactus"))
+                    {
+                        Debug.Log("Updates Cactus quest!!!!");
+                        qc.IncrementStash(3);
+                    }
                 }
             }
+            else
+            {
+                if (this.name.Contains("Golden"))
+                {
+                    //Debug.Log("Dropped item on ground!");
+
+                    //Drop item on the ground
+                    GameObject myObj = Instantiate(itemToDrop) as GameObject;
+                    myObj.transform.position = this.transform.position;
+                }
+            }
+
             int eventId = pm.getMessageId();
             foreach (Transform npc in emc.npcHolder.transform)
             {

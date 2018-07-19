@@ -103,22 +103,11 @@ public class NPCData : MonoBehaviour {
                 timeSinceCanvasActivation = 0.0f;
             }
         }
-        //It takes 10 seconds to reach full assertiveness and cooperativeness
+        //It takes 5 seconds to reach full assertiveness and cooperativeness
         if (!this.GetComponent<Social>().isTalking)
         {
-            currentAssertivenessLevel += (Time.deltaTime / 10.0f )* assertiveness;
-            currentCooperativenessLevel += (Time.deltaTime / 10.0f) * cooperativeness;
-        }
-        else
-        {
-            if (this.GetComponent<Social>().isReceivingMessage)
-            {
-                currentAssertivenessLevel += (Time.deltaTime / 10.0f) * assertiveness;
-            }
-            else
-            {
-                currentCooperativenessLevel += (Time.deltaTime / 10.0f) * cooperativeness;
-            }
+            currentAssertivenessLevel += (Time.deltaTime / 5.0f )* assertiveness;
+            currentCooperativenessLevel += (Time.deltaTime / 5.0f) * cooperativeness;
         }
 
         currentAssertivenessLevel = Mathf.Clamp(currentAssertivenessLevel, 0.0f, 1.0f);

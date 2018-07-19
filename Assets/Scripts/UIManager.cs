@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour {
     public GameObject playerMenu;
 
     public GameObject questsPanel;
+    public GameObject stashPanel;
     public GameObject InstructionPanel;
 
     public GameObject spawnEventPlayModePanel;
@@ -167,6 +168,8 @@ public class UIManager : MonoBehaviour {
         {
             //Enables the quests panel
             questsPanel.SetActive(true);
+            stashPanel.SetActive(true);
+
             gm.GetComponent<QuestsController>().UpdateQuestsBar();
 
             isWatchModeEnabled = false;
@@ -186,6 +189,7 @@ public class UIManager : MonoBehaviour {
         {
             //Disables the quests panel
             questsPanel.SetActive(false);
+            stashPanel.SetActive(false);
 
             //Player must stop atacking
             player.GetComponent<PlayerMovement>().isAtacking = false;
@@ -760,7 +764,8 @@ public class UIManager : MonoBehaviour {
 
         //Enables the quests panel
         questsPanel.SetActive(true);
-        gm.GetComponent<QuestsController>().UpdateQuestsBar();
+        stashPanel.SetActive(true);
+        //gm.GetComponent<QuestsController>().UpdateQuestsBar();
 
         Time.timeScale = 1.0f;
         SidePanel.SetActive(false);
@@ -778,8 +783,9 @@ public class UIManager : MonoBehaviour {
     {
         ReturnToMainPanel();
 
-        //Enables the quests panel
+        //Disables the quests panel
         questsPanel.SetActive(false);
+        stashPanel.SetActive(false);
 
         //If its in Watch mode ... removes it
         if (isWatchModeEnabled)

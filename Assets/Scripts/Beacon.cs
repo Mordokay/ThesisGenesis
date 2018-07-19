@@ -80,7 +80,7 @@ public class Beacon : MonoBehaviour {
                     msg = CreateMessage(-99, true, 1);
                 }
                 npc.gameObject.GetComponent<NPCData>().ReceiveMessage(msg);
-                Debug.Log(msg.ToString());
+                //Debug.Log(msg.ToString());
             }
         }
     }
