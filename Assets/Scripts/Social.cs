@@ -36,7 +36,14 @@ public class Social : MonoBehaviour {
 
     public void NPC_Colision(GameObject otherNPC)
     {
-        if (!otherNPC.transform.GetComponent<Social>().isTalking && !otherNPC.transform.GetComponent<Social>().onTalkCooldown
+        WizardController wcA = this.transform.GetChild(1).GetComponent<WizardController>();
+        WizardController wcB = otherNPC.transform.GetChild(1).GetComponent<WizardController>();
+
+        if((wcA != null && wcA.isFollowingPlayer) || (wcB != null && wcB.isFollowingPlayer))
+        {
+            return;
+        }
+        else if (!otherNPC.transform.GetComponent<Social>().isTalking && !otherNPC.transform.GetComponent<Social>().onTalkCooldown
             && !onTalkCooldown)
         {
             choosedMessage = null;
@@ -134,9 +141,15 @@ public class Social : MonoBehaviour {
         }
         else if (isTalking)
         {
+            WizardController wcA = this.transform.GetChild(1).GetComponent<WizardController>();
+
             if (choosedMessage == null)
             {
                 choosedMessage = talkPartner.GetComponent<Social>().choosedMessage;
+            }
+            else if (wcA != null && wcA.isFollowingPlayer)
+            {
+                InterruptConversation();
             }
             else
             {
@@ -274,6 +287,21 @@ public class Social : MonoBehaviour {
             }
         }
 	}
+
+    void InterruptConversation()
+    {
+        isTalking = false;
+        isReceivingMessage = false;
+        remainingMessageTransmissionTime = 0;
+        this.GetComponentInChildren<NPCPatrolMovement>().stopped = false;
+        talkCanvas.SetActive(false);
+
+        talkPartner.GetComponent<Social>().isTalking = false;
+        talkPartner.GetComponent<Social>().isReceivingMessage = false;
+        talkPartner.GetComponent<Social>().remainingMessageTransmissionTime = 0;
+        talkPartner.GetComponentInChildren<NPCPatrolMovement>().stopped = false;
+        talkPartner.GetComponent<Social>().talkCanvas.SetActive(false);
+    }
 
     Message getBestMessageToTalk(NPCData NPC_A, NPCData NPC_B)
     {

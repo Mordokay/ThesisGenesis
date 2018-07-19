@@ -33,6 +33,8 @@ public class Beacon : MonoBehaviour {
     public float timebetweenElementalEventsMin;
     public float timebetweenElementalEventsMax;
 
+    string[] tags = { "Rock", "Wood", "Berries", "Cactus"};
+
     void Start () {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
         timeToNextEvent = 60.0f;
@@ -56,6 +58,31 @@ public class Beacon : MonoBehaviour {
         //InvokeRepeating("SpawnElementalEvent", 10.0f, 20.0f);
         timeToNextElementalBeaconEvent = UnityEngine.Random.Range(timebetweenElementalEventsMin, timebetweenElementalEventsMax);
         //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
+
+        InitializeNPCMessages();
+    }
+
+    void InitializeNPCMessages()
+    {
+        foreach (Transform npc in npcHolder.transform)
+        {
+            Message msg;
+            //There is a chance of 50% than an NPC has an initial message
+            if (UnityEngine.Random.Range(0, 100) < 50)
+            {
+                //There is 50% chance that message is a Golden Message
+                if (UnityEngine.Random.Range(0, 100) < 50)
+                {
+                    msg = CreateMessage(-99, false, 1);
+                }
+                else
+                {
+                    msg = CreateMessage(-99, true, 1);
+                }
+                npc.gameObject.GetComponent<NPCData>().ReceiveMessage(msg);
+                Debug.Log(msg.ToString());
+            }
+        }
     }
 
     void SpawnElementalEvent()
@@ -110,7 +137,7 @@ public class Beacon : MonoBehaviour {
         for (int i = 0; i < 15; i++)
         {
             //int eventID = this.GetComponent<PlayModeManager>().getMessageId();
-            Message msg = CreateMessage(i);
+            Message msg = CreateMessage(i, false);
             messageSequence[i] = msg;
             messageTimeOfSpawn[i] = UnityEngine.Random.Range(rangeMin, rangeMax);
 
@@ -124,7 +151,7 @@ public class Beacon : MonoBehaviour {
         //selectedNPC.GetComponent<NPCData>().isMessageOfInterest(Message msg);
 
         int eventID = this.GetComponent<PlayModeManager>().getMessageId();
-        Message msg = CreateMessage(eventID);
+        Message msg = CreateMessage(eventID, false);
         GameObject selectedNPC = npcHolder.transform.GetChild(UnityEngine.Random.Range(0, npcHolder.transform.childCount)).gameObject;
 
         //rotates between random NPCs until it finds one who has interest in the message
@@ -143,13 +170,20 @@ public class Beacon : MonoBehaviour {
         Debug.Log("Spawned event " + msg.ToString() + "  " + selectedNPC.name);
     }
 
-    public Message CreateMessage(int eventID)
+    public Message CreateMessage(int eventID, bool isGolden, int weight = 0)
     {
         string tagA = eventTags[UnityEngine.Random.Range(0, eventTags.Count)];
         string tagB = eventTags[UnityEngine.Random.Range(0, eventTags.Count)];
 
+
         int valueTagA = UnityEngine.Random.Range(tagValueMin, tagValueMax);
         int valueTagB = UnityEngine.Random.Range(tagValueMin, tagValueMax);
+
+        if (weight != 0)
+        {
+            valueTagA = weight;
+            valueTagB = weight;
+        }
 
         while (tagA == tagB)
         {
@@ -157,9 +191,16 @@ public class Beacon : MonoBehaviour {
         }
         string TAGS = tagA + " " + valueTagA + "," + tagB + " " + valueTagB;
 
-        return new Message(eventID, messageTime, "This is an event " + tagA + " and " + tagB, TAGS);
+        if (isGolden)
+        {
+            return new Message(eventID, messageTime, "This is Golden event " + tagA + " and " + tagB, TAGS);
+        }
+        else
+        {
+            return new Message(eventID, messageTime, "This is an event " + tagA + " and " + tagB, TAGS);
+        }
     }
-    
+
     void Update () {
         timeToNextElementalBeaconEvent -= Time.deltaTime;
         if(timeToNextElementalBeaconEvent <= 0.0f && this.GetComponent<MySQLManager>().playerMode != ""

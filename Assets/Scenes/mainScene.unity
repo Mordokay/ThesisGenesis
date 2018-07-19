@@ -32884,8 +32884,8 @@ MonoBehaviour:
   - Berries
   timeBetweenEventsMin: 180
   timeBetweenEventsMax: 300
-  tagValueMin: 20
-  tagValueMax: 80
+  tagValueMin: 10
+  tagValueMax: 40
   npcHolder: {fileID: 878201078}
   messageTime: 4
   timeToNextEvent: 0

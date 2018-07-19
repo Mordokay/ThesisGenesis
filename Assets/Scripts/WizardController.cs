@@ -22,7 +22,7 @@ public class WizardController : MonoBehaviour {
         canvas = GameObject.FindGameObjectWithTag("Canvas");
         gm = GameObject.Find("GameManager");
         myInterest = this.GetComponentInParent<NPCData>().interests[0].name;
-        minimumFollowDistance = 5.0f;
+        minimumFollowDistance = 3.0f;
         InvokeRepeating("CheckInterests", 0.0f, 1.0f);
     }
 
