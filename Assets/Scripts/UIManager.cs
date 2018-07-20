@@ -847,11 +847,13 @@ public class UIManager : MonoBehaviour {
 
     private void Update()
     {
+        /*
         if (InstructionPanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
         {
             InstructionPanel.SetActive(false);
             Time.timeScale = 1.0f;
         }
+        */
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (playerMenu.activeSelf)

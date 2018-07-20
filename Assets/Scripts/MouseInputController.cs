@@ -70,6 +70,8 @@ public class MouseInputController : MonoBehaviour {
             //player attacks
             if (!gm.GetComponent<EditorModeController>().isEditorMode)
             {
+                player.GetComponent<Animator>().SetBool("Attack", true);
+
                 RaycastHit hit;
                 Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, ElementLayerMask);
                 //Debug.Log(hit.collider.name);
@@ -78,14 +80,13 @@ public class MouseInputController : MonoBehaviour {
                     if (!player.GetComponent<PlayerMovement>().isAtacking)
                     {
                         player.GetComponent<PlayerMovement>().isAtacking = true;
-                        player.GetComponent<Animator>().SetBool("Attack", true);
                     }
                     player.GetComponent<PlayerMovement>().objectBeingAtacked = hit.collider.gameObject;
                 }
                 else
                 {
                     player.GetComponent<PlayerMovement>().isAtacking = false;
-                    player.GetComponent<Animator>().SetBool("Attack", false);
+                    //player.GetComponent<Animator>().SetBool("Attack", false);
                 }
             }
         }

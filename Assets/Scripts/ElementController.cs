@@ -8,6 +8,8 @@ public class ElementController : MonoBehaviour {
     public float health;
     EditorModeController emc;
     PlayModeManager pm;
+    TutorialController tc;
+
     public float messageSendDistance;
 
     public float messageTime;
@@ -22,6 +24,8 @@ public class ElementController : MonoBehaviour {
     public int watchedEventId;
     public GameObject itemToDrop;
 
+    public bool isTutorial;
+
     private void Start()
     {
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
@@ -29,7 +33,7 @@ public class ElementController : MonoBehaviour {
         emc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         pm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayModeManager>();
         qc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<QuestsController>();
-
+        tc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TutorialController>();
     }
 
     public void BeaconPulse(bool isGolden)
@@ -74,6 +78,10 @@ public class ElementController : MonoBehaviour {
     void Update () {
 		if(health <= 0)
         {
+            if(isTutorial && tc.tutorialStage == 8)
+            {
+                tc.NextTutorial();
+            }
             if (qc.playerStash < 4)
             {
                 if (this.name.Contains("Golden"))
@@ -157,18 +165,32 @@ public class ElementController : MonoBehaviour {
                 }
             }
             */
-            emc.RemoveElement(this.gameObject);
+
+            if (!isTutorial)
+            {
+                emc.RemoveElement(this.gameObject);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
 	}
 
     public void Attack(float attackDamage)
     {
+        if (isTutorial && !(tc.tutorialStage == 8))
+        {
+            return;
+        }
+
         health -= attackDamage;
         GameObject myDamageText = Instantiate(Resources.Load("DamageText")) as GameObject;
         myDamageText.GetComponent<DamageTextController>().Initialize(this.transform.position, 0.5f, 1.5f, attackDamage.ToString());
-        
+
         slider.SetActive(true);
         slider.GetComponent<Slider>().value = health / maxHealth;
         //Debug.Log(health / maxHealth);
+        
     }
 }

@@ -34,10 +34,19 @@ public class QuestsController : MonoBehaviour {
 
     public void UpdateQuestsBar()
     {
+        //This prevents the player from droping any item on the temple before he goes to tutorial 10
+        if(this.GetComponent<TutorialController>().tutorialStage < 11)
+        {
+            return;
+        }
         if(playerStash > 0)
         {
             totalGoldenObjectsGathered += playerStash;
             playerStash = 0;
+            if(this.GetComponent<TutorialController>().tutorialStage == 11)
+            {
+                this.GetComponent<TutorialController>().NextTutorial();
+            }
         }
         progressBar.value = totalGoldenObjectsGathered / 12.0f;
         progressBarText.text = totalGoldenObjectsGathered + "/12";

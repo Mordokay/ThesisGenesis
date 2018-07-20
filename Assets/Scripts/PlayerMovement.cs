@@ -89,8 +89,8 @@ public class PlayerMovement : MonoBehaviour
 
             int mapWidth = em.mapWidth;
             int mapHeight = em.mapHeight;
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, -mapWidth / 2 + 1, mapWidth / 2 - 1), transform.position.y,
-                    Mathf.Clamp(transform.position.z, -mapHeight / 2 + 1, mapHeight / 2 - 1));
+            transform.position = new Vector3(Mathf.Clamp(transform.position.x, -mapWidth / 2 + 2, mapWidth / 2 - 2), transform.position.y,
+                    Mathf.Clamp(transform.position.z, -mapHeight / 2 + 2, mapHeight / 2 - 2));
 
         }
     }
