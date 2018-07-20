@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
                 if (isAtacking)
                 {
                     isAtacking = false;
-                    this.GetComponent<Animator>().SetBool("Attack", false);
+                    this.GetComponentInChildren<Animator>().SetBool("Attack", false);
                 }
             }
             if (isAtacking && Time.timeSinceLevelLoad - timeSinceLastAtack > attackIntervalTime)
@@ -56,29 +56,34 @@ public class PlayerMovement : MonoBehaviour
             Vector3 direction = Vector3.zero;
 
             if (Input.GetKey(KeyCode.W)){
-                direction += new Vector3(0.0f, 0.0f, moveSpeed);
+                direction += Vector3.forward;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                direction += new Vector3(-moveSpeed, 0.0f, 0.0f);
+                
+                direction -= Vector3.right;
             }
             if (Input.GetKey(KeyCode.S))
             {
-                direction += new Vector3(0.0f, 0.0f, -moveSpeed);
+                direction -= Vector3.forward;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                direction += new Vector3(moveSpeed, 0.0f, 0.0f);
+                direction += Vector3.right;
             }
-            this.GetComponent<Rigidbody>().velocity = direction;
+            //Debug.Log(direction.ToString());
+            direction.Normalize();
+            //Debug.Log("NNNNN: " + direction.ToString());
+
+            this.GetComponent<Rigidbody>().velocity = direction * moveSpeed;
 
             if (direction.Equals(Vector3.zero)){
-                this.GetComponent<Animator>().SetBool("Walk", false);
+                this.GetComponentInChildren<Animator>().SetBool("Walk", false);
                 isWalking = false;
             }
             else
             {
-                this.GetComponent<Animator>().SetBool("Walk", true);
+                this.GetComponentInChildren<Animator>().SetBool("Walk", true);
                 isWalking = true;
             }
 

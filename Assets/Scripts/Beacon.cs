@@ -66,22 +66,40 @@ public class Beacon : MonoBehaviour {
     {
         foreach (Transform npc in npcHolder.transform)
         {
+            npc.GetComponent<NPCData>().messages.Clear();
+
             Message msg;
             //There is a chance of 50% than an NPC has an initial message
             if (UnityEngine.Random.Range(0, 100) < 50)
             {
-                //There is 50% chance that message is a Golden Message
-                if (UnityEngine.Random.Range(0, 100) < 50)
+                //There is 20% chance that message is a Golden Message
+                if (UnityEngine.Random.Range(0, 100) < 20)
                 {
-                    msg = CreateMessage(-99, false, 1);
+                    msg = CreateMessage(-99, true, 1);
                 }
                 else
                 {
-                    msg = CreateMessage(-99, true, 1);
+                    msg = CreateMessage(-99, false, 1); 
                 }
                 npc.gameObject.GetComponent<NPCData>().ReceiveMessage(msg);
                 //Debug.Log(msg.ToString());
             }
+        }
+    }
+
+    void SpawnMode3()
+    {
+        if (UnityEngine.Random.Range(0, 100) < 50)
+        {
+            EditorModeController.Element element =
+                this.GetComponent<EditorModeController>().GoldenElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().GoldenElementList.Count)];
+            element.elementObject.GetComponent<ElementController>().BeaconPulse(true);
+        }
+        else
+        {
+            EditorModeController.Element element =
+                this.GetComponent<EditorModeController>().NormalElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().NormalElementList.Count)];
+            element.elementObject.GetComponent<ElementController>().BeaconPulse(false);
         }
     }
 
@@ -204,9 +222,11 @@ public class Beacon : MonoBehaviour {
     void Update () {
         timeToNextElementalBeaconEvent -= Time.deltaTime;
         if(timeToNextElementalBeaconEvent <= 0.0f && this.GetComponent<MySQLManager>().playerMode != ""
-            && this.GetComponent<MySQLManager>().playerMode != "1")
+            /*&& this.GetComponent<MySQLManager>().playerMode != "1"*/)
         {
-            SpawnElementalEvent();
+            //SpawnElementalEvent();
+            SpawnMode3();
+
             timeToNextElementalBeaconEvent = UnityEngine.Random.Range(timebetweenElementalEventsMin, timebetweenElementalEventsMax);
             //Debug.Log("timeToNextElementalBeaconEvent: " + timeToNextElementalBeaconEvent);
         }
