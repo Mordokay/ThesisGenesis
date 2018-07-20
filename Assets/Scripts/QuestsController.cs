@@ -18,6 +18,7 @@ public class QuestsController : MonoBehaviour {
 
     public GameObject[] StashImages;
     bool sentData;
+    public GameObject npcHolder;
 
     void Start () {
         sentData = false;
@@ -46,6 +47,15 @@ public class QuestsController : MonoBehaviour {
             if(this.GetComponent<TutorialController>().tutorialStage == 11)
             {
                 this.GetComponent<TutorialController>().NextTutorial();
+            }
+            foreach(Transform npc in npcHolder.transform)
+            {
+                WizardController wc = npc.gameObject.GetComponentInChildren<WizardController>();
+                if (wc != null)
+                {
+                    NPCPatrolMovement pm = npc.gameObject.GetComponentInChildren<NPCPatrolMovement>();
+                    wc.UpdateDifficulty();
+                }
             }
         }
         progressBar.value = totalGoldenObjectsGathered / 12.0f;

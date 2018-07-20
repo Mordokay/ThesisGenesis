@@ -22,8 +22,13 @@ public class WizardController : MonoBehaviour {
         canvas = GameObject.FindGameObjectWithTag("Canvas");
         gm = GameObject.Find("GameManager");
         myInterest = this.GetComponentInParent<NPCData>().interests[0].name;
-        minimumFollowDistance = 3.0f;
         InvokeRepeating("CheckInterests", 0.0f, 1.0f);
+    }
+
+    public void UpdateDifficulty()
+    {
+        minimumFollowDistance = 3.0f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 4.0f;
+        this.GetComponent<NPCPatrolMovement>().velocity = 0.5f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 2.0f;
     }
 
     void CheckInterests()

@@ -89,5 +89,9 @@ public class TutorialController : MonoBehaviour {
         {
             NextTutorial();
         }
-	}
+        else if (tutorialStage == 14 && Input.GetKeyDown(KeyCode.Space))
+        {
+            NextTutorial();
+        }
+    }
 }

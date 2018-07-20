@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,9 +15,13 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     EditorModeController em;
     MouseInputController mic;
+    float dashForce;
+
+    public Slider stamina;
 
     void Start()
     {
+        dashForce = 1000.0f;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
         timeSinceLastAtack = Time.timeSinceLevelLoad;
@@ -27,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        stamina.value += Time.deltaTime * 0.15f;
         if (!em.isEditorMode)
         {
             if(objectBeingAtacked == null)
@@ -74,8 +80,17 @@ public class PlayerMovement : MonoBehaviour
             //Debug.Log(direction.ToString());
             direction.Normalize();
             //Debug.Log("NNNNN: " + direction.ToString());
+            if (direction != Vector3.zero && this.GetComponent<Rigidbody>().velocity.magnitude < (direction * moveSpeed).magnitude)
+            { 
+                this.GetComponent<Rigidbody>().velocity = direction * moveSpeed;
+            }
 
-            this.GetComponent<Rigidbody>().velocity = direction * moveSpeed;
+            if (Input.GetKeyDown(KeyCode.Space) && stamina.value > 0.4f)
+            {
+                this.GetComponent<Rigidbody>().AddForce(this.transform.forward * dashForce);
+                Debug.Log(this.transform.forward);
+                stamina.value -= 0.4f;
+            }
 
             if (direction.Equals(Vector3.zero)){
                 this.GetComponentInChildren<Animator>().SetBool("Walk", false);
@@ -87,11 +102,12 @@ public class PlayerMovement : MonoBehaviour
                 isWalking = true;
             }
 
+            /*
             int mapWidth = em.mapWidth;
             int mapHeight = em.mapHeight;
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, -mapWidth / 2 + 2, mapWidth / 2 - 2), transform.position.y,
                     Mathf.Clamp(transform.position.z, -mapHeight / 2 + 2, mapHeight / 2 - 2));
-
+                    */
         }
     }
 }

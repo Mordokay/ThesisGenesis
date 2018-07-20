@@ -25,6 +25,7 @@ public class NPCPatrolMovement : MonoBehaviour {
     public float remainingDistance;
 
     public bool stopped;
+    public float velocity;
 
     GameObject player;
 
@@ -43,7 +44,7 @@ public class NPCPatrolMovement : MonoBehaviour {
         myTalkLine = Instantiate(lineGoalFeedback);
         myTalkLine.GetComponent<PatrolGoalFeedback>().origin = this.transform;
         myTalkLine.GetComponent<PatrolGoalFeedback>().isTalkArrow = true;
-
+         
         //agent = GetComponent<NavMeshAgent>();
         //agent.ResetPath();
         waitTime = -1;
@@ -147,7 +148,7 @@ public class NPCPatrolMovement : MonoBehaviour {
         {
             if (!stopped)
             {
-                float step = 1.0f * Time.deltaTime;
+                float step = velocity * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
 
                 //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
@@ -165,13 +166,15 @@ public class NPCPatrolMovement : MonoBehaviour {
             {
                 if (this.GetComponent<WizardController>().isFollowingPlayer)
                 {
-                    float step = (1.1f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
+                    //float step = (1.1f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
+                    float step = velocity * Time.deltaTime;
+
                     transform.position = Vector3.MoveTowards(transform.position, player.transform.position, step);
                     this.transform.LookAt(player.transform);
                 }
                 else if(currentGoalObject != null)
                 {
-                    float step = 1.0f * Time.deltaTime;
+                    float step = velocity * Time.deltaTime;
                     transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
 
                     //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
