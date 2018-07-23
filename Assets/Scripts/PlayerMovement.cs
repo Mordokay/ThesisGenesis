@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     EditorModeController em;
     MouseInputController mic;
+    TutorialController tc;
     float dashForce;
 
     public Slider stamina;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
         dashForce = 1000.0f;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
+        tc = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TutorialController>();
         timeSinceLastAtack = Time.timeSinceLevelLoad;
         attackDamage = 8.0f;
         attackIntervalTime = 0.5f;
@@ -85,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
                 this.GetComponent<Rigidbody>().velocity = direction * moveSpeed;
             }
 
-            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value > 0.4f)
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value > 0.4f && tc.tutorialStage >= 15)
             {
                 this.GetComponent<Rigidbody>().AddForce(this.transform.forward * dashForce);
                 Debug.Log(this.transform.forward);
