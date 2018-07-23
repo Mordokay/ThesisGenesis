@@ -68,7 +68,7 @@ public class MouseInputController : MonoBehaviour {
                 lastMousePos = Input.mousePosition;
             }
             //player attacks
-            if (!gm.GetComponent<EditorModeController>().isEditorMode)
+            if (!gm.GetComponent<EditorModeController>().isEditorMode && this.GetComponent<TutorialController>().tutorialStage >= 7)
             {
                 player.GetComponent<Animator>().SetBool("Attack", true);
 

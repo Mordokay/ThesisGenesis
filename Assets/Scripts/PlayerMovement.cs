@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
                 this.GetComponent<Rigidbody>().velocity = direction * moveSpeed;
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && stamina.value > 0.4f)
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value > 0.4f)
             {
                 this.GetComponent<Rigidbody>().AddForce(this.transform.forward * dashForce);
                 Debug.Log(this.transform.forward);
@@ -102,12 +102,12 @@ public class PlayerMovement : MonoBehaviour
                 isWalking = true;
             }
 
-            /*
+            
             int mapWidth = em.mapWidth;
             int mapHeight = em.mapHeight;
             transform.position = new Vector3(Mathf.Clamp(transform.position.x, -mapWidth / 2 + 2, mapWidth / 2 - 2), transform.position.y,
                     Mathf.Clamp(transform.position.z, -mapHeight / 2 + 2, mapHeight / 2 - 2));
-                    */
+                    
         }
     }
 }

@@ -69,8 +69,8 @@ public class Beacon : MonoBehaviour {
             npc.GetComponent<NPCData>().messages.Clear();
 
             Message msg;
-            //There is a chance of 50% than an NPC has an initial message
-            if (UnityEngine.Random.Range(0, 100) < 50)
+            //There is a chance of 10% than an NPC has an initial message
+            if (UnityEngine.Random.Range(0, 100) < 10)
             {
                 //There is 20% chance that message is a Golden Message
                 if (UnityEngine.Random.Range(0, 100) < 20)
@@ -89,7 +89,7 @@ public class Beacon : MonoBehaviour {
 
     void SpawnMode3()
     {
-        if (UnityEngine.Random.Range(0, 100) < 50)
+        if (UnityEngine.Random.Range(0, 100) < 60)
         {
             EditorModeController.Element element =
                 this.GetComponent<EditorModeController>().GoldenElementList[UnityEngine.Random.Range(0, this.GetComponent<EditorModeController>().GoldenElementList.Count)];
