@@ -88,6 +88,14 @@ public class MouseInputController : MonoBehaviour {
                     player.GetComponent<PlayerMovement>().isAtacking = false;
                     //player.GetComponent<Animator>().SetBool("Attack", false);
                 }
+
+                Physics.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector3.down, out hit, Mathf.Infinity, NPCLayerMask);
+                //Debug.Log(hit.collider.name);
+                if (hit.collider != null && Vector3.Distance(hit.collider.gameObject.transform.position, player.transform.position) < 1.5f)
+                {
+                    Debug.Log("PlayerAtacked " + hit.collider.gameObject.transform.parent.name);
+                    hit.collider.gameObject.GetComponent<NPCPatrolMovement>().AtackedByPlayer();
+                }
             }
         }
 

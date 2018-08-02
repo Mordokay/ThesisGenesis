@@ -38,8 +38,10 @@ public class Social : MonoBehaviour {
     {
         WizardController wcA = this.transform.GetChild(1).GetComponent<WizardController>();
         WizardController wcB = otherNPC.transform.GetChild(1).GetComponent<WizardController>();
+        NPCPatrolMovement movA = this.transform.GetChild(1).GetComponent<NPCPatrolMovement>();
+        NPCPatrolMovement movB = otherNPC.transform.GetChild(1).GetComponent<NPCPatrolMovement>();
 
-        if((wcA != null && wcA.isFollowingPlayer) || (wcB != null && wcB.isFollowingPlayer))
+        if ((wcA != null && wcA.isFollowingPlayer) || (wcB != null && wcB.isFollowingPlayer) || movA.isBeingAtacked || movB.isBeingAtacked)
         {
             return;
         }
@@ -166,6 +168,7 @@ public class Social : MonoBehaviour {
                 if (/*!isReceivingMessage &&*/ !talkCanvas.activeSelf)
                 {
                     talkCanvas.SetActive(true);
+
                     talkCanvas.transform.localPosition = transform.GetChild(1).transform.localPosition;
                     //talkCanvas.GetComponentInChildren<Text>().text = choosedMessage.description;
                     talkCanvas.GetComponentInChildren<Text>().text = "";
@@ -174,7 +177,7 @@ public class Social : MonoBehaviour {
                         talkCanvas.transform.GetChild(i).gameObject.SetActive(false);
                     }
 
-                    if(choosedMessage.id < 0)
+                    if(choosedMessage.id == -99)
                     {
                         talkCanvas.transform.GetChild(11).gameObject.SetActive(false);
                     }
@@ -288,7 +291,7 @@ public class Social : MonoBehaviour {
         }
 	}
 
-    void InterruptConversation()
+    public void InterruptConversation()
     {
         isTalking = false;
         isReceivingMessage = false;

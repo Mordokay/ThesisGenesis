@@ -28,8 +28,13 @@ public class NPCPatrolMovement : MonoBehaviour {
     public float velocity;
 
     GameObject player;
+    public float remainingAtackTime;
+    public bool isBeingAtacked;
 
-    public void Start () {
+    public void Start() {
+        remainingAtackTime = 0.0f;
+        isBeingAtacked = false;
+
         player = GameObject.FindGameObjectWithTag("Player");
 
         uiManager = GameObject.FindGameObjectWithTag("Canvas").GetComponent<UIManager>();
@@ -44,14 +49,14 @@ public class NPCPatrolMovement : MonoBehaviour {
         myTalkLine = Instantiate(lineGoalFeedback);
         myTalkLine.GetComponent<PatrolGoalFeedback>().origin = this.transform;
         myTalkLine.GetComponent<PatrolGoalFeedback>().isTalkArrow = true;
-         
+
         //agent = GetComponent<NavMeshAgent>();
         //agent.ResetPath();
         waitTime = -1;
 
         GetNewGoal();
     }
-	
+
     public void setUpPatrolMovementPoints()
     {
         patrolIndex = 0;
@@ -59,7 +64,7 @@ public class NPCPatrolMovement : MonoBehaviour {
         patrolPointHolder = GameObject.FindGameObjectWithTag("PatrolPointsHolder");
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
     }
-    
+
     void GetNewGoal()
     {
         if (this.GetComponentInParent<NPCData>().patrolPointIndex.Count > 0)
@@ -98,7 +103,7 @@ public class NPCPatrolMovement : MonoBehaviour {
     //When NPC reaches a position he waits for a couple of seconds before starting to move again
     float SetWaitTime()
     {
-        if(currentGoalObject == null)
+        if (currentGoalObject == null)
         {
             return 0;
         }
@@ -112,7 +117,7 @@ public class NPCPatrolMovement : MonoBehaviour {
                 Message.Tag foundTag = patrolMessage.tags.Find(t => t.name == interest.name);
                 //If the message from patrol point contains a TAG that is of interest to the player
                 if (foundTag != null)
-                { 
+                {
                     /*
                     Interests are normalized between 0 - 1
                     tags on messages from events are not normalized and values are usually high (Ex: Berrries,50  Wood,40  Gathering,10)
@@ -143,6 +148,20 @@ public class NPCPatrolMovement : MonoBehaviour {
         }
     }
 
+    public void AtackedByPlayer()
+    {
+        //follows the player for 6 seconds
+        remainingAtackTime = 6.0f;
+        isBeingAtacked = true;
+
+        if (this.transform.parent.gameObject.GetComponent<Social>().isTalking)
+        {
+            this.transform.parent.gameObject.GetComponent<Social>().InterruptConversation();
+        }
+        this.GetComponent<WizardController>().sawPlayerCanvas.SetActive(true);
+        this.GetComponent<WizardController>().WatchingForPlayerCanvas.SetActive(false);
+    }
+
     void Update() {
         if (this.GetComponentInParent<NPCData>().NPCType == 0)
         {
@@ -162,9 +181,22 @@ public class NPCPatrolMovement : MonoBehaviour {
         //The movement of Wizards
         else
         {
+
+            if (isBeingAtacked)
+            {
+                //remainingAtackTime -= Time.deltaTime;
+                if(/*remainingAtackTime < 0 || */
+                    Vector3.Distance(this.transform.position, player.transform.position) > this.GetComponent<WizardController>().minimumFollowDistance)
+                {
+                    remainingAtackTime = 0;
+                    isBeingAtacked = false;
+                    this.GetComponent<WizardController>().sawPlayerCanvas.SetActive(false);
+                    this.transform.LookAt(currentGoalObject.transform);
+                }
+            }
             if (!stopped)
             {
-                if (this.GetComponent<WizardController>().isFollowingPlayer)
+                if (this.GetComponent<WizardController>().isFollowingPlayer || isBeingAtacked)
                 {
                     //float step = (1.1f + (1 - Vector3.Distance(this.transform.position, player.transform.position) / 5.0f)) * Time.deltaTime;
                     float step = velocity * Time.deltaTime;

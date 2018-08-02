@@ -23,6 +23,8 @@ public class TutorialController : MonoBehaviour {
     public Text TextS;
     public Text TextD;
 
+    public Text prisonWarning;
+
     void Start () {
         tutorialStage = 0;
         usedW = false;
@@ -47,7 +49,9 @@ public class TutorialController : MonoBehaviour {
         if (isPTLanguage)
         {
             isPTLanguage = !isPTLanguage;
-            SwitchLanguageButton.GetComponentInChildren<Text>().text = "PT";
+            SwitchLanguageButton.GetComponentInChildren<Text>().text = "EN";
+            prisonWarning.text = "Next Time" + System.Environment.NewLine + "be more" + System.Environment.NewLine + "carefull!";
+
             //puts in english
             tutorials[0].GetComponentInChildren<Text>().text = "Oh hi! ... didn't see you there! Where did you come from?" + System.Environment.NewLine;
             tutorials[0].transform.GetChild(1).GetComponentInChildren<Text>().text = "Dont Know";
@@ -99,7 +103,8 @@ public class TutorialController : MonoBehaviour {
         else
         {
             isPTLanguage = !isPTLanguage;
-            SwitchLanguageButton.GetComponentInChildren<Text>().text = "EN";
+            SwitchLanguageButton.GetComponentInChildren<Text>().text = "PT";
+            prisonWarning.text = "Mais cuidado" + System.Environment.NewLine + "para a" + System.Environment.NewLine + "proxima!";
             //puts in portuguese
 
             tutorials[0].GetComponentInChildren<Text>().text = "Oh ola! Nao te vi ai!. De onde viste?";
@@ -171,6 +176,7 @@ public class TutorialController : MonoBehaviour {
             if (Time.timeScale == 0)
             {
                 Time.timeScale = 1;
+                this.GetComponent<Beacon>().SpreadInitialGoldenMessages();
             }
 
             if (Input.GetKeyDown(KeyCode.W))

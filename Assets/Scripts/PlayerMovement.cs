@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        staminaIncreaseValue = 0.03f;
+        staminaIncreaseValue = 0.05f;
         notEnoughStamina = false;
 
         dashForce = 1000.0f;
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         //if player is not moving the stamina regenerates 5 times faster
         if(this.GetComponent<Rigidbody>().velocity.magnitude < 0.05f)
         {
-            stamina.value += Time.deltaTime * staminaIncreaseValue * 4.0f;
+            stamina.value += Time.deltaTime * staminaIncreaseValue * 6.0f;
         }
         else
         {

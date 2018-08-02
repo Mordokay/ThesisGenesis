@@ -19,10 +19,15 @@ public class QuestsController : MonoBehaviour {
     public GameObject[] StashImages;
     bool sentData;
     public GameObject npcHolder;
+    public GameObject player;
+    public int[] stashTypes;
+    public GameObject[] dropableItems;
 
     void Start () {
         sentData = false;
         canvas = GameObject.FindGameObjectWithTag("Canvas");
+        player = GameObject.FindGameObjectWithTag("Player");
+        stashTypes = new int[4];
 
         totalGoldenObjectsGathered = 0;
         UpdateQuestsBar();
@@ -67,6 +72,37 @@ public class QuestsController : MonoBehaviour {
         }
     }
 
+    public void DropStash()
+    {
+        for (int i = 0; i < playerStash; i++)
+        {
+            StashImages[i].SetActive(false);
+            foreach (Transform child in StashImages[i].transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+
+            GameObject myObj = Instantiate(dropableItems[stashTypes[i]]) as GameObject;
+            switch (i)
+            {
+                case 0:
+                    myObj.transform.position = player.transform.position + Vector3.left * 0.2f;
+                    break;
+                case 1:
+                    myObj.transform.position = player.transform.position + Vector3.right * 0.2f;
+                    break;
+                case 2:
+                    myObj.transform.position = player.transform.position + Vector3.forward * 0.2f;
+                    break;
+                case 3:
+                    myObj.transform.position = player.transform.position + Vector3.back * 0.2f;
+                    break;
+            }
+            stashTypes[i] = 0;
+        }
+        playerStash = 0;
+    }
+
     public void IncrementStash(int type)
     {
         StashImages[playerStash].SetActive(true);
@@ -75,6 +111,8 @@ public class QuestsController : MonoBehaviour {
             child.gameObject.SetActive(false);
         }
         StashImages[playerStash].transform.GetChild(type).gameObject.SetActive(true);
+        stashTypes[playerStash] = type;
+
         playerStash += 1;
         
         switch (type)

@@ -293,10 +293,10 @@ public class NPCData : MonoBehaviour {
             else
             {
                 //Variable decayment
-                m.messageDecayment -= (m.messageDecayment / 8.0f) * Time.deltaTime;
+                m.messageDecayment -= (m.messageDecayment / 32.0f) * Time.deltaTime;
 
                // m.messageDecayment = m.messageDecayment / (1 + Time.deltaTime);
-                if (m.messageDecayment < 0.00001f)
+                if (m.messageDecayment < 0.0001f)
                 {
                     //string logMessage = "Removed from " + npcName + " the message " + m.description + " with id " + m.id;
                     //GameObject.FindGameObjectWithTag("GameManager").GetComponent<SimulationDataLogger>().WriteTextToLog(logMessage);

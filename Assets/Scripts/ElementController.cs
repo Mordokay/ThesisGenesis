@@ -88,22 +88,22 @@ public class ElementController : MonoBehaviour {
                 {
                     if (this.name.Contains("Tree"))
                     {
-                        Debug.Log("Updates Wood quest!!!!");
+                        //Debug.Log("Updates Wood quest!!!!");
                         qc.IncrementStash(0);
                     }
                     else if (this.name.Contains("Rock"))
                     {
-                        Debug.Log("Updates Rock quest!!!!");
+                        //Debug.Log("Updates Rock quest!!!!");
                         qc.IncrementStash(1);
                     }
                     else if (this.name.Contains("Berries"))
                     {
-                        Debug.Log("Updates Berries quest!!!!");
+                        //Debug.Log("Updates Berries quest!!!!");
                         qc.IncrementStash(2);
                     }
                     else if (this.name.Contains("Cactus"))
                     {
-                        Debug.Log("Updates Cactus quest!!!!");
+                        //Debug.Log("Updates Cactus quest!!!!");
                         qc.IncrementStash(3);
                     }
                 }
@@ -120,7 +120,12 @@ public class ElementController : MonoBehaviour {
                 }
             }
 
-            int eventId = pm.getMessageId();
+            int eventId = -999;
+            if (!isTutorial)
+            {
+                eventId = pm.getMessageId();
+            }
+
             foreach (Transform npc in emc.npcHolder.transform)
             {
                 //check if NPC is at a close distance;

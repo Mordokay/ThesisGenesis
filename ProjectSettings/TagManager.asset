@@ -14,6 +14,7 @@ TagManager:
   - NPC
   - Canvas
   - Item
+  - PrisonGuard
   layers:
   - Default
   - TransparentFX
