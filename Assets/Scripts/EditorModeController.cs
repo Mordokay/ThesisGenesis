@@ -169,6 +169,8 @@ public class EditorModeController : MonoBehaviour {
 
     public Text debugText;
 
+    public List<GameObject> guardians;
+
     private void Start()
     {
         InvokeRepeating("UpdateClock", 0.0f, 1.0f);
@@ -1217,11 +1219,13 @@ public class EditorModeController : MonoBehaviour {
                     string[] myNpcColors = npcBasicInfo[2].Split(',');
 
                     GameObject myNPC = Instantiate(npcTypes[System.Int32.Parse(npcBasicInfo[8])]);
-
+                    if (System.Int32.Parse(npcBasicInfo[8]) == 1)
+                    {
+                        guardians.Add(myNPC);
+                    }
                     myNPC.name = npcName;
                     myNPC.transform.parent = npcHolder.transform;
                     myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
-
 
                     myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
                         npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),

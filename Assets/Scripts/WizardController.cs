@@ -48,7 +48,7 @@ public class WizardController : MonoBehaviour {
                 {
                     wantsToFollowPlayer = true;
                     WatchingForPlayerCanvas.SetActive(true);
-                    Debug.Log("Wants to follow player!!!");
+                    //Debug.Log("Wants to follow player!!!");
                     break;
                 }
             }
@@ -94,7 +94,7 @@ public class WizardController : MonoBehaviour {
                     this.GetComponent<NPCPatrolMovement>().remainingAtackTime = 0.0f;
 
                     this.transform.LookAt(this.GetComponent<NPCPatrolMovement>().currentGoalObject.transform);
-                    Debug.Log("I stopped following the player!!!");
+                    //Debug.Log("I stopped following the player!!!");
                 }
             }
             

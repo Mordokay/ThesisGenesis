@@ -57,6 +57,11 @@ public class NPCPatrolMovement : MonoBehaviour {
         GetNewGoal();
     }
 
+    public void LookAtPatrolPoint()
+    {
+        this.transform.LookAt(currentGoalObject.transform);
+    }
+
     public void setUpPatrolMovementPoints()
     {
         patrolIndex = 0;
@@ -165,10 +170,53 @@ public class NPCPatrolMovement : MonoBehaviour {
     void Update() {
         if (this.GetComponentInParent<NPCData>().NPCType == 0)
         {
-            if (!stopped)
+            if(this.transform.parent.GetComponent<Social>().tattling == true)
+            {
+                GameObject guardian = this.transform.parent.GetComponent<Social>().tattlingGuadian;
+                Message msgToTattle = this.transform.parent.GetComponent<Social>().tattlingMessage;
+
+                float step = velocity * 1.6f * Time.deltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, guardian.transform.GetChild(1).position, step);
+                this.transform.LookAt(guardian.transform.GetChild(1));
+
+                //Debug.Log("Distance: " + Vector3.Distance(this.transform.parent.GetComponent<Social>().tattlingGuadian.transform.GetChild(1).position, this.transform.position));
+
+                if (Vector3.Distance(this.transform.parent.GetComponent<Social>().tattlingGuadian.transform.GetChild(1).position, this.transform.position) < 1.0f)
+                {
+                    //Ends tattling on both sides
+                    this.transform.parent.GetComponent<Social>().tattling = false;
+                    guardian.GetComponent<Social>().tattling = false;
+
+                    //Interrupts guardian if he is talking with someone else!
+                    if (guardian.GetComponent<Social>().isTalking)
+                    {
+                        guardian.GetComponent<Social>().InterruptConversation();
+                    }
+
+                    this.GetComponentInParent<Social>().choosedMessage = this.transform.parent.GetComponent<Social>().tattlingMessage;
+                    guardian.GetComponent<Social>().choosedMessage = this.transform.parent.GetComponent<Social>().tattlingMessage;
+                    this.GetComponentInParent<Social>().messageOfInterest = true;
+                    guardian.GetComponent<Social>().messageOfInterest = true;
+                    this.GetComponentInParent<Social>().talkPartner = guardian;
+                    guardian.GetComponent<Social>().talkPartner = this.transform.parent.gameObject;
+                    this.GetComponentInParent<Social>().isReceivingMessage = false;
+                    guardian.GetComponentInParent<Social>().isReceivingMessage = true;
+
+                    this.GetComponentInParent<Social>().remainingMessageTransmissionTime = msgToTattle.messageTransmissionTime;
+                    guardian.GetComponentInParent<Social>().remainingMessageTransmissionTime = msgToTattle.messageTransmissionTime;
+
+                    this.GetComponentInParent<Social>().isTalking = true;
+                    guardian.GetComponentInParent<Social>().isTalking = true;
+
+                    stopped = true;
+                    guardian.GetComponentInChildren<NPCPatrolMovement>().stopped = true;
+                }
+            }
+            else if (!stopped)
             {
                 float step = velocity * Time.deltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, currentGoalObject.transform.position, step);
+                this.transform.LookAt(currentGoalObject.transform);
 
                 //transform.Translate(currentGoalObject.transform.position.normalized * Time.deltaTime);
                 //this.transform.position += currentGoalObject.transform.position.normalized * Time.deltaTime;
@@ -181,7 +229,6 @@ public class NPCPatrolMovement : MonoBehaviour {
         //The movement of Wizards
         else
         {
-
             if (isBeingAtacked)
             {
                 //remainingAtackTime -= Time.deltaTime;

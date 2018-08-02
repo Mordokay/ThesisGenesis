@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        staminaIncreaseValue = 0.05f;
+        staminaIncreaseValue = 0.06f;
         notEnoughStamina = false;
 
         dashForce = 1000.0f;
@@ -43,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
         //if player is not moving the stamina regenerates 5 times faster
         if(this.GetComponent<Rigidbody>().velocity.magnitude < 0.05f)
         {
-            stamina.value += Time.deltaTime * staminaIncreaseValue * 6.0f;
+            stamina.value += Time.deltaTime * staminaIncreaseValue * 8.0f;
         }
         else
         {
@@ -117,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
             if ((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value > 0.4f && tc.tutorialStage >= 15)
             {
                 this.GetComponent<Rigidbody>().AddForce(this.transform.forward * dashForce);
-                Debug.Log(this.transform.forward);
+                //Debug.Log(this.transform.forward);
                 stamina.value -= 0.4f;
             }
             else if((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value < 0.4f && tc.tutorialStage >= 15)

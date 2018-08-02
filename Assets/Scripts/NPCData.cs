@@ -52,6 +52,7 @@ public class NPCData : MonoBehaviour {
     float watchedCanvasDuration;
     public GameObject watchedEventCanvas;
 
+    public Message lastMessageReceived;
     private void Start()
     {
         timeSinceCanvasActivation = 0.0f;
@@ -381,11 +382,17 @@ public class NPCData : MonoBehaviour {
         return false;
     }
 
-    public void ReceiveMessage(Message msg)
+    public bool ReceiveMessage(Message msg)
     {
         if (isMessageOfInterest(msg))
         {
             messages.Add(msg);
+            lastMessageReceived = msg;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

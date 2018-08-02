@@ -19,12 +19,16 @@ public class Social : MonoBehaviour {
 
     bool onTalkCooldown;
     float TalkCooldownTime;
-    bool messageOfInterest;
+    public bool messageOfInterest;
 
     float msgDecaymentAtStart = 0;
 
+    public bool tattling;
+    public Message tattlingMessage;
+    public GameObject tattlingGuadian;
     void Start () {
         onTalkCooldown = false;
+        tattling = false;
 
         isTalking = false;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
@@ -287,9 +291,37 @@ public class Social : MonoBehaviour {
                 {
                     choosedMessage.messageDecayment = 1.0f;
                 }
+
+                this.GetComponentInChildren<NPCPatrolMovement>().LookAtPatrolPoint();
+                talkPartner.GetComponentInChildren<NPCPatrolMovement>().LookAtPatrolPoint();
             }
         }
 	}
+
+    public void TellGuardianHappening()
+    {
+        float minDistance = 999.0f;
+        GameObject choosenGuardian = null;
+
+        foreach (GameObject guardian in em.guardians)
+        {
+            float distance = Vector3.Distance(this.transform.GetChild(1).position, guardian.transform.GetChild(1).position);
+            if (distance < 7.0f && distance  < minDistance)
+            {
+                minDistance = distance;
+                choosenGuardian = guardian;
+            }
+        }
+
+        if (choosenGuardian != null)
+        {
+            tattling = true;
+            tattlingGuadian = choosenGuardian;
+            choosenGuardian.GetComponent<Social>().tattling = true;
+            tattlingMessage = this.GetComponent<NPCData>().lastMessageReceived;
+            choosenGuardian.GetComponent<Social>().tattlingMessage = this.GetComponent<NPCData>().lastMessageReceived;
+        }
+    }
 
     public void InterruptConversation()
     {

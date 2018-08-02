@@ -74,9 +74,9 @@ public class ElementController : MonoBehaviour {
     }
 
     void Update () {
-		if(health <= 0)
+        if (health <= 0)
         {
-            if(isTutorial && tc.tutorialStage == 8)
+            if (isTutorial && tc.tutorialStage == 8)
             {
                 tc.NextTutorial();
             }
@@ -124,6 +124,7 @@ public class ElementController : MonoBehaviour {
                 eventId = pm.getMessageId();
             }
 
+            List<GameObject> closeByNPCs = new List<GameObject>();
             foreach (Transform npc in emc.npcHolder.transform)
             {
                 //check if NPC is at a close distance;
@@ -138,7 +139,7 @@ public class ElementController : MonoBehaviour {
                     {
                         tagString = tagString.Substring(0, tagString.Length - 1);
                     }
-                    npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
+                    bool wantedMessage = npc.gameObject.GetComponent<NPCData>().ReceiveMessage(new Message(eventId, messageTime, description, tagString));
                     if (watchedEventId != 99)
                     {
                         npc.gameObject.GetComponent<NPCData>().ActivateWatchedEvent(watchedEventId);
@@ -146,9 +147,21 @@ public class ElementController : MonoBehaviour {
 
                     uiManager.messageTrackingID.text = eventId.ToString();
                     npc.gameObject.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
+
+                    if (wantedMessage && npc.gameObject.GetComponent<NPCData>().NPCType == 0)
+                    {
+                        closeByNPCs.Add(npc.gameObject);
+                    }
                 }
                 npc.gameObject.GetComponentInChildren<NPCPatrolMovement>().UpdatePatrolPoints();
             }
+
+            //Pick random NPC from the list to go and tell the closest guardian what happened
+            if (closeByNPCs.Count > 0 && this.name.Contains("Golden"))
+            {
+                closeByNPCs[Random.Range(0, closeByNPCs.Count)].GetComponent<Social>().TellGuardianHappening();
+            }
+
             /*
             foreach (Transform patrolPoint in emc.patrolPointsHolder.transform)
             {
@@ -170,7 +183,7 @@ public class ElementController : MonoBehaviour {
             */
 
             if (!isTutorial)
-            {
+            { 
                 emc.RemoveElement(this.gameObject);
             }
             else
