@@ -20,8 +20,14 @@ public class PlayerMovement : MonoBehaviour
 
     public Slider stamina;
 
+    public float staminaIncreaseValue;
+    bool notEnoughStamina;
+
     void Start()
     {
+        staminaIncreaseValue = 0.03f;
+        notEnoughStamina = false;
+
         dashForce = 1000.0f;
         em = GameObject.FindGameObjectWithTag("GameManager").GetComponent<EditorModeController>();
         mic = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MouseInputController>();
@@ -34,7 +40,28 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        stamina.value += Time.deltaTime * 0.15f;
+        //if player is not moving the stamina regenerates 5 times faster
+        if(this.GetComponent<Rigidbody>().velocity.magnitude < 0.05f)
+        {
+            stamina.value += Time.deltaTime * staminaIncreaseValue * 4.0f;
+        }
+        else
+        {
+            stamina.value += Time.deltaTime * staminaIncreaseValue;
+        }
+
+        if (notEnoughStamina)
+        {
+            // Makes stamina bar red!!!!
+            //stamina.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = Color.red  + Color.blue * stamina.value * 2.0f;
+
+            if (stamina.value > 0.4f)
+            {
+                notEnoughStamina = false;
+                stamina.transform.GetChild(1).GetChild(0).GetComponent<Image>().color = new Color(0.1f, 0.3f, 0.9f);
+            }
+        }
+
         if (!em.isEditorMode)
         {
             if(objectBeingAtacked == null)
@@ -92,6 +119,11 @@ public class PlayerMovement : MonoBehaviour
                 this.GetComponent<Rigidbody>().AddForce(this.transform.forward * dashForce);
                 Debug.Log(this.transform.forward);
                 stamina.value -= 0.4f;
+            }
+            else if((Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)) && stamina.value < 0.4f && tc.tutorialStage >= 15)
+            {
+                notEnoughStamina = true;
+                stamina.GetComponent<Animation>().Play();
             }
 
             if (direction.Equals(Vector3.zero)){
