@@ -45,7 +45,7 @@ public class Social : MonoBehaviour {
         NPCPatrolMovement movA = this.transform.GetChild(1).GetComponent<NPCPatrolMovement>();
         NPCPatrolMovement movB = otherNPC.transform.GetChild(1).GetComponent<NPCPatrolMovement>();
 
-        if ((wcA != null && wcA.isFollowingPlayer) || (wcB != null && wcB.isFollowingPlayer) || movA.isBeingAtacked || movB.isBeingAtacked)
+        if ((wcA != null && wcA.isFollowingPlayer) || (wcB != null && wcB.isFollowingPlayer) || movA.isBeingAtacked || movB.isBeingAtacked || tattling) 
         {
             return;
         }
