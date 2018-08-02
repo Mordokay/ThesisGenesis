@@ -265,7 +265,9 @@ MonoBehaviour:
     weight: 30
   description: Player is breaking the fence! Someone please stop him!
   slider: {fileID: 1958013255857668}
-  watchedEventId: 99
+  watchedEventId: 8
+  itemToDrop: {fileID: 0}
+  isTutorial: 0
 --- !u!114 &114772522452295006
 MonoBehaviour:
   m_ObjectHideFlags: 1

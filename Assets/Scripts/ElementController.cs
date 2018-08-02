@@ -69,8 +69,6 @@ public class ElementController : MonoBehaviour {
                 {
                     npc.gameObject.GetComponent<NPCData>().ActivateWatchedEvent(watchedEventId);
                 }
-
-                
             }
         }
     }
