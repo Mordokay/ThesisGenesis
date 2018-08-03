@@ -104,53 +104,53 @@ public class TutorialController : MonoBehaviour {
         {
             isPTLanguage = !isPTLanguage;
             SwitchLanguageButton.GetComponentInChildren<Text>().text = "PT";
-            prisonWarning.text = "Mais cuidado" + System.Environment.NewLine + "para a" + System.Environment.NewLine + "proxima!";
+            prisonWarning.text = "Mais cuidado" + System.Environment.NewLine + "para a" + System.Environment.NewLine + "próxima!";
             //puts in portuguese
 
-            tutorials[0].GetComponentInChildren<Text>().text = "Oh ola! Nao te vi ai!. De onde viste?";
-            tutorials[0].transform.GetChild(1).GetComponentInChildren<Text>().text = "Nao Sei";
+            tutorials[0].GetComponentInChildren<Text>().text = "Oh olá! Não te vi ai! De onde viste?";
+            tutorials[0].transform.GetChild(1).GetComponentInChildren<Text>().text = "Não Sei";
 
-            tutorials[1].GetComponentInChildren<Text>().text = " ... agora nao importa. As pessoas chamam-me profeta e neste momento eu preciso da tua ajuda!!!";
+            tutorials[1].GetComponentInChildren<Text>().text = " ... agora não importa. As pessoas chamam-me profeta e neste momento eu preciso da tua ajuda!!!";
             tutorials[1].transform.GetChild(1).GetComponentInChildren<Text>().text = "Claro!";
 
-            tutorials[2].GetComponentInChildren<Text>().text = "O que ves atraz de mim e o Templo das Almas e se nao conseguires trazer todas as reliquias douradas para o altar este mundo vai ser destruido";
-            tutorials[2].transform.GetChild(1).GetComponentInChildren<Text>().text = "Oh Nao :(";
+            tutorials[2].GetComponentInChildren<Text>().text = "O que vês atrás de mim e o Templo das Almas e se não conseguires trazer todas as relíquias douradas para o altar, este mundo vai ser destruído";
+            tutorials[2].transform.GetChild(1).GetComponentInChildren<Text>().text = "Oh Não :(";
 
-            tutorials[3].GetComponentInChildren<Text>().text = " ... sim e muito triste. EU fazia parte deste mundo ate ao momento em que os guardioes ficaram corrompidos para escuridao e comecaram a controlar os aldeoes ...";
-            tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = "Tao triste ...";
+            tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. EU fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos para escuridão e começaram a controlar os aldeões ...";
+            tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = ":(";
 
-            tutorials[4].GetComponentInChildren<Text>().text = "... como todos os guardioes estao atraz de mim eu nao consigo apanhar as reliquias todas, portanto preciso que tu me recolhas 12 reliquias sem ser apanhado";
+            tutorials[4].GetComponentInChildren<Text>().text = "... como todos os guardiões estão atrás de mim eu não consigo apanhar as relíquias todas, portanto preciso que tu me recolhas 12 relíquias sem seres apanhado";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Compreendo";
 
-            tutorials[5].GetComponentInChildren<Text>().text = "Antes de comecares a tua viagem preciso de te ensinar algumas coisas";
+            tutorials[5].GetComponentInChildren<Text>().text = "Antes de começares a tua viagem preciso de te ensinar algumas coisas";
             tutorials[5].transform.GetChild(1).GetComponentInChildren<Text>().text = "OK!";
 
-            tutorials[6].transform.GetChild(0).GetComponentInChildren<Text>().text = "Para andar pelo mapa usa as teclas do teu teclado" + System.Environment.NewLine + "Tenta usa-las agora!";
+            tutorials[6].transform.GetChild(0).GetComponentInChildren<Text>().text = "Para andar pelo mapa usa as teclas do teu teclado" + System.Environment.NewLine;
 
-            tutorials[7].GetComponentInChildren<Text>().text = "Perfeito! Agora tenta usar o machado pressionando o botao esquerdo do mapa ...";
+            tutorials[7].GetComponentInChildren<Text>().text = "Perfeito! Agora tenta usar o machado pressionando o botão esquerdo do mapa...";
 
-            tutorials[8].GetComponentInChildren<Text>().text = "Boa! Agora que conheces os controlos basicos tenta apanhar a reliquia de madeira que esta perto de ti ...";
+            tutorials[8].GetComponentInChildren<Text>().text = "Boa! Agora que conheces os controlos básicos tenta apanhar a relíquia de madeira que esta perto de ti...";
 
-            tutorials[9].GetComponentInChildren<Text>().text = "Consegues ver que um aldeao viu-te a apanhar a reliquia!" + System.Environment.NewLine + "Os aldeoes nao te atacam mas podem ir contar ao guardiao mais proximo o que estavas a fazer, portanto tem cuidado!";
+            tutorials[9].GetComponentInChildren<Text>().text = "Consegues ver que um aldeão viu-te a apanhar a relíquia!" + System.Environment.NewLine + "Os aldeões não te atacam mas podem ir contar ao guardião mais próximo o que estavas a fazer, portanto tem cuidado!";
             tutorials[9].transform.GetChild(1).GetComponentInChildren<Text>().text = "OK";
 
-            tutorials[10].GetComponentInChildren<Text>().text = "bem ... como podes ver no canto superior direito, a reliquia que apanhaste ja se encontra dentro do teu \"Stash\"";
+            tutorials[10].GetComponentInChildren<Text>().text = "bem ... como podes ver no canto superior direito, a relíquia que apanhaste já se encontra dentro do teu \"Stash\"";
             tutorials[10].transform.GetChild(1).GetComponentInChildren<Text>().text = "Eu vejo";
 
-            tutorials[11].GetComponentInChildren<Text>().text = "Agora retorna a reliquia ao altar que se encontra no centro do templo ...";
+            tutorials[11].GetComponentInChildren<Text>().text = "Agora retorna a relíquia ao altar que se encontra no centro do templo...";
 
-            tutorials[12].GetComponentInChildren<Text>().text = "Conseguiste! Estamos 1 reliquia mais perto do sacrificio final!" + System.Environment.NewLine + "PS: Podes ver o progresso total na barra branca a direita do ecra.";
+            tutorials[12].GetComponentInChildren<Text>().text = "Conseguiste! Estamos 1 relíquia mais perto do sacrifício final!" + System.Environment.NewLine + "PS: Podes ver o progresso total na barra branca à direita do ecrã.";
             tutorials[12].transform.GetChild(1).GetComponentInChildren<Text>().text = "Boa!";
 
-            tutorials[13].GetComponentInChildren<Text>().text = "Se tiveres a ser perseguido por um guardiao podes tentar escapar usando o \" Dash\". ";
+            tutorials[13].GetComponentInChildren<Text>().text = "Se tiveres a ser perseguido por um guardião podes tentar escapar usando o \" Dash\".";
             tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Como?";
 
-            tutorials[14].GetComponentInChildren<Text>().text = "para usar o  \"dash\" pressiona na tecla SPACE ou no botao direito do rato enquanto apontas com o rato na direccao que queres ir!  Tenta agora ...";
+            tutorials[14].GetComponentInChildren<Text>().text = "Para usar o \"dash\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
 
-            tutorials[15].GetComponentInChildren<Text>().text = "Estas pronto para comecar! Lembra-te que o \"Stash\" nao consegue transportar mais do que 4 reliquias. Larga as reliquias no altar para libertar espaco!";
+            tutorials[15].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Larga as relíquias no altar para libertar espaço!";
             tutorials[15].transform.GetChild(1).GetComponentInChildren<Text>().text = "Percebido!";
 
-            tutorials[16].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Nao me decepciones!";
+            tutorials[16].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Boa Sorte!";
             tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Adeus!";
         }
     }
