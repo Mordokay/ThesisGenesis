@@ -184,11 +184,12 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Rock
-    weight: 100
+    weight: 300
   description: Golden Rock was harvested!!!
   slider: {fileID: 1542679483090130}
   watchedEventId: 5
   itemToDrop: {fileID: 1997464523699742, guid: 77d4c26347805264492cf2b8c2080fef, type: 2}
+  isTutorial: 0
 --- !u!114 &114334040242260126
 MonoBehaviour:
   m_ObjectHideFlags: 1

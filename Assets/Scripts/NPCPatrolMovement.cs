@@ -70,6 +70,13 @@ public class NPCPatrolMovement : MonoBehaviour {
         foreach (Transform tr in patrolPointHolder.transform) patrolMovementPoints.Add(tr);
     }
 
+    public void ResetPosition()
+    {
+        patrolIndex = 0;
+        currentGoalObject = patrolMovementPoints[System.Int32.Parse(this.GetComponentInParent<NPCData>().patrolPointIndex[patrolIndex])].gameObject;
+        this.transform.position = currentGoalObject.transform.position;
+    }
+
     void GetNewGoal()
     {
         if (this.GetComponentInParent<NPCData>().patrolPointIndex.Count > 0)

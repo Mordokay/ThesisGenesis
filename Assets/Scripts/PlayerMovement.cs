@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        staminaIncreaseValue = 0.06f;
+        staminaIncreaseValue = 0.1f;
         notEnoughStamina = false;
 
         dashForce = 1000.0f;
@@ -43,11 +43,11 @@ public class PlayerMovement : MonoBehaviour
         //if player is not moving the stamina regenerates 5 times faster
         if(this.GetComponent<Rigidbody>().velocity.magnitude < 0.05f)
         {
-            stamina.value += Time.deltaTime * staminaIncreaseValue * 8.0f;
+            stamina.value += Time.deltaTime * staminaIncreaseValue * 4.0f;
         }
         else
         {
-            stamina.value += Time.deltaTime * staminaIncreaseValue;
+            stamina.value += Time.deltaTime * staminaIncreaseValue * 1.5f;
         }
 
         if (notEnoughStamina)
@@ -74,8 +74,19 @@ public class PlayerMovement : MonoBehaviour
             }
             if (isAtacking && Time.timeSinceLevelLoad - timeSinceLastAtack > attackIntervalTime)
             {
-                objectBeingAtacked.GetComponent<ElementController>().Attack(attackDamage);
-                timeSinceLastAtack = Time.timeSinceLevelLoad;
+                if (stamina.value > 0.2f)
+                {
+                    objectBeingAtacked.GetComponent<ElementController>().Attack(attackDamage);
+
+                    //Player loses 10% of stamina when atacking object
+                    stamina.value -= 0.2f;
+
+                    timeSinceLastAtack = Time.timeSinceLevelLoad;
+                }
+                else
+                {
+                    stamina.GetComponent<Animation>().Play();
+                }
             }
 
             if (mic.eventSpawnerArea.activeSelf && Input.mousePosition.x > 0.76 * Screen.width)

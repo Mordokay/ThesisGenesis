@@ -33,8 +33,8 @@ public class WizardController : MonoBehaviour {
 
     public void UpdateDifficulty()
     {
-        minimumFollowDistance = 3.0f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 4.0f;
-        this.GetComponent<NPCPatrolMovement>().velocity = 1.0f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 2.0f;
+        minimumFollowDistance = 3.0f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 3.0f;
+        this.GetComponent<NPCPatrolMovement>().velocity = 1.3f + (gm.GetComponent<QuestsController>().totalGoldenObjectsGathered / 12.0f) * 1.1f;
     }
 
     void CheckInterests()
@@ -101,6 +101,11 @@ public class WizardController : MonoBehaviour {
         }
 	}
 
+    public void UpdateColor(Color c)
+    {
+
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag.Equals("Player") && (wantsToFollowPlayer || this.GetComponent<NPCPatrolMovement>().isBeingAtacked))
@@ -111,6 +116,7 @@ public class WizardController : MonoBehaviour {
             prisonGuard.GetComponent<PrisonGuardControler>().ShowMessage();
             player.transform.position = new Vector3(-13.0f, 0.0f, 17.0f);
 
+            this.GetComponent<NPCPatrolMovement>().ResetPosition();
             //Time.timeScale = 0.0f;
             //canvas.transform.GetChild(0).gameObject.SetActive(true);
             //StartCoroutine(gm.GetComponent<MySQLManager>().SendsDataToDatabase());

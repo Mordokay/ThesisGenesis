@@ -1227,11 +1227,20 @@ public class EditorModeController : MonoBehaviour {
                     myNPC.transform.parent = npcHolder.transform;
                     myNPC.transform.localPosition = new Vector3(float.Parse(npcPos[0]), 0.0f, float.Parse(npcPos[1]));
 
-                    myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
-                        npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
-                        new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
-                        new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
-                        new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
+                    if (System.Int32.Parse(npcBasicInfo[8]) == 0)
+                    {
+                        myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+                            npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
+                            new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])),
+                            new Color(float.Parse(myNpcColors[3]), float.Parse(myNpcColors[4]), float.Parse(myNpcColors[5])),
+                            new Color(float.Parse(myNpcColors[6]), float.Parse(myNpcColors[7]), float.Parse(myNpcColors[8])));
+                    }
+                    else
+                    {
+                        myNPC.GetComponent<NPCData>().InitializeNPCData(npcName, npcBasicInfo[3], npcBasicInfo[4], npcData[1],
+                           npcBasicInfo[5], float.Parse(npcBasicInfo[6]), float.Parse(npcBasicInfo[7]), System.Int32.Parse(npcBasicInfo[8]),
+                           new Color(float.Parse(myNpcColors[0]), float.Parse(myNpcColors[1]), float.Parse(myNpcColors[2])), Color.white, Color.white);
+                    }
 
                     myNPC.GetComponentInChildren<NPCPatrolMovement>().setUpPatrolMovementPoints();
                 }

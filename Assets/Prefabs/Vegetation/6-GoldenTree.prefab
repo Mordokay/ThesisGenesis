@@ -323,11 +323,12 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Wood
-    weight: 100
+    weight: 300
   description: Golden Tree was harvested!!!
   slider: {fileID: 1233488202394396}
   watchedEventId: 4
   itemToDrop: {fileID: 1345026960026232, guid: 10290016ead339c40bbf9810d7bed370, type: 2}
+  isTutorial: 0
 --- !u!135 &135658615421337824
 SphereCollider:
   m_ObjectHideFlags: 1

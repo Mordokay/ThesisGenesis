@@ -184,11 +184,12 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Cactus
-    weight: 100
+    weight: 300
   description: Golden Cactus was harvested!!!
   slider: {fileID: 1837766765263776}
   watchedEventId: 7
   itemToDrop: {fileID: 1818953786296402, guid: d80d4a22277a07d478d8a3e9406eae3b, type: 2}
+  isTutorial: 0
 --- !u!114 &114382719244406302
 MonoBehaviour:
   m_ObjectHideFlags: 1

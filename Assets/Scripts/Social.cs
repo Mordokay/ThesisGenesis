@@ -21,11 +21,10 @@ public class Social : MonoBehaviour {
     float TalkCooldownTime;
     public bool messageOfInterest;
 
-    float msgDecaymentAtStart = 0;
-
     public bool tattling;
     public Message tattlingMessage;
     public GameObject tattlingGuadian;
+
     void Start () {
         onTalkCooldown = false;
         tattling = false;
@@ -92,7 +91,6 @@ public class Social : MonoBehaviour {
                 else
                 {
                     isReceivingMessage = true;
-                    msgDecaymentAtStart = choosedMessage.messageDecayment;
                 }
                 remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
                 otherNPC.GetComponentInParent<Social>().remainingMessageTransmissionTime = choosedMessage.messageTransmissionTime;
@@ -263,8 +261,9 @@ public class Social : MonoBehaviour {
 
                 if (isReceivingMessage && choosedMessage != null)
                 {
-                    bool wasRepeated = false;
+                    //bool wasRepeated = false;
 
+                    //If it does not have the message, a message is added
                     if (this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id) == null)
                     {
                         this.GetComponent<NPCData>().messages.Add(new Message(choosedMessage.id,
@@ -272,17 +271,47 @@ public class Social : MonoBehaviour {
                             choosedMessage.tags));
                        this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();
                     }
+                    //If it has the message, the decayment resets to 1
                     else
                     {
                         this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).messageDecayment = 1.0f;
-                        wasRepeated = true;
+                        //wasRepeated = true;
                     }
                     isReceivingMessage = false;
 
+                    //Changes the color of the guardians when they receive messages with specific tags
+                    if(choosedMessage.description.Contains("Golden") && choosedMessage.id != -99 && 
+                        choosedMessage.id != -999 && this.GetComponent<NPCData>().NPCType == 1)
+                    {
+                        switch (choosedMessage.tags[0].name)
+                        {
+                            case "Wood":
+                                this.GetComponent<NPCData>().LeftHand.color = new Color(0.1568f, 0.55686f, 0.0f);
+                                this.GetComponent<NPCData>().RightHand.color = new Color(0.1568f, 0.55686f, 0.0f);
+                                this.GetComponent<NPCData>().Head.color = new Color(0.1568f, 0.55686f, 0.0f);
+                                break;
+                            case "Rock":
+                                this.GetComponent<NPCData>().LeftHand.color = new Color(0.55f, 0.55f, 0.55f);
+                                this.GetComponent<NPCData>().RightHand.color = new Color(0.55f, 0.55f, 0.55f);
+                                this.GetComponent<NPCData>().Head.color = new Color(0.55f, 0.55f, 0.55f);
+                                break;
+                            case "Cactus":
+                                this.GetComponent<NPCData>().LeftHand.color = new Color(0.9725f, 0.949f, 0.1216f);
+                                this.GetComponent<NPCData>().RightHand.color = new Color(0.9725f, 0.949f, 0.1216f);
+                                this.GetComponent<NPCData>().Head.color = new Color(0.9725f, 0.949f, 0.1216f);
+                                break;
+                            case "Berries":
+                                this.GetComponent<NPCData>().LeftHand.color = new Color(0.91f, 0.1725f, 0.1725f);
+                                this.GetComponent<NPCData>().RightHand.color = new Color(0.91f, 0.1725f, 0.1725f);
+                                this.GetComponent<NPCData>().Head.color = new Color(0.91f, 0.1725f, 0.1725f);
+                                break;
+                        }
+                    }
+                    /*
                     sdl.WriteMessageToLog(talkPartner.GetComponent<NPCData>().name + " >> " + this.GetComponent<NPCData>().name + " || "
                         + "{ " + this.GetComponent<NPCData>().messages.Find(x => x.id == choosedMessage.id).ToString() + " }" +
                         " || Decayment: " + msgDecaymentAtStart, choosedMessage.id, wasRepeated, (talkPartner.transform.GetChild(1).position + this.transform.GetChild(1).position) / 2);
-                    msgDecaymentAtStart = 0.0f;
+                        */
 
                     //Checks if the message recieved is the message being tracked
                     this.GetComponent<NPCFeedbackUpdater>().checkMessageFeedback();

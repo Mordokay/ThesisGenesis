@@ -13,6 +13,11 @@ public class TutorialController : MonoBehaviour {
     public int tutorialStage;
     public GameObject[] tutorials;
 
+    public Text introQuestions;
+    public Text submitQuestionsButtonText;
+    public Text optionsQuestions;
+    public GameObject[] questions;
+
     bool usedW;
     bool usedA;
     bool usedS;
@@ -68,8 +73,8 @@ public class TutorialController : MonoBehaviour {
             tutorials[4].GetComponentInChildren<Text>().text = "anyways ... since all the guardians are after me, I can't get all the relics myself, so I need you to bring me around 12 relics without being caught";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Sure!";
 
-            tutorials[5].GetComponentInChildren<Text>().text = "Before you start your journey I have to teach you a few very important things.";
-            tutorials[5].transform.GetChild(1).GetComponentInChildren<Text>().text = "Teach Me!";
+            tutorials[5].GetComponentInChildren<Text>().text = "Relics can come in diferent shapes:";
+            tutorials[5].transform.GetChild(1).GetComponentInChildren<Text>().text = "I see!";
 
             tutorials[6].transform.GetChild(0).GetComponentInChildren<Text>().text = "To move around the map you Have to use they keys" + System.Environment.NewLine + "Try using them now!";
 
@@ -98,7 +103,45 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[16].GetComponentInChildren<Text>().text = "Farewell traveler. I am counting on you! Dont let me down!";
             tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Farewell!";
-            
+
+            introQuestions.text = "Please indicate how you felt while playing the game for each of the items, on the following scale:";
+            submitQuestionsButtonText.text = "Submit";
+            optionsQuestions.text = "    not at all   slightly	moderately   fairly	  extremely";
+            optionsQuestions.fontSize = 11;
+
+            questions[0].GetComponent<Text>().text = "I felt content";
+            questions[1].GetComponent<Text>().text = "I felt skilful";
+            questions[2].GetComponent<Text>().text = "I was interested in the game's story";
+            questions[3].GetComponent<Text>().text = "I thought it was fun";
+            questions[4].GetComponent<Text>().text = "I was fully occupied with the game";
+            questions[5].GetComponent<Text>().text = "I felt happy";
+            questions[6].GetComponent<Text>().text = "It gave me a bad mood";
+            questions[7].GetComponent<Text>().text = "I thought about other things";
+            questions[8].GetComponent<Text>().text = "I found it tiresome";
+            questions[9].GetComponent<Text>().text = "I felt competent";
+            questions[10].GetComponent<Text>().text = "I thought it was hard";
+            questions[11].GetComponent<Text>().text = "It was aesthetically pleasing";
+            questions[12].GetComponent<Text>().text = "I forgot everything around me";
+            questions[13].GetComponent<Text>().text = "I felt good";
+            questions[14].GetComponent<Text>().text = "I was good at it";
+            questions[15].GetComponent<Text>().text = "I felt bored";
+            questions[16].GetComponent<Text>().text = "I felt successful";
+            questions[17].GetComponent<Text>().text = "I felt imaginative";
+            questions[18].GetComponent<Text>().text = "I felt that I could explore things";
+            questions[19].GetComponent<Text>().text = "I enjoyed it";
+            questions[20].GetComponent<Text>().text = "I was fast at reaching the game's targets";
+            questions[21].GetComponent<Text>().text = "I felt annoyed";
+            questions[22].GetComponent<Text>().text = "I felt pressured";
+            questions[23].GetComponent<Text>().text = "I felt irritable";
+            questions[24].GetComponent<Text>().text = "I lost track of time";
+            questions[25].GetComponent<Text>().text = "I felt challenged";
+            questions[26].GetComponent<Text>().text = "I found it impressive";
+            questions[27].GetComponent<Text>().text = "I was deeply concentrated in the game";
+            questions[28].GetComponent<Text>().text = "I felt frustrated";
+            questions[29].GetComponent<Text>().text = "It felt like a rich experience";
+            questions[30].GetComponent<Text>().text = "I lost connection with the outside world";
+            questions[31].GetComponent<Text>().text = "I felt time pressure";
+            questions[32].GetComponent<Text>().text = "I had to put a lot of effort into it";
         }
         else
         {
@@ -107,7 +150,7 @@ public class TutorialController : MonoBehaviour {
             prisonWarning.text = "Mais cuidado" + System.Environment.NewLine + "para a" + System.Environment.NewLine + "próxima!";
             //puts in portuguese
 
-            tutorials[0].GetComponentInChildren<Text>().text = "Oh olá! Não te vi ai! De onde viste?";
+            tutorials[0].GetComponentInChildren<Text>().text = "Oh olá! Não te vi ai! De onde viestes?";
             tutorials[0].transform.GetChild(1).GetComponentInChildren<Text>().text = "Não Sei";
 
             tutorials[1].GetComponentInChildren<Text>().text = " ... agora não importa. As pessoas chamam-me profeta e neste momento eu preciso da tua ajuda!!!";
@@ -116,25 +159,25 @@ public class TutorialController : MonoBehaviour {
             tutorials[2].GetComponentInChildren<Text>().text = "O que vês atrás de mim e o Templo das Almas e se não conseguires trazer todas as relíquias douradas para o altar, este mundo vai ser destruído";
             tutorials[2].transform.GetChild(1).GetComponentInChildren<Text>().text = "Oh Não :(";
 
-            tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. EU fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos para escuridão e começaram a controlar os aldeões ...";
+            tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. EU fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos pela escuridão e começaram a controlar os aldeões ...";
             tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = ":(";
 
-            tutorials[4].GetComponentInChildren<Text>().text = "... como todos os guardiões estão atrás de mim eu não consigo apanhar as relíquias todas, portanto preciso que tu me recolhas 12 relíquias sem seres apanhado";
+            tutorials[4].GetComponentInChildren<Text>().text = "... como todos os guardiões estão atrás de mim eu não consigo apanhar as relíquias todas. Preciso que tu me recolhas 12 relíquias sem seres apanhado!";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Compreendo";
 
-            tutorials[5].GetComponentInChildren<Text>().text = "Antes de começares a tua viagem preciso de te ensinar algumas coisas";
+            tutorials[5].GetComponentInChildren<Text>().text = "As relíquias têm formas diferentes:";
             tutorials[5].transform.GetChild(1).GetComponentInChildren<Text>().text = "OK!";
 
             tutorials[6].transform.GetChild(0).GetComponentInChildren<Text>().text = "Para andar pelo mapa usa as teclas do teu teclado" + System.Environment.NewLine;
 
-            tutorials[7].GetComponentInChildren<Text>().text = "Perfeito! Agora tenta usar o machado pressionando o botão esquerdo do mapa...";
+            tutorials[7].GetComponentInChildren<Text>().text = "Perfeito! Agora tenta usar o machado pressionando o botão esquerdo do rato...";
 
             tutorials[8].GetComponentInChildren<Text>().text = "Boa! Agora que conheces os controlos básicos tenta apanhar a relíquia de madeira que esta perto de ti...";
 
             tutorials[9].GetComponentInChildren<Text>().text = "Consegues ver que um aldeão viu-te a apanhar a relíquia!" + System.Environment.NewLine + "Os aldeões não te atacam mas podem ir contar ao guardião mais próximo o que estavas a fazer, portanto tem cuidado!";
             tutorials[9].transform.GetChild(1).GetComponentInChildren<Text>().text = "OK";
 
-            tutorials[10].GetComponentInChildren<Text>().text = "bem ... como podes ver no canto superior direito, a relíquia que apanhaste já se encontra dentro do teu \"Stash\"";
+            tutorials[10].GetComponentInChildren<Text>().text = "bem ... como podes ver no canto superior direito, a relíquia que foi agarrada já se encontra dentro do teu \"Saco\"";
             tutorials[10].transform.GetChild(1).GetComponentInChildren<Text>().text = "Eu vejo";
 
             tutorials[11].GetComponentInChildren<Text>().text = "Agora retorna a relíquia ao altar que se encontra no centro do templo...";
@@ -142,16 +185,56 @@ public class TutorialController : MonoBehaviour {
             tutorials[12].GetComponentInChildren<Text>().text = "Conseguiste! Estamos 1 relíquia mais perto do sacrifício final!" + System.Environment.NewLine + "PS: Podes ver o progresso total na barra branca à direita do ecrã.";
             tutorials[12].transform.GetChild(1).GetComponentInChildren<Text>().text = "Boa!";
 
-            tutorials[13].GetComponentInChildren<Text>().text = "Se tiveres a ser perseguido por um guardião podes tentar escapar usando o \" Dash\".";
+            tutorials[13].GetComponentInChildren<Text>().text = "Se tiveres a ser perseguido por um guardião podes tentar escapar usando o \" Correr\".";
             tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Como?";
 
-            tutorials[14].GetComponentInChildren<Text>().text = "Para usar o \"dash\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
+            tutorials[14].GetComponentInChildren<Text>().text = "Para usar o \"correr\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
 
-            tutorials[15].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Larga as relíquias no altar para libertar espaço!";
+            tutorials[15].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Deixa as relíquias no altar para libertar espaço!";
             tutorials[15].transform.GetChild(1).GetComponentInChildren<Text>().text = "Percebido!";
 
             tutorials[16].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Boa Sorte!";
             tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Adeus!";
+
+            introQuestions.text = "Por favor, indique como se sentiu ao jogar o jogo para cada um dos seguintes pontos, na seguinte escala:";
+            submitQuestionsButtonText.text = "Submeter";
+            optionsQuestions.text = "         discordo            discordo 	   Indiferente        concordo          concordo" + System.Environment.NewLine +
+                                            "      totalmente    parcialmente                            parcialmente   totalmente";
+            optionsQuestions.fontSize = 9;
+
+            questions[0].GetComponent<Text>().text = "Senti satisfação";
+            questions[1].GetComponent<Text>().text = "Senti-me hábil.";
+            questions[2].GetComponent<Text>().text = "Estava interessado na história do jogo";
+            questions[3].GetComponent<Text>().text = "Achei divertido";
+            questions[4].GetComponent<Text>().text = "Estava totalmente ocupado com o jogo";
+            questions[5].GetComponent<Text>().text = "Senti-me feliz";
+            questions[6].GetComponent<Text>().text = "O jogo deu-me mau humor";
+            questions[7].GetComponent<Text>().text = "Pensei noutras coisas";
+            questions[8].GetComponent<Text>().text = "Achei cansativo";
+            questions[9].GetComponent<Text>().text = "Senti-me competente";
+            questions[10].GetComponent<Text>().text = "Era difícil";
+            questions[11].GetComponent<Text>().text = "Era esteticamente agradável";
+            questions[12].GetComponent<Text>().text = "Esqueci-me de tudo em meu redor";
+            questions[13].GetComponent<Text>().text = "Senti-me bem";
+            questions[14].GetComponent<Text>().text = "Joguei bem";
+            questions[15].GetComponent<Text>().text = "Senti-me aborrecido";
+            questions[16].GetComponent<Text>().text = "Senti-me bem sucedido";
+            questions[17].GetComponent<Text>().text = "Senti-me imaginativo";
+            questions[18].GetComponent<Text>().text = "Senti que poderia explorar coisas";
+            questions[19].GetComponent<Text>().text = "Eu gostei do jogo";
+            questions[20].GetComponent<Text>().text = "Eu fui rápido a alcançar os objectivos do jogo";
+            questions[21].GetComponent<Text>().text = "Senti-me irritado";
+            questions[22].GetComponent<Text>().text = "Senti-me pressionado";
+            questions[23].GetComponent<Text>().text = "Senti-me irritado";
+            questions[24].GetComponent<Text>().text = "Perdi a noção do tempo";
+            questions[25].GetComponent<Text>().text = "Senti-me desafiado";
+            questions[26].GetComponent<Text>().text = "Achei impressionante";
+            questions[27].GetComponent<Text>().text = "Estava profundamente concentrado no jogo";
+            questions[28].GetComponent<Text>().text = "Senti-me frustrado";
+            questions[29].GetComponent<Text>().text = "Pareceu-me uma experiência rica";
+            questions[30].GetComponent<Text>().text = "Perdi a conexão com o mundo exterior";
+            questions[31].GetComponent<Text>().text = "Senti a pressão do tempo";
+            questions[32].GetComponent<Text>().text = "Tive de me esforçar muito";
         }
     }
 

@@ -159,10 +159,19 @@ public class MySQLManager : MonoBehaviour
 
     public IEnumerator SendsQuestionsToDatabase(int[] questionValues)
     {
-        for(int i = 0; i < questionValues.Length; i++)
+        string questionsResults = "";
+        for (int i = 0; i < questionValues.Length; i++)
+        {
+            questionsResults += "Q" + (i + 1).ToString() + ":" + questionValues[i].ToString() + "_";
+        }
+        yield return StartCoroutine(InsertData(questionsResults, 0, 0));
+
+        /*
+        for (int i = 0; i < questionValues.Length; i++)
         {
             yield return StartCoroutine(InsertData("Q" + (i+1).ToString(), questionValues[i], 0));
         }
+        */
     }
 
     public void QuitGame()

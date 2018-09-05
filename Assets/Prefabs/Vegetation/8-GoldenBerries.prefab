@@ -232,11 +232,12 @@ MonoBehaviour:
   messageTime: 4
   tags:
   - name: Berries
-    weight: 100
+    weight: 300
   description: Golden Berries was harvested!!!
   slider: {fileID: 1498839711883034}
   watchedEventId: 6
   itemToDrop: {fileID: 1356257660526936, guid: 18bd351b5f35a2a4e91a41ff0ac719b3, type: 2}
+  isTutorial: 0
 --- !u!114 &114535658142735754
 MonoBehaviour:
   m_ObjectHideFlags: 1
