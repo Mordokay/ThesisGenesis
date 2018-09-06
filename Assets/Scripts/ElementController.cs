@@ -80,7 +80,7 @@ public class ElementController : MonoBehaviour {
             {
                 tc.NextTutorial();
             }
-            if (qc.playerStash < 4)
+            if (qc.playerStash < 2)
             {
                 if (this.name.Contains("Golden"))
                 {

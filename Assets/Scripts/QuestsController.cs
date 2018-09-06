@@ -53,15 +53,7 @@ public class QuestsController : MonoBehaviour {
             {
                 this.GetComponent<TutorialController>().NextTutorial();
             }
-            foreach(Transform npc in npcHolder.transform)
-            {
-                WizardController wc = npc.gameObject.GetComponentInChildren<WizardController>();
-                if (wc != null)
-                {
-                    NPCPatrolMovement pm = npc.gameObject.GetComponentInChildren<NPCPatrolMovement>();
-                    wc.UpdateDifficulty();
-                }
-            }
+            UpdateDificultyAllGuardians();
         }
         progressBar.value = totalGoldenObjectsGathered / 12.0f;
         progressBarText.text = totalGoldenObjectsGathered + "/12";
@@ -114,7 +106,9 @@ public class QuestsController : MonoBehaviour {
         stashTypes[playerStash] = type;
 
         playerStash += 1;
-        
+
+        UpdateDificultyAllGuardians();
+
         switch (type)
         {
             case 0:
@@ -123,6 +117,7 @@ public class QuestsController : MonoBehaviour {
                 StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("tree"));
                 break;
             case 1:
+                totalGoldenRockGathered += 1;
                 //sends grabing data to database
                 StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("rock"));
                 break;
@@ -139,8 +134,21 @@ public class QuestsController : MonoBehaviour {
         }
     }
 
+    public void UpdateDificultyAllGuardians()
+    {
+        foreach (Transform npc in npcHolder.transform)
+        {
+            WizardController wc = npc.gameObject.GetComponentInChildren<WizardController>();
+            if (wc != null)
+            {
+                NPCPatrolMovement pm = npc.gameObject.GetComponentInChildren<NPCPatrolMovement>();
+                wc.UpdateDifficulty();
+            }
+        }
+    }
+
     void Update () {
-	    if(totalGoldenObjectsGathered == 12 && !sentData)
+	    if(totalGoldenObjectsGathered >= 12 && !sentData)
         {
             //Player wins the game and shows panel!!!
             Time.timeScale = 0.0f;

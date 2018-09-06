@@ -17,7 +17,7 @@ public class DroppedItemControler : MonoBehaviour {
     {
         if (other.tag.Equals("Player"))
         {
-            if (qc.playerStash < 4)
+            if (qc.playerStash < 2)
             {
                 qc.IncrementStash(type);
                 Destroy(this.gameObject);

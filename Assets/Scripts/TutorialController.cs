@@ -70,7 +70,7 @@ public class TutorialController : MonoBehaviour {
             tutorials[3].GetComponentInChildren<Text>().text = " ... yeah its very sad. I used to be part of this world until the guardians got corrupted by the darkness and started mind controlling the villagers ...";
             tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = "So sad ...";
 
-            tutorials[4].GetComponentInChildren<Text>().text = "anyways ... since all the guardians are after me, I can't get all the relics myself, so I need you to bring me around 12 relics without being caught";
+            tutorials[4].GetComponentInChildren<Text>().text = "anyways ... we are both outsiders on this world and the guardians are after us. I am hurt so I can't get all the relics myself. Bring me 12 relics without being caught";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Sure!";
 
             tutorials[5].GetComponentInChildren<Text>().text = "Relics can come in diferent shapes:";
@@ -82,7 +82,7 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[8].GetComponentInChildren<Text>().text = "You are doing great! Now that you know the basics lets try and grab that wood relic close to you ...";
 
-            tutorials[9].GetComponentInChildren<Text>().text = "You can see that a villager was watching you gathering that relic!" + System.Environment.NewLine + "Vilagers cannot attack you but they can tell the guardians what you are doing, so be carefull!";
+            tutorials[9].GetComponentInChildren<Text>().text = "You can see that a villager was watching you gathering that relic!" + System.Environment.NewLine + "Vilagers cannot attack you but they can tell the guardians what you are doing, so be careful!";
             tutorials[9].transform.GetChild(1).GetComponentInChildren<Text>().text = "Okey";
 
             tutorials[10].GetComponentInChildren<Text>().text = "anyways ... As you can see on the top right of the screen, the gold relic you just grabbed is now inside your stash.";
@@ -93,16 +93,19 @@ public class TutorialController : MonoBehaviour {
             tutorials[12].GetComponentInChildren<Text>().text = "You did it! We are 1 relic closer to the ultimate sacrifice!" + System.Environment.NewLine + "PS: You can also check your progress on the white bar on the right.";
             tutorials[12].transform.GetChild(1).GetComponentInChildren<Text>().text = "Nice!";
 
-            tutorials[13].GetComponentInChildren<Text>().text = "If you are being chased by a guardian you can always escape with a quick dash. ";
-            tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Cool!";
+            tutorials[13].GetComponentInChildren<Text>().text = "When NPCs talk about your actions you will see an axe symbol on their baloon box.";
+            tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Ah!";
 
-            tutorials[14].GetComponentInChildren<Text>().text = "To use the \"dash\" simply press space or the right mouse button while pointing with the mouse at the direction you want to go!  Try it ...";
+            tutorials[14].GetComponentInChildren<Text>().text = "If you are being chased by a guardian you can always escape with a quick dash. ";
+            tutorials[14].transform.GetChild(1).GetComponentInChildren<Text>().text = "Cool!";
+            
+            tutorials[15].GetComponentInChildren<Text>().text = "To use the \"dash\" simply press space or the right mouse button while pointing with the mouse at the direction you want to go!  Try it ...";
 
-            tutorials[15].GetComponentInChildren<Text>().text = "You are all set to go! Remember that your stash can't carry more than 4 relics. Drop the relics at the altar to free some space!";
-            tutorials[15].transform.GetChild(1).GetComponentInChildren<Text>().text = "Got it!";
+            tutorials[16].GetComponentInChildren<Text>().text = "You are all set to go! Remember that your stash can't carry more than 4 relics. Drop the relics at the altar to free some space!";
+            tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Got it!";
 
-            tutorials[16].GetComponentInChildren<Text>().text = "Farewell traveler. I am counting on you! Dont let me down!";
-            tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Farewell!";
+            tutorials[17].GetComponentInChildren<Text>().text = "Farewell traveler. I am counting on you! Dont let me down!";
+            tutorials[17].transform.GetChild(1).GetComponentInChildren<Text>().text = "Farewell!";
 
             introQuestions.text = "Please indicate how you felt while playing the game for each of the items, on the following scale:";
             submitQuestionsButtonText.text = "Submit";
@@ -162,7 +165,7 @@ public class TutorialController : MonoBehaviour {
             tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. EU fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos pela escuridão e começaram a controlar os aldeões ...";
             tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = ":(";
 
-            tutorials[4].GetComponentInChildren<Text>().text = "... como todos os guardiões estão atrás de mim eu não consigo apanhar as relíquias todas. Preciso que tu me recolhas 12 relíquias sem seres apanhado!";
+            tutorials[4].GetComponentInChildren<Text>().text = "... somos os unicos sobreviventes deste mundo e os guardiões estão atrás de nos. Eu estou magoado por isso preciso que me apanhes 12 relíquias!";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Compreendo";
 
             tutorials[5].GetComponentInChildren<Text>().text = "As relíquias têm formas diferentes:";
@@ -185,16 +188,19 @@ public class TutorialController : MonoBehaviour {
             tutorials[12].GetComponentInChildren<Text>().text = "Conseguiste! Estamos 1 relíquia mais perto do sacrifício final!" + System.Environment.NewLine + "PS: Podes ver o progresso total na barra branca à direita do ecrã.";
             tutorials[12].transform.GetChild(1).GetComponentInChildren<Text>().text = "Boa!";
 
-            tutorials[13].GetComponentInChildren<Text>().text = "Se tiveres a ser perseguido por um guardião podes tentar escapar usando o \" Correr\".";
-            tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Como?";
+            tutorials[13].GetComponentInChildren<Text>().text = "Quando os NPCs falam sobre as tuas acções aparece um machado na sua caixa de diálogo.";
+            tutorials[13].transform.GetChild(1).GetComponentInChildren<Text>().text = "Ah!";
 
-            tutorials[14].GetComponentInChildren<Text>().text = "Para usar o \"correr\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
+            tutorials[14].GetComponentInChildren<Text>().text = "Se estiveres a ser perseguido por um guardião podes tentar escapar usando o \" Correr\".";
+            tutorials[14].transform.GetChild(1).GetComponentInChildren<Text>().text = "Como?";
 
-            tutorials[15].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Deixa as relíquias no altar para libertar espaço!";
-            tutorials[15].transform.GetChild(1).GetComponentInChildren<Text>().text = "Percebido!";
+            tutorials[15].GetComponentInChildren<Text>().text = "Para usar o \"correr\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
 
-            tutorials[16].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Boa Sorte!";
-            tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Adeus!";
+            tutorials[16].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Deixa as relíquias no altar para libertar espaço!";
+            tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Percebido!";
+
+            tutorials[17].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Boa Sorte!";
+            tutorials[17].transform.GetChild(1).GetComponentInChildren<Text>().text = "Adeus!";
 
             introQuestions.text = "Por favor, indique como se sentiu ao jogar o jogo para cada um dos seguintes pontos, na seguinte escala:";
             submitQuestionsButtonText.text = "Submeter";
@@ -292,7 +298,7 @@ public class TutorialController : MonoBehaviour {
         {
             NextTutorial();
         }
-        else if (tutorialStage == 14 && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)))
+        else if (tutorialStage == 15 && (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(1)))
         {
             NextTutorial();
         }
