@@ -34,7 +34,7 @@ public class WizardController : MonoBehaviour {
     public void UpdateDifficulty()
     {
         minimumFollowDistance = 3.0f + ((gm.GetComponent<QuestsController>().totalGoldenObjectsGathered + gm.GetComponent<QuestsController>().playerStash) / 12.0f) * 2.0f;
-        this.GetComponent<NPCPatrolMovement>().velocity = 1.3f + ((gm.GetComponent<QuestsController>().totalGoldenObjectsGathered + gm.GetComponent<QuestsController>().playerStash) / 12.0f) * 1.1f;
+        this.GetComponent<NPCPatrolMovement>().velocity = 1.3f + ((gm.GetComponent<QuestsController>().totalGoldenObjectsGathered + gm.GetComponent<QuestsController>().playerStash) / 12.0f) * 1.3f;
     }
 
     void CheckInterests()
@@ -119,6 +119,8 @@ public class WizardController : MonoBehaviour {
             this.GetComponent<NPCPatrolMovement>().ResetPosition();
 
             gm.GetComponent<QuestsController>().UpdateDificultyAllGuardians();
+
+            StartCoroutine(gm.GetComponent<MySQLManager>().LogEventAtTime("Killed by " + this.transform.parent.name));
             //Time.timeScale = 0.0f;
             //canvas.transform.GetChild(0).gameObject.SetActive(true);
             //StartCoroutine(gm.GetComponent<MySQLManager>().SendsDataToDatabase());

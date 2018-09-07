@@ -7,9 +7,20 @@ public class QuestionsManager : MonoBehaviour {
 
     public int[] questionsAnswers = new int[33];
 
-    public GameObject submitButton;
     public InputField inputField;
-    public GameObject quitButton;
+    public GameObject nextPersonalButton;
+    public GameObject nextExtraButton;
+    public GameObject quitExtraButton;
+
+    public GameObject gameExperienceQuestionairePanel;
+    public GameObject personalQuestionsPanel;
+    public GameObject extraQuestionsPanel;
+
+    public Text ageText;
+    public int[] personalQuestionsAnswers = new int[3];
+
+    public InputField extraQuestion1text;
+    public InputField extraQuestion2text;
 
     public void SetQuestion(string question_value)
     {
@@ -25,37 +36,131 @@ public class QuestionsManager : MonoBehaviour {
             questionsAnswers[question] = 0;
         }
     }
-    
-    public void SendQuestionaireData()
+    public void SetPersonalQuestion(string question_value)
     {
-        StartCoroutine(SendQuestionaireDataEnumerator());
+        string[] data = question_value.Split('_');
+        int question = System.Convert.ToInt32(data[0]);
+        int value = System.Convert.ToInt32(data[1]);
+        if (personalQuestionsAnswers[question] == 0)
+        {
+            personalQuestionsAnswers[question] = value;
+        }
+        else
+        {
+            personalQuestionsAnswers[question] = 0;
+        }
     }
 
-    public IEnumerator SendQuestionaireDataEnumerator()
+    public void ShowPersonalQuestionsPanel()
+    {
+        gameExperienceQuestionairePanel.SetActive(false);
+        personalQuestionsPanel.SetActive(true);
+        extraQuestionsPanel.SetActive(false);
+    }
+
+    public void ShowExtraQuestionsPanel()
+    {
+        gameExperienceQuestionairePanel.SetActive(false);
+        personalQuestionsPanel.SetActive(false);
+        extraQuestionsPanel.SetActive(true);
+    }
+
+    public void SendGameExperienceQuestionaireData()
+    {
+        StartCoroutine(SendGameExperienceQuestionaireEnumerator());
+    }
+
+    public IEnumerator SendGameExperienceQuestionaireEnumerator()
     {
         yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordData(questionsAnswers));
-        submitButton.gameObject.SetActive(false);
-        quitButton.gameObject.SetActive(true);
+        ShowPersonalQuestionsPanel();
+    }
+
+    public void SendPersonalExperienceQuestionaireData()
+    {
+        StartCoroutine(SendPersonalExperienceQuestionaireDataEnumerator());
+    }
+
+    public IEnumerator SendPersonalExperienceQuestionaireDataEnumerator()
+    {
+        string answers = "Age:" + ageText.text + "_";
+        for (int i = 0; i < personalQuestionsAnswers.Length; i++)
+        {
+            answers += "Q" + (i + 1).ToString() + ":" + personalQuestionsAnswers[i].ToString() + "_";
+        }
+
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordPersonalData(answers));
+        ShowExtraQuestionsPanel();
+    }
+
+    public void SendExtraQuestionaireData()
+    {
+        StartCoroutine(SendExtraQuestionaireDataEnumerator());
+    }
+
+    public IEnumerator SendExtraQuestionaireDataEnumerator()
+    {
+        string answers = "Q1: " + extraQuestion1text.text + "_____XXXXX_____" + "Q2: " + extraQuestion2text.text;
+        
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordPersonalData(answers));
+        this.GetComponent<MySQLManager>().QuitGame();
     }
 
     public void Update()
     {
-        bool allAnswered = true;
-        for(int i = 0; i < questionsAnswers.Length; i++)
+        if (gameExperienceQuestionairePanel.activeSelf)
         {
-            if(questionsAnswers[i] == 0)
+            bool allAnswered = true;
+            for (int i = 0; i < questionsAnswers.Length; i++)
             {
-                allAnswered = false;
+                if (questionsAnswers[i] == 0)
+                {
+                    allAnswered = false;
+                }
+            }
+
+            if (allAnswered)
+            {
+                nextPersonalButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                nextPersonalButton.GetComponent<Button>().interactable = false;
             }
         }
 
-        if(allAnswered)
+        if (personalQuestionsPanel.activeSelf)
         {
-            submitButton.GetComponent<Button>().interactable = true;
+            bool allAnswered = true;
+            for (int i = 0; i < personalQuestionsAnswers.Length; i++)
+            {
+                if (personalQuestionsAnswers[i] == 0)
+                {
+                    allAnswered = false;
+                }
+            }
+
+            if (allAnswered && ageText.text != "")
+            {
+                nextExtraButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                nextExtraButton.GetComponent<Button>().interactable = false;
+            }
         }
-        else
+
+        if (extraQuestionsPanel.activeSelf)
         {
-            submitButton.GetComponent<Button>().interactable = false;
+
+            if (extraQuestion1text.text != "" && extraQuestion2text.text != "")
+            {
+                quitExtraButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                quitExtraButton.GetComponent<Button>().interactable = false;
+            }
         }
     }
 }

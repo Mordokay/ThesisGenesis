@@ -29,6 +29,11 @@ public class MySQLManager : MonoBehaviour
         yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsQuestionsToDatabase(questionsAnswers));
     }
 
+    public IEnumerator RecordPersonalData(string questionsAnswers)
+    {
+        yield return StartCoroutine(this.GetComponent<MySQLManager>().SendsPersonalQuestionsToDatabase(questionsAnswers));
+    }
+
     public string playerMode = "";
     string playerTableName = "";
 
@@ -72,7 +77,7 @@ public class MySQLManager : MonoBehaviour
 
     IEnumerator InsertData(string type, float value1, float value2)
     {
-        yield return StartCoroutine(AddPlayerData(type, value1, value2));
+        yield return StartCoroutine(AddPlayerData(WWW.EscapeURL(type), value1, value2));
     }
 
     public IEnumerator LogEventAtTime(string description)
@@ -165,13 +170,11 @@ public class MySQLManager : MonoBehaviour
             questionsResults += "Q" + (i + 1).ToString() + ":" + questionValues[i].ToString() + "_";
         }
         yield return StartCoroutine(InsertData(questionsResults, 0, 0));
+    }
 
-        /*
-        for (int i = 0; i < questionValues.Length; i++)
-        {
-            yield return StartCoroutine(InsertData("Q" + (i+1).ToString(), questionValues[i], 0));
-        }
-        */
+    public IEnumerator SendsPersonalQuestionsToDatabase(string questionValues)
+    {
+        yield return StartCoroutine(InsertData(questionValues, 0, 0));
     }
 
     public void QuitGame()

@@ -14,7 +14,6 @@ public class TutorialController : MonoBehaviour {
     public GameObject[] tutorials;
 
     public Text introQuestions;
-    public Text submitQuestionsButtonText;
     public Text optionsQuestions;
     public GameObject[] questions;
 
@@ -29,6 +28,36 @@ public class TutorialController : MonoBehaviour {
     public Text TextD;
 
     public Text prisonWarning;
+
+    public Text nextPersonalQuestionsButton;
+
+    public Text question1_Personal;
+
+    public Text question2_Personal;
+    public Text question2_Personal_OptionA;
+    public Text question2_Personal_OptionB;
+    public Text question2_Personal_OptionC;
+
+    public Text question3_Personal;
+    public Text question3_Personal_OptionA;
+    public Text question3_Personal_OptionB;
+    public Text question3_Personal_OptionC;
+
+    public Text question4_Personal;
+    public Text question4_Personal_OptionA;
+    public Text question4_Personal_OptionB;
+    public Text question4_Personal_OptionC;
+    public Text question4_Personal_OptionD;
+    public Text nextExtraQuestionsButton;
+
+    public Text question1_Extra;
+    public Text question2_Extra;
+    public Text quitExtraQuestionsButton;
+
+
+    public Text answerQuestionsText_winPanel;
+    public Text quitText_winPanel;
+    public Text youWinText_winPanel;
 
     void Start () {
         tutorialStage = 0;
@@ -60,7 +89,7 @@ public class TutorialController : MonoBehaviour {
             //puts in english
             tutorials[0].GetComponentInChildren<Text>().text = "Oh hi! ... didn't see you there! Where did you come from?" + System.Environment.NewLine;
             tutorials[0].transform.GetChild(1).GetComponentInChildren<Text>().text = "Dont Know";
-            
+
             tutorials[1].GetComponentInChildren<Text>().text = " ... well  it doesn't matter. People call me the prophet and right now I am in urgent need of help!!!";
             tutorials[1].transform.GetChild(1).GetComponentInChildren<Text>().text = "I can Help!";
 
@@ -98,7 +127,7 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[14].GetComponentInChildren<Text>().text = "If you are being chased by a guardian you can always escape with a quick dash. ";
             tutorials[14].transform.GetChild(1).GetComponentInChildren<Text>().text = "Cool!";
-            
+
             tutorials[15].GetComponentInChildren<Text>().text = "To use the \"dash\" simply press space or the right mouse button while pointing with the mouse at the direction you want to go!  Try it ...";
 
             tutorials[16].GetComponentInChildren<Text>().text = "You are all set to go! Remember that your stash can't carry more than 4 relics. Drop the relics at the altar to free some space!";
@@ -108,7 +137,6 @@ public class TutorialController : MonoBehaviour {
             tutorials[17].transform.GetChild(1).GetComponentInChildren<Text>().text = "Farewell!";
 
             introQuestions.text = "Please indicate how you felt while playing the game for each of the items, on the following scale:";
-            submitQuestionsButtonText.text = "Submit";
             optionsQuestions.text = "    not at all   slightly	moderately   fairly	  extremely";
             optionsQuestions.fontSize = 11;
 
@@ -145,6 +173,31 @@ public class TutorialController : MonoBehaviour {
             questions[30].GetComponent<Text>().text = "I lost connection with the outside world";
             questions[31].GetComponent<Text>().text = "I felt time pressure";
             questions[32].GetComponent<Text>().text = "I had to put a lot of effort into it";
+
+            youWinText_winPanel.text = "YOU WIN!!!";
+            answerQuestionsText_winPanel.text = "Answer" + System.Environment.NewLine + "Questions";
+            quitText_winPanel.text = "QUIT";
+            
+            nextPersonalQuestionsButton.text = "NEXT";
+            question1_Personal.text = "1. Age";
+            question2_Personal.text = "2. Sex";
+            question2_Personal_OptionA.text = "Male";
+            question2_Personal_OptionB.text = "Female";
+            question2_Personal_OptionC.text = "Rather not say";
+            question3_Personal.text = "3. How often do you play video games?";
+            question3_Personal_OptionA.text = "I don't play video games.";
+            question3_Personal_OptionB.text = "I play video games occasionally when the opportunity presents itself.";
+            question3_Personal_OptionC.text = "I make some time in my schedule to play video games.";
+            question4_Personal.text = "4. Are you familiar with the game genre (top-down action game)?";
+            question4_Personal_OptionA.text = "I don’t play video games.";
+            question4_Personal_OptionB.text = "I play video games but not of this genre.";
+            question4_Personal_OptionC.text = "I am familiar with the genre and played at least one game of the genre.";
+            question4_Personal_OptionD.text = "This genre is one of my favorites, and I played several games of this genre.";
+            nextExtraQuestionsButton.text = "NEXT";
+            question1_Extra.text = "1. Tell me a bit about your experience";
+            question2_Extra.text = "2. Did you understand the behaviour of guardians?";
+            quitExtraQuestionsButton.text = "QUIT";
+
         }
         else
         {
@@ -203,7 +256,6 @@ public class TutorialController : MonoBehaviour {
             tutorials[17].transform.GetChild(1).GetComponentInChildren<Text>().text = "Adeus!";
 
             introQuestions.text = "Por favor, indique como se sentiu ao jogar o jogo para cada um dos seguintes pontos, na seguinte escala:";
-            submitQuestionsButtonText.text = "Submeter";
             optionsQuestions.text = "         discordo            discordo 	   Indiferente        concordo          concordo" + System.Environment.NewLine +
                                             "      totalmente    parcialmente                            parcialmente   totalmente";
             optionsQuestions.fontSize = 9;
@@ -241,6 +293,31 @@ public class TutorialController : MonoBehaviour {
             questions[30].GetComponent<Text>().text = "Perdi a conexão com o mundo exterior";
             questions[31].GetComponent<Text>().text = "Senti a pressão do tempo";
             questions[32].GetComponent<Text>().text = "Tive de me esforçar muito";
+
+            youWinText_winPanel.text = "GANHASTE!!!";
+            answerQuestionsText_winPanel.text = "Responder" + System.Environment.NewLine + "Questionário";
+            quitText_winPanel.text = "SAIR";
+
+            nextPersonalQuestionsButton.text = "PRÓXIMO";
+            question1_Personal.text = "1. Idade";
+            question2_Personal.text = "2. Sexo";
+            question2_Personal_OptionA.text = "Masculino";
+            question2_Personal_OptionB.text = "Feminino";
+            question2_Personal_OptionC.text = "Prefiro não dizer";
+            question3_Personal.text = "3. Qual a frequência com que joga jogos?";
+            question3_Personal_OptionA.text = "Eu não jogo jogos.";
+            question3_Personal_OptionB.text = "Jogo ocasionalmente quando tenho oportunidade.";
+            question3_Personal_OptionC.text = "Tento arranjar espaço no meu horário para jogar jogos.";
+            question4_Personal.text = "4. Esta familiarizado com este tipo de jogo (top-down action game)?";
+            question4_Personal_OptionA.text = "Eu não jogo jogos.";
+            question4_Personal_OptionB.text = "EU jogo jogos mas não deste genero.";
+            question4_Personal_OptionC.text = "Estou familiarizado com o género e joguei pelo menos um jogo deste género.";
+            question4_Personal_OptionD.text = "Este género de jogo e um dos meus preferidos.";
+            nextExtraQuestionsButton.text = "PRÓXIMO";
+            question1_Extra.text = "1. Descreve um bocado a sua experiencia de jogo";
+            question2_Extra.text = "2. Conseguiu perceber o comportamento dos guardiões?";
+            quitExtraQuestionsButton.text = "SAIR";
+
         }
     }
 
