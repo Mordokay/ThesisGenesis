@@ -130,7 +130,7 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[15].GetComponentInChildren<Text>().text = "To use the \"dash\" simply press space or the right mouse button while pointing with the mouse at the direction you want to go!  Try it ...";
 
-            tutorials[16].GetComponentInChildren<Text>().text = "You are all set to go! Remember that your stash can't carry more than 4 relics. Drop the relics at the altar to free some space!";
+            tutorials[16].GetComponentInChildren<Text>().text = "You are all set to go! Remember that your stash can't carry more than 2 relics. Drop the relics at the altar to free some space!";
             tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Got it!";
 
             tutorials[17].GetComponentInChildren<Text>().text = "Farewell traveler. I am counting on you! Dont let me down!";
@@ -194,10 +194,9 @@ public class TutorialController : MonoBehaviour {
             question4_Personal_OptionC.text = "I am familiar with the genre and played at least one game of the genre.";
             question4_Personal_OptionD.text = "This genre is one of my favorites, and I played several games of this genre.";
             nextExtraQuestionsButton.text = "NEXT";
-            question1_Extra.text = "1. Tell me a bit about your experience";
-            question2_Extra.text = "2. Did you understand the behaviour of guardians?";
+            question1_Extra.text = "1. How would you describe the behavior of the guardians?";
+            question2_Extra.text = "2. Could you tell me an interesting situation that happened during the game?";
             quitExtraQuestionsButton.text = "QUIT";
-
         }
         else
         {
@@ -215,10 +214,10 @@ public class TutorialController : MonoBehaviour {
             tutorials[2].GetComponentInChildren<Text>().text = "O que vês atrás de mim e o Templo das Almas e se não conseguires trazer todas as relíquias douradas para o altar, este mundo vai ser destruído";
             tutorials[2].transform.GetChild(1).GetComponentInChildren<Text>().text = "Oh Não :(";
 
-            tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. EU fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos pela escuridão e começaram a controlar os aldeões ...";
+            tutorials[3].GetComponentInChildren<Text>().text = "... sim é muito triste. Eu fazia parte deste mundo até ao momento em que os guardiões ficaram corrompidos pela escuridão e começaram a controlar os aldeões ...";
             tutorials[3].transform.GetChild(1).GetComponentInChildren<Text>().text = ":(";
 
-            tutorials[4].GetComponentInChildren<Text>().text = "... somos os unicos sobreviventes deste mundo e os guardiões estão atrás de nos. Eu estou magoado por isso preciso que me apanhes 12 relíquias!";
+            tutorials[4].GetComponentInChildren<Text>().text = "... somos os únicos sobreviventes deste mundo e os guardiões estão atrás de nós. Eu estou magoado por isso preciso que me apanhes 12 relíquias!";
             tutorials[4].transform.GetChild(1).GetComponentInChildren<Text>().text = "Compreendo";
 
             tutorials[5].GetComponentInChildren<Text>().text = "As relíquias têm formas diferentes:";
@@ -228,7 +227,7 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[7].GetComponentInChildren<Text>().text = "Perfeito! Agora tenta usar o machado pressionando o botão esquerdo do rato...";
 
-            tutorials[8].GetComponentInChildren<Text>().text = "Boa! Agora que conheces os controlos básicos tenta apanhar a relíquia de madeira que esta perto de ti...";
+            tutorials[8].GetComponentInChildren<Text>().text = "Boa! Agora que conheces os controlos básicos tenta apanhar a relíquia de madeira que está perto de ti...";
 
             tutorials[9].GetComponentInChildren<Text>().text = "Consegues ver que um aldeão viu-te a apanhar a relíquia!" + System.Environment.NewLine + "Os aldeões não te atacam mas podem ir contar ao guardião mais próximo o que estavas a fazer, portanto tem cuidado!";
             tutorials[9].transform.GetChild(1).GetComponentInChildren<Text>().text = "OK";
@@ -249,7 +248,7 @@ public class TutorialController : MonoBehaviour {
 
             tutorials[15].GetComponentInChildren<Text>().text = "Para usar o \"correr\" pressiona na tecla SPACE ou no botão direito do rato enquanto apontas com o rato na direcção que queres ir! Tenta agora...";
 
-            tutorials[16].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 4 relíquias. Deixa as relíquias no altar para libertar espaço!";
+            tutorials[16].GetComponentInChildren<Text>().text = "Estas pronto para começar! Lembra-te que o \"Stash\" não consegue transportar mais do que 2 relíquias. Deixa as relíquias no altar para libertar espaço!";
             tutorials[16].transform.GetChild(1).GetComponentInChildren<Text>().text = "Percebido!";
 
             tutorials[17].GetComponentInChildren<Text>().text = "Adeus viajante. Estou a contar contigo! Boa Sorte!";
@@ -281,9 +280,9 @@ public class TutorialController : MonoBehaviour {
             questions[18].GetComponent<Text>().text = "Senti que poderia explorar coisas";
             questions[19].GetComponent<Text>().text = "Eu gostei do jogo";
             questions[20].GetComponent<Text>().text = "Eu fui rápido a alcançar os objectivos do jogo";
-            questions[21].GetComponent<Text>().text = "Senti-me irritado";
+            questions[21].GetComponent<Text>().text = "Senti-me chateado";
             questions[22].GetComponent<Text>().text = "Senti-me pressionado";
-            questions[23].GetComponent<Text>().text = "Senti-me irritado";
+            questions[23].GetComponent<Text>().text = "Senti-me irritável";
             questions[24].GetComponent<Text>().text = "Perdi a noção do tempo";
             questions[25].GetComponent<Text>().text = "Senti-me desafiado";
             questions[26].GetComponent<Text>().text = "Achei impressionante";
@@ -308,14 +307,14 @@ public class TutorialController : MonoBehaviour {
             question3_Personal_OptionA.text = "Eu não jogo jogos.";
             question3_Personal_OptionB.text = "Jogo ocasionalmente quando tenho oportunidade.";
             question3_Personal_OptionC.text = "Tento arranjar espaço no meu horário para jogar jogos.";
-            question4_Personal.text = "4. Esta familiarizado com este tipo de jogo (top-down action game)?";
+            question4_Personal.text = "4. Está familiarizado com este tipo de jogo (top-down action game)?";
             question4_Personal_OptionA.text = "Eu não jogo jogos.";
-            question4_Personal_OptionB.text = "EU jogo jogos mas não deste genero.";
+            question4_Personal_OptionB.text = "EU jogo jogos mas não deste género.";
             question4_Personal_OptionC.text = "Estou familiarizado com o género e joguei pelo menos um jogo deste género.";
-            question4_Personal_OptionD.text = "Este género de jogo e um dos meus preferidos.";
+            question4_Personal_OptionD.text = "Este género de jogo é um dos meus preferidos.";
             nextExtraQuestionsButton.text = "PRÓXIMO";
-            question1_Extra.text = "1. Descreve um bocado a sua experiencia de jogo";
-            question2_Extra.text = "2. Conseguiu perceber o comportamento dos guardiões?";
+            question1_Extra.text = "1. Como descreveria o comportamento dos guardiões?";
+            question2_Extra.text = "2. Consegue descrever uma situação interessante que tenha acontecido durante o jogo?";
             quitExtraQuestionsButton.text = "SAIR";
 
         }

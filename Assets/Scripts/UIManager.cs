@@ -840,6 +840,7 @@ public class UIManager : MonoBehaviour {
 
     public void AnswerQuestionsPanel()
     {
+        Time.timeScale = 0.0f;
         AnswerQuestions_Panel.SetActive(true);
         this.transform.GetChild(0).gameObject.SetActive(false);
         this.transform.GetChild(1).gameObject.SetActive(false);
