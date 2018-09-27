@@ -48,6 +48,7 @@ public class Message
         this.tags = msg.tags;
         this.description = msg.description;
     }
+
     public Message(int id, float messageTransmissionTime, string description, string tagsText)
     {
         //Debug.Log("id " + id + " messageTimeOfLife " + messageTimeOfLife + " description " + description + " tagsText " + tagsText);

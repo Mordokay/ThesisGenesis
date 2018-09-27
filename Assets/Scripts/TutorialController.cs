@@ -59,6 +59,8 @@ public class TutorialController : MonoBehaviour {
     public Text quitText_winPanel;
     public Text youWinText_winPanel;
 
+    public List<GameObject> tutorialColliders;
+
     void Start () {
         tutorialStage = 0;
         usedW = false;
@@ -329,12 +331,20 @@ public class TutorialController : MonoBehaviour {
         tutorials[tutorialStage].SetActive(true);
     }
 
+    void DisableTutorialColliders()
+    {
+        foreach(GameObject col in tutorialColliders)
+        {
+            col.SetActive(false);
+        }
+    }
+
 	void Update () {
         //Check if the tutorial has ended
         if (tutorialStage >= tutorials.Length)
         {
             prophetBaloon.SetActive(false);
-
+            DisableTutorialColliders();
         }
         else if(tutorialStage == 6)
         {

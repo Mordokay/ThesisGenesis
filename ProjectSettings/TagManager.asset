@@ -15,6 +15,7 @@ TagManager:
   - Canvas
   - Item
   - PrisonGuard
+  - TutorialColider
   layers:
   - Default
   - TransparentFX
@@ -33,7 +34,7 @@ TagManager:
   - Bush
   - Temple
   - Item
-  - 
+  - PLayerCollider
   - 
   - 
   - 

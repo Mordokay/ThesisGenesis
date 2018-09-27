@@ -846,6 +846,20 @@ public class UIManager : MonoBehaviour {
         this.transform.GetChild(1).gameObject.SetActive(false);
     }
 
+    public void TogglePlayerMenu()
+    {
+        if (playerMenu.activeSelf)
+        {
+            playerMenu.SetActive(false);
+            Time.timeScale = 1.0f;
+        }
+        else
+        {
+            playerMenu.SetActive(true);
+            Time.timeScale = 0.0f;
+        }
+    }
+
     private void Update()
     {
         /*
@@ -857,16 +871,7 @@ public class UIManager : MonoBehaviour {
         */
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (playerMenu.activeSelf)
-            {
-                playerMenu.SetActive(false);
-                Time.timeScale = 1.0f;
-            }
-            else
-            {
-                playerMenu.SetActive(true);
-                Time.timeScale = 0.0f;
-            }
+            TogglePlayerMenu();
         }
     }
 }
