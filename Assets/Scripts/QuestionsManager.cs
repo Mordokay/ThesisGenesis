@@ -51,10 +51,10 @@ public class QuestionsManager : MonoBehaviour {
         }
     }
 
-    public void ShowPersonalQuestionsPanel()
+    public void ShowGameExperienceQuestionsPanel()
     {
-        gameExperienceQuestionairePanel.SetActive(false);
-        personalQuestionsPanel.SetActive(true);
+        gameExperienceQuestionairePanel.SetActive(true);
+        personalQuestionsPanel.SetActive(false);
         extraQuestionsPanel.SetActive(false);
     }
 
@@ -73,7 +73,7 @@ public class QuestionsManager : MonoBehaviour {
     public IEnumerator SendGameExperienceQuestionaireEnumerator()
     {
         yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordData(questionsAnswers));
-        ShowPersonalQuestionsPanel();
+        ShowExtraQuestionsPanel();
     }
 
     public void SendPersonalExperienceQuestionaireData()
@@ -90,7 +90,7 @@ public class QuestionsManager : MonoBehaviour {
         }
 
         yield return StartCoroutine(this.GetComponent<MySQLManager>().RecordPersonalData(answers));
-        ShowExtraQuestionsPanel();
+        ShowGameExperienceQuestionsPanel();
     }
 
     public void SendExtraQuestionaireData()
