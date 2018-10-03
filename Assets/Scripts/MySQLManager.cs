@@ -145,8 +145,8 @@ public class MySQLManager : MonoBehaviour
 
     public IEnumerator SendsDataToDatabase()
     {
-        int messagesTotalCount = this.GetComponent<SimulationDataLogger>().totalMessages;
-        int repeatedMessageCount = this.GetComponent<SimulationDataLogger>().repeatedMessageCount;
+        //int messagesTotalCount = this.GetComponent<SimulationDataLogger>().totalMessages;
+        //int repeatedMessageCount = this.GetComponent<SimulationDataLogger>().repeatedMessageCount;
 
         /*
         for (int i = 0; i < this.GetComponent<PlayModeManager>().messageID; i++)
@@ -156,9 +156,9 @@ public class MySQLManager : MonoBehaviour
         }
         */
 
-        yield return StartCoroutine(InsertData("totalMsgCount", messagesTotalCount, 0));
-        yield return StartCoroutine(InsertData("repeatedMsgCount", repeatedMessageCount, 0));
-        yield return StartCoroutine(InsertData("newMsgCount", (messagesTotalCount - repeatedMessageCount), 0));
+        //yield return StartCoroutine(InsertData("totalMsgCount", messagesTotalCount, 0));
+        //yield return StartCoroutine(InsertData("repeatedMsgCount", repeatedMessageCount, 0));
+        //yield return StartCoroutine(InsertData("newMsgCount", (messagesTotalCount - repeatedMessageCount), 0));
         yield return StartCoroutine(InsertTime());
     }
 
@@ -179,9 +179,7 @@ public class MySQLManager : MonoBehaviour
 
     public void QuitGame()
     {
-        PlayerPrefs.SetString("mapToLoad", "default");
-        Application.Quit();
-        //StartCoroutine( QuitGameEnumerator());
+        StartCoroutine( QuitGameEnumerator());
     }
 
     public IEnumerator QuitGameEnumerator()
@@ -196,6 +194,7 @@ public class MySQLManager : MonoBehaviour
 
     void Update()
     {
+        /*
         timeSinceLastPositionUpdate += Time.deltaTime;
         //sends position data every 2 seconds to database
         if (timeSinceLastPositionUpdate > 2.0f)
@@ -203,5 +202,6 @@ public class MySQLManager : MonoBehaviour
             timeSinceLastPositionUpdate = 0.0f;
             StartCoroutine(InsertPlayerPos());
         }
+        */
     }
 }

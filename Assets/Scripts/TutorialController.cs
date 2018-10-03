@@ -318,7 +318,7 @@ public class TutorialController : MonoBehaviour {
             question3_Personal_OptionC.text = "Tento arranjar espaço no meu horário para jogar jogos.";
             question4_Personal.text = "4. Está familiarizado com este tipo de jogo (top-down action game)?";
             question4_Personal_OptionA.text = "Eu não jogo jogos.";
-            question4_Personal_OptionB.text = "EU jogo jogos mas não deste género.";
+            question4_Personal_OptionB.text = "Eu jogo jogos mas não deste género.";
             question4_Personal_OptionC.text = "Estou familiarizado com o género e joguei pelo menos um jogo deste género.";
             question4_Personal_OptionD.text = "Este género de jogo é um dos meus preferidos.";
             nextExtraQuestionsButton.text = "PRÓXIMO";
