@@ -78,6 +78,13 @@ public class TutorialController : MonoBehaviour {
         {
             RefreshTutorialTexts();
         }
+        else if (tutorialStage >= tutorials.Length)
+        {
+            prophetBaloon.SetActive(false);
+            DisableTutorialColliders();
+
+            StartCoroutine(this.GetComponent<MySQLManager>().LogEventAtTime("Finished Tutorial"));
+        }
     }
 
     public void SwitchLanguage()
@@ -341,12 +348,8 @@ public class TutorialController : MonoBehaviour {
 
 	void Update () {
         //Check if the tutorial has ended
-        if (tutorialStage >= tutorials.Length)
-        {
-            prophetBaloon.SetActive(false);
-            DisableTutorialColliders();
-        }
-        else if(tutorialStage == 6)
+
+        if (tutorialStage == 6)
         {
             if (Time.timeScale == 0)
             {
